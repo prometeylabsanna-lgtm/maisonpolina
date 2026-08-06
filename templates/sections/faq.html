@@ -1,0 +1,41 @@
+{% load i18n site_content %}
+<section class="section section--alt" id="faq" data-section="faq">
+  <div class="container">
+    <div data-reveal>
+      <p class="section__eyebrow">{% block_plain "home" "faq.eyebrow" %}</p>
+      <div class="section__rule"></div>
+      <h2 class="section__title">
+        {% block_plain "home" "faq.title" %}
+        <span class="section__title-accent">{% block_plain "home" "faq.title_accent" %}</span>
+      </h2>
+    </div>
+    <div class="accordion" data-accordion data-reveal>
+      {% for item in faq_items %}
+      <div class="accordion__item{% if forloop.first %} is-open{% endif %}">
+        <button type="button"
+                class="accordion__trigger"
+                id="faq-trigger-{{ item.pk }}"
+                aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-controls="faq-panel-{{ item.pk }}"
+                data-accordion-trigger>
+          <span>{{ item.question }}</span>
+          <span class="accordion__icon" aria-hidden="true"></span>
+        </button>
+        <div class="accordion__panel"
+             id="faq-panel-{{ item.pk }}"
+             role="region"
+             aria-labelledby="faq-trigger-{{ item.pk }}">
+          <div class="accordion__panel-inner">
+            <p class="accordion__answer">{{ item.answer }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="faq__cta">
+      <button type="button" class="btn" data-open-lead data-source="faq" data-service="">
+        {% block_plain "home" "faq.cta" %}
+      </button>
+    </div>
+  </div>
+</section>

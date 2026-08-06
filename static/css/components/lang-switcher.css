@@ -1,0 +1,37 @@
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.12em;
+}
+
+.lang-switcher__sep {
+  color: var(--color-text-muted);
+}
+
+.lang-switcher__link {
+  background: none;
+  border: 0;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-transform: uppercase;
+  transition: color var(--t-base);
+}
+
+.lang-switcher__link.is-active {
+  color: var(--color-text);
+}
+
+.lang-switcher__link:hover {
+  color: var(--color-accent-mid);
+}
+
+.lang-switcher__link.is-active:hover {
+  color: var(--color-text);
+}

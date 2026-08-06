@@ -1,0 +1,62 @@
+{% load i18n site_content static %}
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__col footer__col--brand">
+      <div class="footer__brand-row">
+        <span class="footer__line footer__line--left" aria-hidden="true"></span>
+        <a href="#top" class="footer__brand">
+          <span class="footer__brand-mark">Private companion</span>
+        </a>
+        <span class="footer__line footer__line--right" aria-hidden="true"></span>
+      </div>
+      {% if site_settings.get_location %}
+      <p class="footer__label footer__label--brand footer__location-label">{% trans "Локация" %}</p>
+      <p class="footer__text footer__location">{{ site_settings.get_location }}</p>
+      {% endif %}
+    </div>
+
+    <div class="footer__col footer__col--contact">
+      <p class="footer__label">{% trans "Связаться" %}</p>
+      {% if site_settings.phone %}
+      <a class="footer__phone" href="tel:{{ site_settings.phone|cut:' '|cut:'-' }}">{{ site_settings.phone }}</a>
+      {% endif %}
+      {% if site_settings.telegram_url or site_settings.email %}
+      <div class="footer__channels">
+        {% if site_settings.telegram_url %}
+        <a class="footer__telegram" href="{{ site_settings.telegram_url }}" target="_blank" rel="noopener noreferrer">
+          <span class="footer__telegram-title">{% trans "Telegram" %}</span>
+          <span class="footer__telegram-sub">{% trans "Написать в чат-бот" %}</span>
+        </a>
+        {% endif %}
+        {% if site_settings.email %}
+        <a class="footer__email" href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="footer__col footer__col--menu">
+      <p class="footer__label">{% trans "Меню" %}</p>
+      <nav class="footer__menu" aria-label="{% trans 'Меню футера' %}">
+        <a class="footer__menu-link" href="#about">{% trans "О себе" %}</a>
+        <a class="footer__menu-link" href="#gallery">{% trans "Галерея" %}</a>
+        <a class="footer__menu-link" href="#services">{% trans "Услуги" %}</a>
+        <a class="footer__menu-link" href="#reviews">{% trans "Отзывы" %}</a>
+        <details class="footer__menu-more">
+          <summary class="footer__menu-toggle">
+            <span class="footer__menu-toggle-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">{% trans "Показать ещё" %}</span>
+          </summary>
+          <div class="footer__menu-extra">
+            <a class="footer__menu-link" href="#faq">{% trans "Вопросы" %}</a>
+            <a class="footer__menu-link" href="#contact">{% trans "Контакты" %}</a>
+            <a class="footer__menu-link footer__menu-link--privacy" href="{% url 'core:privacy' %}">
+              <span>{% trans "Политика" %}</span>
+              <span>{% trans "конфиденциальности" %}</span>
+            </a>
+          </div>
+        </details>
+      </nav>
+    </div>
+  </div>
+</footer>

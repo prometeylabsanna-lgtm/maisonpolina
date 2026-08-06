@@ -1,0 +1,50 @@
+{% load i18n static site_content %}
+<section class="section section--alt" id="about" data-section="about">
+  <div class="container">
+    <div class="about__intro" data-reveal>
+      <p class="section__eyebrow">{% block_plain "home" "about.eyebrow" %}</p>
+      <div class="section__rule"></div>
+      <h2 class="section__title about__title">
+        {% block_plain "home" "about.title" %}
+        <span class="section__title-accent">{% block_plain "home" "about.title_accent" %}</span>
+      </h2>
+    </div>
+    <div class="about__grid" data-reveal>
+      <div class="about__media">
+        {% block_image "home" "about.portrait" as portrait %}
+        {% if portrait %}
+        <img src="{{ portrait.url }}" alt="" width="1024" height="1536" loading="lazy">
+        {% else %}
+        <img src="{% static 'images/about-portrait.jpg' %}?v={{ static_version }}"
+             alt=""
+             width="1024"
+             height="1536"
+             loading="lazy">
+        {% endif %}
+      </div>
+      <div class="about__body">
+        <p class="about__text">{% block_plain "home" "about.body_1" %}</p>
+        <p class="about__text">{% block_plain "home" "about.body_2" %}</p>
+        <p class="about__text">{% block_plain "home" "about.body_3" %}</p>
+        <blockquote class="about__quote">{% block_plain "home" "about.quote" %}</blockquote>
+        <div class="about__stats">
+          <div>
+            <p class="about__stat-value">{% block_plain "home" "about.stat_1_value" %}</p>
+            <p class="about__stat-label">{% block_plain "home" "about.stat_1_label" %}</p>
+          </div>
+          <div>
+            <p class="about__stat-value">{% block_plain "home" "about.stat_2_value" %}</p>
+            <p class="about__stat-label">{% block_plain "home" "about.stat_2_label" %}</p>
+          </div>
+          <div>
+            <p class="about__stat-value">{% block_plain "home" "about.stat_3_value" %}</p>
+            <p class="about__stat-label">{% block_plain "home" "about.stat_3_label" %}</p>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn--compact about__cta" data-open-lead data-source="about" data-service="">
+        {% block_plain "home" "about.cta" %}
+      </button>
+    </div>
+  </div>
+</section>

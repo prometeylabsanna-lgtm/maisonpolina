@@ -1,0 +1,167 @@
+.carousel {
+  margin-top: clamp(28px, 4vw, 48px);
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 2vw, 28px);
+}
+
+.carousel__btn {
+  flex: 0 0 auto;
+  padding: 12px;
+  color: var(--color-text-muted);
+  transition:
+    color var(--t-base),
+    border-color var(--t-base);
+  border: 1px solid transparent;
+}
+
+.carousel__btn:hover {
+  color: var(--color-accent-mid);
+  border-color: var(--color-accent-mid);
+}
+
+.carousel__track-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel__track {
+  display: flex;
+  width: 100%;
+  transition: transform var(--t-slow);
+  will-change: transform;
+}
+
+.carousel__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 0 clamp(4px, 2vw, 24px);
+  transition:
+    filter var(--t-slow),
+    opacity var(--t-slow),
+    transform var(--t-slow);
+}
+
+.carousel__quote-mark {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 64px;
+  line-height: 0.6;
+  color: var(--color-accent-mid);
+  height: 40px;
+}
+
+.carousel__text {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(18px, 2.4vw, 30px);
+  line-height: 1.45;
+  color: var(--color-text);
+  max-width: 42ch;
+  margin-inline: auto;
+}
+
+.carousel__footer {
+  margin-top: 22px;
+}
+
+.carousel__name {
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.carousel__role {
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}
+
+.carousel__dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.carousel__dot {
+  width: 34px;
+  height: 1px;
+  border: 0;
+  padding: 0;
+  background: rgb(255 255 255 / 0.25);
+  cursor: pointer;
+  transition: background var(--t-base);
+}
+
+.carousel__dot.is-active {
+  background: var(--color-accent-mid);
+}
+
+/* Планшет+ : три відгуки, центр чіткий, боки з блюром */
+@media (min-width: 768px) {
+  .carousel[data-per-view="3"] .carousel__track {
+    display: block;
+    position: relative;
+    width: 100%;
+    /* висота від центрового слайда */
+    min-height: 220px;
+  }
+
+  .carousel[data-per-view="3"] .carousel__track-wrap {
+    /* м’яке згасання біля країв блоку */
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+  }
+
+  .carousel[data-per-view="3"] .carousel__slide {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 33.333%;
+    max-width: none;
+    margin-left: -16.666%;
+    flex: none;
+    padding: 0 clamp(8px, 1.2vw, 18px);
+  }
+
+  .carousel[data-per-view="3"] .carousel__slide.is-side {
+    opacity: 0.42;
+    filter: blur(2.5px);
+  }
+
+  .carousel[data-per-view="3"] .carousel__slide.is-center {
+    opacity: 1;
+    filter: none;
+    z-index: 2;
+  }
+
+  .carousel[data-per-view="3"] .carousel__text {
+    font-size: clamp(15px, 1.5vw, 22px);
+    max-width: 28ch;
+  }
+
+  .carousel[data-per-view="3"] .carousel__quote-mark {
+    font-size: 48px;
+    height: 32px;
+  }
+}

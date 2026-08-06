@@ -1,0 +1,43 @@
+{% load i18n static site_content %}
+<section class="section contacts" id="contact" data-section="contacts">
+  <div class="contacts__bg" aria-hidden="true">
+    <img class="contacts__bg-img"
+         src="{% static 'images/contacts-bg.jpg' %}?v={{ static_version }}"
+         alt=""
+         width="1024"
+         height="559"
+         decoding="async">
+    <div class="contacts__bg-matte"></div>
+  </div>
+  <div class="container contacts__layout">
+    <div class="contacts__intro" data-reveal>
+      <h2 class="contacts__title">
+        {% block_plain "home" "contacts.title" %}<br>
+        <span class="contacts__title-accent">{% block_plain "home" "contacts.title_accent" %}</span>
+      </h2>
+      <p class="contacts__lead">{% block_plain "home" "contacts.lead" %}</p>
+
+      <div class="contacts__primary">
+        {% if site_settings.phone %}
+        <a class="contacts__phone" href="tel:{{ site_settings.phone|cut:' '|cut:'-' }}">{{ site_settings.phone }}</a>
+        {% endif %}
+        {% if site_settings.telegram_url %}
+        <a class="contacts__telegram" href="{{ site_settings.telegram_url }}" target="_blank" rel="noopener noreferrer">
+          <span class="contacts__telegram-title">{% trans "Telegram" %}</span>
+          <span class="contacts__telegram-sub">{% trans "Написать в чат-бот" %}</span>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="contacts__glass" data-reveal>
+      <div class="contacts__glass-inner">
+        <p class="contacts__glass-label">{% trans "Заявка" %}</p>
+        <div class="contacts__form-wrap" id="contacts-form">
+          {% include "partials/lead-form.html" with form=contacts_form service_label="" form_target="#contacts-form" %}
+        </div>
+        <p class="contacts__privacy">{% block_plain "home" "contacts.privacy_note" %}</p>
+      </div>
+    </div>
+  </div>
+</section>

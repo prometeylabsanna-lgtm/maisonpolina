@@ -1,0 +1,66 @@
+{% load i18n site_content %}
+<section class="section" id="gallery" data-section="gallery">
+  <div class="container">
+    <div class="gallery__head" data-reveal>
+      <div>
+        <p class="section__eyebrow">{% block_plain "home" "gallery.eyebrow" %}</p>
+        <div class="section__rule"></div>
+        <h2 class="section__title">
+          {% block_plain "home" "gallery.title" %}
+          <span class="section__title-accent">{% block_plain "home" "gallery.title_accent" %}</span>
+        </h2>
+      </div>
+    </div>
+    <div class="gallery" data-gallery data-reveal>
+      <div class="gallery__track" data-gallery-track data-lightbox-root>
+        {% for photo in gallery_photos %}
+        <figure class="gallery__item">
+          <button type="button"
+                  class="gallery__button"
+                  data-lightbox-open
+                  data-full="{{ photo.image.url }}"
+                  data-alt="{{ photo.alt|default:photo.caption }}"
+                  aria-label="{% trans 'Открыть фото' %}">
+            {% if photo.image %}
+            <img class="gallery__img"
+                 src="{{ photo.image.url }}"
+                 alt="{{ photo.alt }}"
+                 width="1024"
+                 height="768"
+                 loading="lazy">
+            {% else %}
+            <span class="gallery__placeholder">{{ forloop.counter|stringformat:"02d" }}</span>
+            {% endif %}
+          </button>
+        </figure>
+        {% empty %}
+        {% for i in "123456789012"|make_list %}
+        <figure class="gallery__item">
+          <div class="gallery__placeholder">{{ forloop.counter|stringformat:"02d" }}</div>
+        </figure>
+        {% endfor %}
+        {% endfor %}
+      </div>
+      <div class="gallery__controls">
+        <button type="button" class="gallery__arrow" data-gallery-prev aria-label="{% trans 'Предыдущие фото' %}">
+          <svg width="40" height="12" viewBox="0 0 40 12" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+            <path d="M39 6H1"></path>
+            <path d="M7 1L1 6l6 5"></path>
+          </svg>
+        </button>
+        <button type="button" class="gallery__arrow" data-gallery-next aria-label="{% trans 'Следующие фото' %}">
+          <svg width="40" height="12" viewBox="0 0 40 12" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+            <path d="M1 6h38"></path>
+            <path d="M33 1l6 5-6 5"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="lightbox" id="lightbox" data-lightbox hidden>
+  <button type="button" class="lightbox__close" data-lightbox-close aria-label="{% trans 'Закрыть' %}">✕</button>
+  <button type="button" class="lightbox__prev" data-lightbox-prev aria-label="{% trans 'Предыдущее' %}">‹</button>
+  <img class="lightbox__img" data-lightbox-img src="" alt="">
+  <button type="button" class="lightbox__next" data-lightbox-next aria-label="{% trans 'Следующее' %}">›</button>
+</div>

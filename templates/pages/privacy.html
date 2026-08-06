@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static site_content %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/pages/privacy.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+<section class="privacy">
+  <div class="container">
+    <h1 class="privacy__title">{{ privacy_title }}</h1>
+    <div class="privacy__body prose">{{ privacy_body|nl2p }}</div>
+  </div>
+</section>
+{% endblock %}

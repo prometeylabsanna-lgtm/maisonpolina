@@ -1,0 +1,106 @@
+.mobile-nav {
+  position: fixed;
+  z-index: var(--z-mobile-nav);
+  top: calc(12px + var(--safe-top));
+  left: max(12px, env(safe-area-inset-left, 0px));
+  right: max(12px, env(safe-area-inset-right, 0px));
+  bottom: calc(12px + var(--safe-bottom));
+  display: none;
+  flex-direction: column;
+  padding: 20px 22px 24px;
+  border-radius: 16px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: rgb(var(--color-bg-rgb) / 0.62);
+  -webkit-backdrop-filter: blur(22px) saturate(1.25);
+  backdrop-filter: blur(22px) saturate(1.25);
+  box-shadow:
+    0 12px 40px rgb(0 0 0 / 0.45),
+    inset 0 1px 0 rgb(255 255 255 / 0.08);
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-nav.is-open {
+  display: flex;
+}
+
+.mobile-nav__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0 0 auto;
+}
+
+.mobile-nav__top .header__brand-mark {
+  font-size: 14px;
+}
+
+.mobile-nav__close {
+  width: 44px;
+  height: 44px;
+  color: var(--color-text);
+  font-size: 22px;
+  line-height: 1;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 0.04);
+}
+
+.mobile-nav__list {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  font-size: clamp(26px, 7vw, 30px);
+  overflow-y: auto;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-nav__list a {
+  color: var(--color-text);
+  padding: 16px 0;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.mobile-nav__bottom {
+  margin-top: auto;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  flex: 0 0 auto;
+}
+
+.mobile-nav__phone {
+  display: inline-block;
+  align-self: center;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 6vw, 28px);
+  line-height: 1.15;
+  letter-spacing: 0.03em;
+  color: var(--color-text);
+  border-bottom: 1px solid rgb(212 181 110 / 0.55);
+  padding-bottom: 4px;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
+  transition:
+    color var(--t-base),
+    border-color var(--t-base);
+}
+
+.mobile-nav__phone:hover {
+  color: #e0c57a;
+  border-bottom-color: #e0c57a;
+}
+
+.mobile-nav__bottom .btn {
+  width: 100%;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .mobile-nav {
+    background: rgb(var(--color-bg-rgb) / 0.94);
+  }
+}

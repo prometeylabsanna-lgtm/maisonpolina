@@ -1,0 +1,232 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
+  background: transparent;
+  backdrop-filter: none;
+  padding-top: var(--safe-top);
+  transition:
+    background var(--t-base),
+    backdrop-filter var(--t-base);
+}
+
+.header.is-scrolled {
+  background: rgb(var(--color-bg-rgb) / 0.96);
+  backdrop-filter: blur(8px);
+}
+
+.header__inner {
+  width: min(var(--container-max), calc(100% - 40px));
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  min-height: var(--header-h);
+  padding: 14px 0;
+  position: relative;
+}
+
+.header__nav {
+  display: none;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: clamp(8px, 1.1vw, 20px);
+  font-family: var(--font-display);
+  font-size: clamp(11px, 0.95vw, 13px);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.header__nav a {
+  color: var(--color-text-muted);
+  transition: color var(--t-base);
+  flex: 0 0 auto;
+}
+
+.header__nav a:hover,
+.header__nav a.is-active {
+  color: var(--color-accent-mid);
+}
+
+.header__center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  max-width: calc(100% - 96px);
+  z-index: 1;
+}
+
+.header__brand-mark {
+  font-family: var(--font-display);
+  font-size: clamp(11px, 3.2vw, 16px);
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin-right: -0.14em;
+}
+
+.header__line {
+  display: block;
+  width: 10px;
+  height: 1px;
+  border: 0;
+  flex: 0 0 auto;
+  background: linear-gradient(
+    90deg,
+    rgb(180 150 80 / 0.12) 0%,
+    #8f7340 10%,
+    #c9a962 38%,
+    #e8d5a3 62%,
+    #f5ecd0 88%,
+    #fff8e6 100%
+  );
+}
+
+.header__line--left {
+  background: linear-gradient(
+    90deg,
+    rgb(180 150 80 / 0.08) 0%,
+    #7a6236 12%,
+    #b8924a 40%,
+    #d4b56e 68%,
+    #f0e2b6 90%,
+    #fffaf0 100%
+  );
+}
+
+.header__line--right {
+  background: linear-gradient(
+    90deg,
+    #fffaf0 0%,
+    #f0e2b6 10%,
+    #d4b56e 32%,
+    #b8924a 60%,
+    #7a6236 88%,
+    rgb(180 150 80 / 0.08) 100%
+  );
+}
+
+.header__brand {
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+  flex: 0 0 auto;
+}
+
+.header__actions {
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(8px, 1vw, 16px);
+  min-width: 0;
+}
+
+.header__phone {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+  transition: color var(--t-base);
+  white-space: nowrap;
+}
+
+.header__phone:hover {
+  color: var(--color-accent-mid);
+}
+
+.header__burger {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-content: center;
+  gap: 6px;
+}
+
+.header__burger-line {
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--color-text);
+}
+
+@media (min-width: 768px) {
+  .header__line {
+    width: 14px;
+  }
+
+  .header__center {
+    gap: clamp(10px, 1.2vw, 16px);
+    max-width: 100%;
+  }
+
+  .header__brand-mark {
+    font-size: clamp(12px, 1.35vw, 16px);
+    letter-spacing: 0.22em;
+    margin-right: -0.22em;
+  }
+
+  .header__inner {
+    padding-inline: 52px;
+  }
+}
+
+/* Повне меню: рівні проміжки між меню / брендом / діями */
+@media (min-width: 1180px) {
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(20px, 2.4vw, 40px);
+    width: min(var(--container-max), calc(100% - 48px));
+    padding-inline: 0;
+    box-sizing: border-box;
+  }
+
+  .header__nav {
+    display: flex;
+    flex: 0 1 auto;
+    justify-content: flex-start;
+  }
+
+  .header__center {
+    flex: 0 0 auto;
+  }
+
+  .header__line {
+    width: 16px;
+  }
+
+  .header__actions {
+    display: flex;
+    flex: 0 1 auto;
+    justify-content: flex-end;
+  }
+
+  .header__burger {
+    display: none;
+  }
+}
+
+/* На дуже широких екранах можна трохи довші риски */
+@media (min-width: 1400px) {
+  .header__line {
+    width: 20px;
+  }
+
+  .header__nav {
+    gap: clamp(12px, 1.4vw, 24px);
+  }
+}

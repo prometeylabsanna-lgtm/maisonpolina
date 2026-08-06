@@ -1,0 +1,183 @@
+.gallery__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.gallery {
+  --gallery-gap: 12px;
+  /* ширина картки; кількість видимих карток задається в медіазапитах */
+  --gallery-card: 88vw;
+}
+
+.gallery__track {
+  display: flex;
+  align-items: stretch;
+  gap: var(--gallery-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  /* без scroll-snap: Chrome прилипає до снап-точки й глушить наступні
+     програмні кроки стрілками. Крок і так завжди рівний ширині картки */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.gallery__track::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery__item {
+  margin: 0;
+  flex: 0 0 var(--gallery-card);
+  /* кадри секції — горизонтальні (~4:3); не ріжемо їх у портрет */
+  aspect-ratio: 4 / 3;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line-soft);
+  overflow: hidden;
+  transition:
+    border-color var(--t-slow),
+    background var(--t-slow);
+}
+
+.gallery__controls {
+  display: flex;
+  justify-content: center;
+  gap: clamp(20px, 4vw, 40px);
+  margin-top: clamp(22px, 3vw, 34px);
+}
+
+.gallery.is-static .gallery__controls {
+  display: none;
+}
+
+.gallery__arrow {
+  width: 56px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    color var(--t-base),
+    opacity var(--t-base);
+}
+
+.gallery__arrow:hover {
+  color: var(--color-accent);
+}
+
+.gallery__arrow:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+.gallery__item:hover {
+  border-color: var(--color-text);
+  background: var(--color-surface-hover);
+}
+
+.gallery__button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+
+.gallery__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery__placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+  text-align: center;
+  line-height: 1.9;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-lightbox);
+  background: rgb(var(--color-overlay-rgb) / 0.94);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  padding-bottom: calc(20px + var(--safe-bottom));
+}
+
+.lightbox.is-open {
+  display: flex;
+}
+
+.lightbox__img {
+  max-width: min(100%, 1200px);
+  max-height: 85svh;
+  object-fit: contain;
+}
+
+.lightbox__close,
+.lightbox__prev,
+.lightbox__next {
+  position: absolute;
+  color: var(--color-text);
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-line-soft);
+  background: transparent;
+}
+
+.lightbox__close {
+  top: calc(16px + var(--safe-top));
+  right: 16px;
+}
+
+.lightbox__prev {
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox__next {
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ~1.55 картки в кадрі — більші фото */
+@media (min-width: 600px) {
+  .gallery {
+    --gallery-gap: 14px;
+    --gallery-card: calc((100% - var(--gallery-gap)) / 1.55);
+  }
+}
+
+/* ~2.4 картки + край наступної */
+@media (min-width: 900px) {
+  .gallery {
+    --gallery-gap: 18px;
+    --gallery-card: calc((100% - 2 * var(--gallery-gap)) / 2.4);
+  }
+}

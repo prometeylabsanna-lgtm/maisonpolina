@@ -1,0 +1,23 @@
+{% load i18n %}
+<div class="mobile-nav" id="mobile-nav" data-mobile-nav hidden>
+  <div class="mobile-nav__top">
+    <span class="header__brand-mark">Private companion</span>
+    <button type="button" class="mobile-nav__close" data-mobile-nav-close aria-label="{% trans 'Закрыть' %}">✕</button>
+  </div>
+  <nav class="mobile-nav__list" aria-label="{% trans 'Мобильная навигация' %}">
+    <a href="#about" data-mobile-nav-link>{% trans "О себе" %}</a>
+    <a href="#gallery" data-mobile-nav-link>{% trans "Галерея" %}</a>
+    <a href="#services" data-mobile-nav-link>{% trans "Услуги" %}</a>
+    <a href="#reviews" data-mobile-nav-link>{% trans "Отзывы" %}</a>
+    <a href="#faq" data-mobile-nav-link>{% trans "Вопросы" %}</a>
+    <a href="#contact" data-mobile-nav-link>{% trans "Контакты" %}</a>
+  </nav>
+  <div class="mobile-nav__bottom">
+    {% if site_settings.phone %}
+    <a class="mobile-nav__phone" href="tel:{{ site_settings.phone|cut:' '|cut:'-' }}">{{ site_settings.phone }}</a>
+    {% endif %}
+    <button type="button" class="btn btn--block" data-open-lead data-source="header" data-service="" data-mobile-nav-link>
+      {% trans "Заявка" %}
+    </button>
+  </div>
+</div>

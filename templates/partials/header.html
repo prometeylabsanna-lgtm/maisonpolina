@@ -1,0 +1,33 @@
+{% load i18n %}
+<header class="header" data-sticky-header>
+  <div class="header__inner">
+    <nav class="header__nav" data-scrollspy aria-label="{% trans 'Основная навигация' %}">
+      <a href="#about">{% trans "О себе" %}</a>
+      <a href="#gallery">{% trans "Галерея" %}</a>
+      <a href="#services">{% trans "Услуги" %}</a>
+      <a href="#reviews">{% trans "Отзывы" %}</a>
+      <a href="#faq">{% trans "Вопросы" %}</a>
+      <a href="#contact">{% trans "Контакты" %}</a>
+    </nav>
+    <div class="header__center">
+      <span class="header__line header__line--left" aria-hidden="true"></span>
+      <a href="#top" class="header__brand">
+        <span class="header__brand-mark">Private companion</span>
+      </a>
+      <span class="header__line header__line--right" aria-hidden="true"></span>
+    </div>
+    <div class="header__actions">
+      {% include "partials/lang-switcher.html" %}
+      {% if site_settings.phone %}
+      <a class="header__phone" href="tel:{{ site_settings.phone|cut:' '|cut:'-' }}">{{ site_settings.phone }}</a>
+      {% endif %}
+      <button type="button" class="btn btn--compact" data-open-lead data-source="header" data-service="">
+        {% trans "Заявка" %}
+      </button>
+    </div>
+    <button type="button" class="header__burger" data-mobile-nav-open aria-label="{% trans 'Меню' %}" aria-expanded="false" aria-controls="mobile-nav">
+      <span class="header__burger-line"></span>
+      <span class="header__burger-line"></span>
+    </button>
+  </div>
+</header>

@@ -1,0 +1,61 @@
+{% load static i18n django_htmx %}
+<!DOCTYPE html>
+<html lang="{{ current_language|default:'ru' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <title>{% block title %}{% if seo_title %}{{ seo_title }}{% else %}{{ page_title|default:site_settings.brand_name }}{% endif %}{% endblock %}</title>
+  {% block meta %}
+  {% if seo_description %}
+  <meta name="description" content="{{ seo_description }}">
+  {% endif %}
+  {% endblock %}
+  {% block hreflang %}
+  {% if alternate_urls.ru %}<link rel="alternate" hreflang="ru" href="{{ request.scheme }}://{{ request.get_host }}{{ alternate_urls.ru }}">{% endif %}
+  {% if alternate_urls.en %}<link rel="alternate" hreflang="en" href="{{ request.scheme }}://{{ request.get_host }}{{ alternate_urls.en }}">{% endif %}
+  {% if alternate_urls.ru %}<link rel="alternate" hreflang="x-default" href="{{ request.scheme }}://{{ request.get_host }}{{ alternate_urls.ru }}">{% endif %}
+  <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+  <meta property="og:locale" content="{% if current_language == 'en' %}en_US{% else %}ru_RU{% endif %}">
+  {% endblock %}
+  <link rel="preload" href="{% static 'fonts/bodoni-moda-sc-400.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/cormorant-garamond-400-cyr.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/cormorant-garamond-400.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'css/tokens.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/reset.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/typography.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/layout/header.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/layout/footer.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/layout/grid.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/button.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/form.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/modal.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/card.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/nav-mobile.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/lang-switcher.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/gallery.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/carousel.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/accordion.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/tg-float.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/dock.css' %}?v={{ static_version }}">
+  {% block page_css %}{% endblock %}
+  <script src="{% static 'js/htmx.min.js' %}" defer></script>
+  {% django_htmx_script %}
+</head>
+<body>
+  <div class="scroll-sentinel" id="scroll-sentinel" aria-hidden="true"></div>
+  {% include "partials/header.html" %}
+  {% include "partials/mobile-nav.html" %}
+  <main id="top">
+    {% block content %}{% endblock %}
+  </main>
+  {% include "partials/footer.html" %}
+  {% include "partials/lead-modal.html" %}
+  {% include "partials/tg-float.html" %}
+  {% include "partials/dock.html" %}
+  <script type="module" src="{% static 'js/main.js' %}?v={{ static_version }}"></script>
+  {% block page_js %}{% endblock %}
+</body>
+</html>

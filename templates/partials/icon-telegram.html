@@ -1,0 +1,11 @@
+{% load static %}
+{# 3D глянцева іконка Telegram (смарагд) #}
+<picture class="{{ class|default:'icon-telegram' }}">
+  <source type="image/webp" srcset="{% static 'images/icon-telegram-3d.webp' %}?v={{ static_version }}">
+  <img src="{% static 'images/icon-telegram-3d.png' %}?v={{ static_version }}"
+       alt=""
+       width="{{ size|default:36 }}"
+       height="{{ size|default:36 }}"
+       decoding="async"
+       draggable="false">
+</picture>

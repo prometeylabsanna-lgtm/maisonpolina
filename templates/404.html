@@ -1,0 +1,24 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'ru' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>404</title>
+  <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
+  <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+  <link rel="stylesheet" href="{% static 'css/typography.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/button.css' %}">
+  <link rel="stylesheet" href="{% static 'css/pages/privacy.css' %}">
+</head>
+<body>
+  <div class="error-page">
+    <div>
+      <p class="error-page__code">404</p>
+      <p class="error-page__text">{% trans "Страница не найдена. Вернитесь на главную." %}</p>
+      <a class="btn" href="/">{% trans "На главную" %}</a>
+    </div>
+  </div>
+</body>
+</html>

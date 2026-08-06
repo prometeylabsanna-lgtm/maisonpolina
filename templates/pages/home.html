@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/pages/home.css' %}?v={{ static_version }}">
+{% endblock %}
+
+{% block content %}
+{% if section_visible.hero %}{% include "sections/hero.html" %}{% endif %}
+{% if section_visible.about %}{% include "sections/about.html" %}{% endif %}
+{% if section_visible.gallery %}{% include "sections/gallery.html" %}{% endif %}
+{% if section_visible.formats %}{% include "sections/formats.html" %}{% endif %}
+{% if section_visible.testimonials %}{% include "sections/testimonials.html" %}{% endif %}
+{% if section_visible.faq %}{% include "sections/faq.html" %}{% endif %}
+{% if section_visible.contacts %}{% include "sections/contacts.html" %}{% endif %}
+{% endblock %}

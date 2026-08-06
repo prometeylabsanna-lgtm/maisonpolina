@@ -1,0 +1,14 @@
+{% load i18n %}
+<nav class="lang-switcher" aria-label="{% trans 'Язык' %}">
+  <a class="lang-switcher__link{% if current_language == 'ru' %} is-active{% endif %}"
+     href="{{ alternate_urls.ru }}"
+     hreflang="ru"
+     data-lang-switch
+     {% if current_language == 'ru' %}aria-current="true"{% endif %}>RU</a>
+  <span class="lang-switcher__sep" aria-hidden="true">/</span>
+  <a class="lang-switcher__link{% if current_language == 'en' %} is-active{% endif %}"
+     href="{{ alternate_urls.en }}"
+     hreflang="en"
+     data-lang-switch
+     {% if current_language == 'en' %}aria-current="true"{% endif %}>EN</a>
+</nav>

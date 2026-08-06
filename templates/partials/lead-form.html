@@ -1,0 +1,48 @@
+{% load i18n %}
+{% with form_target=form_target|default:"#lead-form-body" %}
+<form class="form"
+      method="post"
+      action="{% url 'leads:submit' %}"
+      hx-post="{% url 'leads:submit' %}"
+      hx-target="{{ form_target }}"
+      hx-swap="innerHTML"
+      data-lead-form>
+  {% csrf_token %}
+  {% if service_label %}
+  <p class="form__hint">{% trans "Выбранная услуга:" %} <strong>{{ service_label }}</strong></p>
+  {% endif %}
+  {% if form and form.non_field_errors %}
+  <div class="form__errors">{{ form.non_field_errors }}</div>
+  {% endif %}
+  <label class="form__field">
+    {% trans "Имя" %}
+    <input class="form__input" type="text" name="name" required value="{% if form %}{{ form.name.value|default:'' }}{% endif %}" autocomplete="name">
+    {% if form and form.name.errors %}<span class="form__field-error">{{ form.name.errors.0 }}</span>{% endif %}
+  </label>
+  <label class="form__field">
+    {% trans "Телефон или e-mail" %}
+    <input class="form__input" type="text" name="contact" required value="{% if form %}{{ form.contact.value|default:'' }}{% endif %}" autocomplete="tel">
+    {% if form and form.contact.errors %}<span class="form__field-error">{{ form.contact.errors.0 }}</span>{% endif %}
+  </label>
+  <label class="form__field">
+    {% trans "Комментарий" %}
+    <textarea class="form__textarea" name="message" rows="3">{% if form %}{{ form.message.value|default:'' }}{% endif %}</textarea>
+  </label>
+  <label class="form__consent">
+    <input type="checkbox" name="consent" required {% if form and form.consent.value %}checked{% endif %}>
+    <span>
+      {% url 'core:privacy' as privacy_url %}
+      {% blocktrans %}Согласен на обработку персональных данных и принимаю <a href="{{ privacy_url }}">политику конфиденциальности</a>{% endblocktrans %}
+    </span>
+  </label>
+  {% if form and form.consent.errors %}<span class="form__field-error">{{ form.consent.errors.0 }}</span>{% endif %}
+  <input type="hidden" name="service" value="{% if form %}{{ form.service.value|default:service_label|default:'' }}{% else %}{{ service_label|default:'' }}{% endif %}" data-lead-service>
+  <input type="hidden" name="source" value="{% if form %}{{ form.source.value|default:'contacts' }}{% else %}contacts{% endif %}" data-lead-source>
+  <input type="hidden" name="language" value="{% if form %}{{ form.language.value|default:current_language|default:'ru' }}{% else %}{{ current_language|default:'ru' }}{% endif %}">
+  <input type="hidden" name="form_ts" value="{% if form %}{{ form.form_ts.value|default:'' }}{% endif %}" data-lead-ts>
+  <div class="honeypot" aria-hidden="true">
+    <label>{% trans "Сайт" %}<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+  </div>
+  <button type="submit" class="btn btn--solid btn--block">{% trans "Отправить" %}</button>
+</form>
+{% endwith %}

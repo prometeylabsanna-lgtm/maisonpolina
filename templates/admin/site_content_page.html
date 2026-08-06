@@ -1,0 +1,138 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}{{ title }} | {{ site_title }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/admin/site_content.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="site-content-editor">
+  <div class="site-content-editor__head">
+    <div>
+      <h1>{{ section.title }}</h1>
+      {% if section.description %}
+      <p>{{ section.description }}</p>
+      {% endif %}
+    </div>
+    <a href="{{ section.preview_url }}" target="_blank" rel="noopener">
+      {% trans "Перегляд на сайті" %}
+    </a>
+  </div>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% if section.visibility_key %}
+    <div class="site-content-editor__card">
+      {% for key, block in blocks.items %}
+        {% if key == section.visibility_key %}
+        <label>
+          <input type="checkbox"
+                 name="block__{{ section.page_slug }}__{{ section.visibility_key }}__visible"
+                 {% if block.is_visible %}checked{% endif %}>
+          {% trans "Показувати секцію на сайті" %}
+        </label>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="site-content-editor__grid">
+      {% for page, key in section.blocks %}
+        {% for bkey, bobj in blocks.items %}
+          {% if bkey == key %}
+          <div class="site-content-editor__card">
+            <p class="site-content-editor__label">{{ bobj.label|default:key }}</p>
+            {% if key in image_keys %}
+              {% if bobj.image %}
+              <p class="site-content-editor__preview">
+                <img src="{{ bobj.image.url }}" alt="" width="180" height="120">
+              </p>
+              <label>
+                <input type="checkbox" name="block__{{ page }}__{{ key }}__clear_image">
+                {% trans "Видалити зображення" %}
+              </label>
+              {% endif %}
+              <div class="site-content-editor__field">
+                <label>{% trans "Зображення" %}</label>
+                <input type="file" name="block__{{ page }}__{{ key }}__image" accept="image/*">
+              </div>
+            {% else %}
+              <div class="site-content-editor__pair">
+                <div class="site-content-editor__field">
+                  <label>RU</label>
+                  {% if key in multiline_keys %}
+                  <textarea name="block__{{ page }}__{{ key }}__ru">{{ bobj.text_ru }}</textarea>
+                  {% else %}
+                  <input type="text" name="block__{{ page }}__{{ key }}__ru" value="{{ bobj.text_ru }}">
+                  {% endif %}
+                </div>
+                <div class="site-content-editor__field">
+                  <label>EN</label>
+                  {% if key in multiline_keys %}
+                  <textarea name="block__{{ page }}__{{ key }}__en" class="{% if not bobj.text_en %}is-empty-en{% endif %}">{{ bobj.text_en }}</textarea>
+                  {% else %}
+                  <input type="text" name="block__{{ page }}__{{ key }}__en" value="{{ bobj.text_en }}" class="{% if not bobj.text_en %}is-empty-en{% endif %}">
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+    {% if gallery_formset %}
+    <div class="site-content-editor__card site-content-editor__card--spaced">
+      <h2>{% trans "Фото галереї" %}</h2>
+      {{ gallery_formset.management_form }}
+      {% for form in gallery_formset %}
+      <div class="site-content-editor__gallery-row">
+        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+        <div class="site-content-editor__pair">
+          <div class="site-content-editor__field">
+            <label>{{ form.image.label }}</label>
+            {{ form.image }}
+            {% if form.instance.image %}
+            <p class="site-content-editor__preview">
+              <img src="{{ form.instance.image.url }}" alt="" width="120" height="90">
+            </p>
+            {% endif %}
+          </div>
+          <div class="site-content-editor__field">
+            <label>{{ form.is_active.label }}</label>
+            {{ form.is_active }}
+            {% if gallery_formset.can_delete %}
+            <label class="site-content-editor__delete">{{ form.DELETE }} {% trans "Видалити" %}</label>
+            {% endif %}
+          </div>
+        </div>
+        <div class="site-content-editor__pair">
+          <div class="site-content-editor__field"><label>alt RU</label>{{ form.alt_ru }}</div>
+          <div class="site-content-editor__field"><label>alt EN</label>{{ form.alt_en }}</div>
+        </div>
+        <div class="site-content-editor__pair">
+          <div class="site-content-editor__field"><label>caption RU</label>{{ form.caption_ru }}</div>
+          <div class="site-content-editor__field"><label>caption EN</label>{{ form.caption_en }}</div>
+        </div>
+        <div class="site-content-editor__pair">
+          <div class="site-content-editor__field"><label>col span</label>{{ form.col_span }}</div>
+          <div class="site-content-editor__field"><label>row span</label>{{ form.row_span }}</div>
+        </div>
+        <div class="site-content-editor__field"><label>order</label>{{ form.order }}</div>
+        {% if form.errors %}<div class="site-content-editor__errors">{{ form.errors }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="site-content-editor__actions">
+      <button type="submit">{% trans "Зберегти" %}</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

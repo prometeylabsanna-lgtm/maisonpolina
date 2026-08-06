@@ -1,0 +1,326 @@
+# English translations for SelfBrand
+# Copyright (C) SelfBrand
+msgid ""
+msgstr ""
+"Project-Id-Version: SelfBrand\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-03 16:10+0300\n"
+"PO-Revision-Date: 2026-08-03 16:10+0300\n"
+"Last-Translator: SelfBrand\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: config/settings/base.py:97
+msgid "Русский"
+msgstr "Russian"
+
+#: config/settings/base.py:98
+msgid "English"
+msgstr "English"
+
+#: config/settings/base.py:193
+msgid "Вміст сторінок"
+msgstr "Page content"
+
+#: config/settings/base.py:197
+msgid "Hero"
+msgstr "Hero"
+
+#: config/settings/base.py:202
+msgid "Про мене"
+msgstr "About"
+
+#: config/settings/base.py:207 templates/partials/footer.html:49
+#: templates/partials/header.html:6 templates/partials/mobile-nav.html:9
+msgid "Галерея"
+msgstr "Gallery"
+
+#: config/settings/base.py:212
+msgid "Формати"
+msgstr "Formats"
+
+#: config/settings/base.py:217 config/settings/base.py:248
+msgid "Відгуки"
+msgstr "Testimonials"
+
+#: config/settings/base.py:222
+msgid "Питання"
+msgstr "FAQ"
+
+#: config/settings/base.py:227
+msgid "Контакти"
+msgstr "Contacts"
+
+#: config/settings/base.py:232
+msgid "Політика"
+msgstr "Privacy"
+
+#: config/settings/base.py:239
+msgid "Списки"
+msgstr "Lists"
+
+#: config/settings/base.py:243
+msgid "Формати послуг"
+msgstr "Service formats"
+
+#: config/settings/base.py:253
+msgid "Питання й відповіді"
+msgstr "FAQ"
+
+#: config/settings/base.py:260
+msgid "Заявки"
+msgstr "Leads"
+
+#: config/settings/base.py:264
+msgid "Усі заявки"
+msgstr "All leads"
+
+#: config/settings/base.py:271
+msgid "Налаштування"
+msgstr "Settings"
+
+#: config/settings/base.py:275 templates/partials/lead-form.html:44
+msgid "Сайт"
+msgstr "Website"
+
+#: config/settings/base.py:280
+msgid "SEO"
+msgstr "SEO"
+
+#: src/leads/forms.py:10 templates/partials/lead-form.html:18
+msgid "Имя"
+msgstr "Name"
+
+#: src/leads/forms.py:15 templates/partials/lead-form.html:23
+msgid "Телефон или e-mail"
+msgstr "Phone or e-mail"
+
+#: src/leads/forms.py:20 templates/partials/lead-form.html:28
+msgid "Комментарий"
+msgstr "Comment"
+
+#: src/leads/forms.py:24
+msgid "Согласен на обработку персональных данных"
+msgstr "I agree to personal data processing"
+
+#: src/leads/forms.py:25
+msgid "Необходимо согласие на обработку данных"
+msgstr "Consent to data processing is required"
+
+#: src/leads/forms.py:57
+msgid "Укажите телефон или e-mail"
+msgstr "Please provide a phone or e-mail"
+
+#: templates/404.html:19
+msgid "Страница не найдена. Вернитесь на главную."
+msgstr "Page not found. Return to the homepage."
+
+#: templates/partials/dock.html:2
+msgid "Мобильная панель"
+msgstr "Mobile bar"
+
+#: templates/partials/dock.html:7
+msgid "Главная"
+msgstr "Home"
+
+#: templates/partials/footer.html
+msgid "Показать ещё"
+msgstr "Show more"
+
+#: templates/404.html:20
+msgid "На главную"
+msgstr "Back home"
+
+
+#: templates/admin/site_content_page.html:21
+msgid "Перегляд на сайті"
+msgstr "View on site"
+
+#: templates/admin/site_content_page.html:36
+msgid "Показувати секцію на сайті"
+msgstr "Show section on site"
+
+#: templates/admin/site_content_page.html:56
+msgid "Видалити зображення"
+msgstr "Remove image"
+
+#: templates/admin/site_content_page.html:60
+msgid "Зображення"
+msgstr "Image"
+
+#: templates/admin/site_content_page.html:91
+msgid "Фото галереї"
+msgstr "Gallery photos"
+
+#: templates/admin/site_content_page.html:110
+msgid "Видалити"
+msgstr "Delete"
+
+#: templates/admin/site_content_page.html:134
+msgid "Зберегти"
+msgstr "Save"
+
+#: templates/partials/footer.html:10
+msgid "Локация"
+msgstr "Location"
+
+#: templates/partials/footer.html:16
+msgid "Связаться"
+msgstr "Contact"
+
+#: templates/partials/footer.html:35 templates/sections/contacts.html:40
+msgid "Telegram"
+msgstr "Telegram"
+
+#: templates/partials/footer.html:36 templates/sections/contacts.html:41
+msgid "Написать в чат-бот"
+msgstr "Message the chat bot"
+
+#: templates/partials/footer.html:46 templates/partials/header.html:26
+msgid "Меню"
+msgstr "Menu"
+
+#: templates/partials/footer.html:47
+msgid "Меню футера"
+msgstr "Footer menu"
+
+#: templates/partials/footer.html:48 templates/partials/header.html:5
+#: templates/partials/mobile-nav.html:8
+msgid "О себе"
+msgstr "About"
+
+#: templates/partials/footer.html:50 templates/partials/header.html:7
+#: templates/partials/mobile-nav.html:10
+msgid "Услуги"
+msgstr "Services"
+
+#: templates/partials/footer.html:51 templates/partials/header.html:8
+#: templates/partials/mobile-nav.html:11
+msgid "Отзывы"
+msgstr "Reviews"
+
+#: templates/partials/footer.html:52 templates/partials/header.html:9
+#: templates/partials/mobile-nav.html:12
+msgid "Вопросы"
+msgstr "FAQ"
+
+#: templates/partials/footer.html:53 templates/partials/header.html:10
+#: templates/partials/mobile-nav.html:13
+msgid "Контакты"
+msgstr "Contacts"
+
+#: templates/partials/footer.html:54
+msgid "Политика конфиденциальности"
+msgstr "Privacy policy"
+
+#: templates/partials/footer.html:55
+msgid "Политика"
+msgstr "Privacy"
+
+#: templates/partials/footer.html:56
+msgid "конфиденциальности"
+msgstr "policy"
+
+#: templates/partials/header.html:4
+msgid "Основная навигация"
+msgstr "Primary navigation"
+
+#: templates/partials/header.html:23 templates/partials/mobile-nav.html:21
+#: templates/sections/contacts.html:50
+msgid "Заявка"
+msgstr "Request"
+
+#: templates/partials/lang-switcher.html:2
+msgid "Язык"
+msgstr "Language"
+
+#: templates/partials/lead-form.html:12
+msgid "Выбранная услуга:"
+msgstr "Selected service:"
+
+#: templates/partials/lead-form.html:35
+#, python-format
+msgid ""
+"Согласен на обработку персональных данных и принимаю <a "
+"href=\"%(privacy_url)s\">политику конфиденциальности</a>"
+msgstr ""
+"I agree to personal data processing and accept the <a "
+"href=\"%(privacy_url)s\">privacy policy</a>"
+
+#: templates/partials/lead-form.html:46
+msgid "Отправить"
+msgstr "Send"
+
+#: templates/partials/lead-modal.html:5
+msgid "Оставить заявку"
+msgstr "Send a request"
+
+#: templates/partials/lead-modal.html:6 templates/partials/lead-success.html:6
+#: templates/partials/mobile-nav.html:5 templates/sections/gallery.html:63
+msgid "Закрыть"
+msgstr "Close"
+
+#: templates/partials/lead-success.html:4
+msgid "Благодарю вас"
+msgstr "Thank you"
+
+#: templates/partials/lead-success.html:5
+msgid "Я получу заявку и отвечу лично в течение суток."
+msgstr "I will receive your request and reply personally within a day."
+
+#: templates/partials/mobile-nav.html:7
+msgid "Мобильная навигация"
+msgstr "Mobile navigation"
+
+#: templates/partials/tg-float.html:7
+msgid "Написать в Telegram"
+msgstr "Message on Telegram"
+
+#: templates/sections/formats.html:42
+msgid "Чаще всего"
+msgstr "Most chosen"
+
+#: templates/sections/formats.html:50
+msgid "Что входит"
+msgstr "What’s included"
+
+#: templates/sections/formats.html:68
+msgid "Заказать"
+msgstr "Book"
+
+#: templates/sections/gallery.html:24
+msgid "Открыть фото"
+msgstr "Open photo"
+
+#: templates/sections/gallery.html:46
+msgid "Предыдущие фото"
+msgstr "Previous photos"
+
+#: templates/sections/gallery.html:52
+msgid "Следующие фото"
+msgstr "Next photos"
+
+#: templates/sections/gallery.html:64
+msgid "Предыдущее"
+msgstr "Previous"
+
+#: templates/sections/gallery.html:66
+msgid "Следующее"
+msgstr "Next"
+
+#: templates/sections/testimonials.html:10
+msgid "Предыдущий отзыв"
+msgstr "Previous testimonial"
+
+#: templates/sections/testimonials.html:27
+msgid "Следующий отзыв"
+msgstr "Next testimonial"
+
+#: templates/sections/testimonials.html:33
+#, python-format
+msgid "Отзыв %(n)s"
+msgstr "Testimonial %(n)s"

@@ -1,0 +1,75 @@
+{% load i18n site_content %}
+<section class="section section--alt" id="services" data-section="formats">
+  <div class="container">
+    <div data-reveal>
+      <p class="section__eyebrow">{% block_plain "home" "formats.eyebrow" %}</p>
+      <div class="section__rule"></div>
+      <h2 class="section__title">
+        {% block_plain "home" "formats.title" %}
+        <span class="section__title-accent">{% block_plain "home" "formats.title_accent" %}</span>
+      </h2>
+    </div>
+    <div class="formats__grid" data-reveal>
+      {% for fmt in formats %}
+      <article class="card{% if fmt.is_featured %} card--featured{% endif %}">
+        <div class="card__head">
+          <span class="card__icon" aria-hidden="true">
+            {% if forloop.counter == 1 %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <circle cx="9" cy="8" r="3.2"></circle>
+              <path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"></path>
+              <circle cx="17" cy="9" r="2.4"></circle>
+              <path d="M14.2 19c.4-2.2 1.8-3.5 3.8-3.5 1.2 0 2.2.5 2.9 1.4"></path>
+            </svg>
+            {% elif forloop.counter == 2 %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <rect x="3.5" y="5" width="17" height="15" rx="1.5"></rect>
+              <path d="M3.5 9.5h17"></path>
+              <path d="M8 3.5v3"></path>
+              <path d="M16 3.5v3"></path>
+              <path d="M8.5 14h3"></path>
+              <path d="M14 14h1.5"></path>
+            </svg>
+            {% else %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <path d="M4 18.5V7.2L12 4l8 3.2v11.3"></path>
+              <path d="M4 11l8 3.2L20 11"></path>
+              <path d="M12 14.2V21"></path>
+            </svg>
+            {% endif %}
+          </span>
+          {% if fmt.is_featured %}
+          <span class="card__badge">{% trans "Чаще всего" %}</span>
+          {% endif %}
+          <span class="card__label">{{ fmt.label }}</span>
+          <h3 class="card__title">{{ fmt.title }}</h3>
+          <p class="card__text">{{ fmt.description }}</p>
+          <p class="card__price">{{ fmt.price_text }}</p>
+        </div>
+        <div class="card__divider" aria-hidden="true"></div>
+        <p class="card__includes">{% trans "Что входит" %}</p>
+        <ul class="card__list">
+          {% for feature in fmt.features.all %}
+          <li class="card__list-item">
+            <span class="card__check" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M2.2 6.2l2.6 2.6 5-5.4"></path>
+              </svg>
+            </span>
+            <span>{{ feature.text }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        <button type="button"
+                class="btn btn--gradient btn--block card__action"
+                data-open-lead
+                data-source="formats"
+                data-service="{{ fmt.title }}">
+          {% trans "Заказать" %}
+        </button>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="formats__note" data-reveal>{% block_plain "home" "formats.note" %}</p>
+  </div>
+</section>

@@ -1,0 +1,72 @@
+/* Мобільна sticky-панель: Главная / Галерея / Контакты */
+.dock {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .dock {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-dock);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    min-height: var(--dock-h);
+    padding-top: 10px;
+    padding-bottom: calc(10px + var(--safe-bottom));
+    padding-inline: max(20px, env(safe-area-inset-left, 0px))
+      max(20px, env(safe-area-inset-right, 0px));
+    background: #1a1a1a;
+    border-top: 1px solid rgb(255 255 255 / 0.08);
+  }
+
+  .dock__item {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 48px;
+    padding: 6px 8px;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: color var(--t-base);
+  }
+
+  .dock__item:hover,
+  .dock__item:focus-visible,
+  .dock__item.is-active {
+    color: var(--color-text);
+  }
+
+  .dock__item:hover .dock__icon,
+  .dock__item:focus-visible .dock__icon,
+  .dock__item.is-active .dock__icon {
+    color: #d4b56e;
+  }
+
+  .dock__icon {
+    display: block;
+    width: 30px;
+    height: 30px;
+    color: var(--color-accent-mid);
+    transition: color var(--t-base);
+  }
+
+  .dock__label {
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  /* відступ під контент дає футер своїм padding-bottom — без сірої смуги body */
+  body {
+    padding-bottom: 0;
+  }
+}

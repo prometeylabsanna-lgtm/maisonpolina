@@ -1,0 +1,58 @@
+:root {
+  --color-bg: #1c1c1c;
+  --color-bg-alt: #222222;
+  --color-surface: #272727;
+  --color-surface-hover: #2d2d2d;
+
+  /* Канали --color-bg для напівпрозорих шарів (шторки hero, фон хедера) */
+  --color-bg-rgb: 28 28 28;
+  /* Оверлеї мусять бути темнішими за --color-bg, інакше затемнення не читається */
+  --color-overlay-rgb: 18 18 18;
+
+  /* Основний акцент #1e583f, додатковий #2c8863 */
+  --color-accent: #1e583f;
+  --color-accent-mid: #2c8863;
+  --color-accent-deep: #1e583f;
+  --color-accent-dark: #193e2c;
+  --color-accent-dim: #193e2c;
+  --color-accent-rgb: 30 88 63;
+  --color-accent-2-rgb: 44 136 99;
+
+  --color-line: rgb(var(--color-accent-2-rgb) / 0.45);
+  --color-line-soft: rgb(var(--color-accent-2-rgb) / 0.2);
+
+  --color-text: #ffffff;
+  --color-text-muted: #a8a8a8;
+  --color-text-subtle: #6e6e6e;
+
+  --border-hairline: var(--color-line-soft);
+  --border-strong: var(--color-line);
+
+  --font-display: "Bodoni Moda SC", "Bodoni Moda", "Cormorant Garamond", Georgia, serif;
+  --font-body: "Cormorant Garamond", Georgia, serif;
+
+  /* спільна сітка для всіх блоків: хедер, банер, секції, футер */
+  --container-max: 1240px;
+  --section-pad-m: 64px 20px;
+  --section-pad-t: 96px 32px;
+  --section-pad-d: 140px 40px;
+  --sec-y: clamp(64px, 10vw, 140px);
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast: 150ms var(--ease);
+  --t-base: 300ms var(--ease);
+  --t-slow: 400ms var(--ease);
+
+  --z-header: 100;
+  --z-dock: 95;
+  --z-mobile-nav: 110;
+  --z-modal: 400;
+  --z-lightbox: 450;
+
+  --header-h: clamp(64px, 7vw, 96px);
+  --dock-h: 64px;
+  --radius: 0;
+}

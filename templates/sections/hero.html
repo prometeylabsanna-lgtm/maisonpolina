@@ -1,0 +1,38 @@
+{% load i18n static site_content %}
+<section class="hero" id="hero" data-section="hero">
+  <div class="hero__banner">
+    <div class="hero__bg" aria-hidden="true"></div>
+    {% block_image "home" "hero.media" as hero_media %}
+    <div class="hero__media">
+      {% if hero_media %}
+      <img src="{{ hero_media.url }}" alt="" fetchpriority="high">
+      {% else %}
+      <img class="hero__portrait"
+           src="{% static 'images/hero-portrait.jpg' %}?v={{ static_version }}"
+           alt=""
+           width="1452"
+           height="1083"
+           fetchpriority="high">
+      {% endif %}
+    </div>
+    <div class="hero__shade-x" aria-hidden="true"></div>
+    <div class="hero__shade-y" aria-hidden="true"></div>
+    <div class="hero__content">
+      <div class="hero__copy">
+        <h1 class="hero__title">{% block_plain "home" "hero.title" %}</h1>
+        <p class="hero__subtitle">{% block_plain "home" "hero.subtitle" %}</p>
+        <p class="hero__lead">{% block_plain "home" "hero.lead" %}</p>
+        <div class="hero__actions">
+          <button type="button" class="btn" data-open-lead data-source="hero" data-service="">
+            {% block_plain "home" "hero.cta_primary" %}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="hero__strip">
+      <span class="hero__strip-text">{% block_plain "home" "hero.tagline" %}</span>
+      <span class="hero__strip-line" aria-hidden="true"></span>
+      <a class="hero__strip-link" href="#services">{% block_plain "home" "hero.cta_secondary" %}</a>
+    </div>
+  </div>
+</section>
