@@ -16,7 +16,7 @@ ALLOWED_HOSTS = config(
 )
 CSRF_TRUSTED_ORIGINS = config(
     "CSRF_TRUSTED_ORIGINS",
-    default="",
+    default="https://*.vercel.app",
     cast=lambda v: [s.strip() for s in v.split(",") if s.strip()],
 )
 
@@ -59,7 +59,16 @@ elif _postgres_db:
             "PORT": config("DB_PORT", default="5432"),
         }
     }
-# else: keep SQLite from base (build-time / collectstatic without DB)
+elif os.environ.get("VERCEL"):
+    # Serverless FS is read-only except /tmp — local sqlite path would 500.
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "/tmp/maisonpolina.sqlite3",
+        }
+    }
+    MEDIA_ROOT = "/tmp/maisonpolina-media"
+# else: keep SQLite from base (local collectstatic / build without DB)
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 

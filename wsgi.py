@@ -10,3 +10,10 @@ if str(ROOT) not in sys.path:
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.production")
 
 from config.wsgi import application  # noqa: E402
+
+try:
+    from src.core.vercel_bootstrap import bootstrap_vercel_db
+
+    bootstrap_vercel_db()
+except Exception:
+    pass
