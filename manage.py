@@ -7,9 +7,14 @@ from decouple import config
 
 
 def main() -> None:
+    default_settings = (
+        "config.settings.production"
+        if os.environ.get("VERCEL")
+        else "config.settings.develop"
+    )
     os.environ.setdefault(
         "DJANGO_SETTINGS_MODULE",
-        config("DJANGO_SETTINGS_MODULE", default="config.settings.develop"),
+        config("DJANGO_SETTINGS_MODULE", default=default_settings),
     )
     try:
         from django.core.management import execute_from_command_line
