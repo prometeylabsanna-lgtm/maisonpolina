@@ -4,8 +4,8 @@
     <img class="contacts__bg-img"
          src="{% static 'images/contacts-bg.jpg' %}?v={{ static_version }}"
          alt=""
-         width="1024"
-         height="559"
+         width="1915"
+         height="821"
          decoding="async">
     <div class="contacts__bg-matte"></div>
   </div>
@@ -21,16 +21,14 @@
         {% if site_settings.phone %}
         <a class="contacts__phone" href="tel:{{ site_settings.phone|cut:' '|cut:'-' }}">{{ site_settings.phone }}</a>
         {% endif %}
-        {% if site_settings.telegram_url %}
-        <a class="contacts__telegram" href="{{ site_settings.telegram_url }}" target="_blank" rel="noopener noreferrer">
+        <a class="contacts__telegram" href="#chat" data-open-chat>
           <span class="contacts__telegram-title">{% trans "Telegram" %}</span>
           <span class="contacts__telegram-sub">{% trans "Написать в чат-бот" %}</span>
         </a>
-        {% endif %}
       </div>
     </div>
 
-    <div class="contacts__glass" data-reveal>
+    <div class="contacts__glass" data-reveal data-reveal-delay="220">
       <div class="contacts__glass-inner">
         <p class="contacts__glass-label">{% trans "Заявка" %}</p>
         <div class="contacts__form-wrap" id="contacts-form">

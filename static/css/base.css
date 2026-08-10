@@ -1,9 +1,20 @@
+html {
+  background-color: var(--color-floral);
+}
+
 body {
-  background: var(--color-bg);
+  min-height: 100%;
+  background-color: var(--color-floral);
+  background-image: var(--bg-depth);
+  background-size: var(--bg-depth-size);
+  background-repeat: var(--bg-depth-repeat);
+  background-position: var(--bg-depth-position);
+  background-blend-mode: var(--bg-depth-blend);
   color: var(--color-text);
   font-family: var(--font-body);
   font-weight: 300;
   overflow-x: hidden;
+  transition: background-color var(--t-base), color var(--t-base);
 }
 
 button,
@@ -24,7 +35,7 @@ h6 {
 }
 
 ::selection {
-  background: rgb(var(--color-accent-rgb) / 0.35);
+  background: rgb(var(--color-accent-rgb) / 0.2);
   color: var(--color-text);
 }
 
@@ -47,30 +58,62 @@ body.is-locked {
   border-top: 1px solid var(--color-line-soft);
 }
 
+/* Напівпрозорий підпис у секціях головної (без hero / header / footer) */
+.section[data-section] {
+  position: relative;
+}
+
+.section[data-section]::before {
+  content: "Maison Polina";
+  position: absolute;
+  top: clamp(18px, 2.8vw, 36px);
+  right: clamp(16px, 4vw, 40px);
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  max-width: min(46vw, 220px);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(13px, 1.7vw, 18px);
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: var(--color-champagne);
+  opacity: 0.25;
+  text-align: right;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.section[data-section] > .container {
+  position: relative;
+  z-index: 1;
+}
+
 .section--alt {
-  background: var(--color-bg-alt);
+  background-color: var(--color-floral-soft);
+  background-image: var(--bg-depth-alt);
+  background-size: var(--bg-depth-size);
+  background-repeat: var(--bg-depth-repeat);
+  background-position: var(--bg-depth-position);
+  background-blend-mode: var(--bg-depth-blend);
 }
 
 .section__eyebrow {
-  font-size: 12px;
-  letter-spacing: 0.24em;
+  font-size: 14px;
+  letter-spacing: 0.28em;
+  line-height: 1.5;
   text-transform: uppercase;
-  color: var(--color-text-subtle);
+  color: var(--color-type-muted);
 }
 
 .section__rule {
   width: 56px;
   height: 1px;
   border: 0;
-  /* металево-золота риска під eyebrow */
-  background: linear-gradient(
-    90deg,
-    #7a6236 0%,
-    #b8924a 28%,
-    #d4b56e 52%,
-    #f0e2b6 78%,
-    #fff8e6 100%
-  );
+  /* золотий металевий наконечник */
+  background: var(--metal-tip-end);
   margin: 18px 0 26px;
 }
 
@@ -82,21 +125,14 @@ body.is-locked {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(28px, 4.6vw, 54px);
-  line-height: 1.1;
-  letter-spacing: 0.01em;
+  line-height: 1.18;
+  letter-spacing: 0.02em;
 }
 
 .section__title-accent {
   font-weight: 300;
   font-style: italic;
   color: var(--color-accent-mid);
-}
-
-.section__lead {
-  font-size: 15px;
-  line-height: 1.8;
-  color: var(--color-text-muted);
-  max-width: 38ch;
 }
 
 .scroll-sentinel {
@@ -142,4 +178,27 @@ body.is-locked {
   .container {
     width: min(var(--container-max), calc(100% - 48px));
   }
+}
+
+/* HTMX: swapped content inherits tokens; soft loading affordance */
+.htmx-indicator {
+  display: none;
+  opacity: 0;
+  transition: opacity var(--t-fast);
+}
+
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+  display: inline-flex;
+  opacity: 1;
+}
+
+.htmx-swapping {
+  opacity: 0.55;
+  transition: opacity var(--t-fast);
+}
+
+.htmx-settling {
+  opacity: 1;
+  transition: opacity var(--t-base);
 }

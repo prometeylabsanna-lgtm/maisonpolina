@@ -11,6 +11,7 @@ from src.formats.models import ServiceFormat
 from src.gallery.models import GalleryPhoto
 from src.leads.forms import LeadForm
 from src.leads.models import LeadSource
+from src.reviews.forms import ReviewForm
 from src.reviews.models import Testimonial
 
 
@@ -20,7 +21,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         blocks = get_site_blocks()
-        ctx["page_title"] = "Полина"
+        ctx["page_title"] = "MAISON POLINA"
         seo = SeoMeta.objects.filter(page="home").first()
         ctx["seo"] = seo
         if seo:
@@ -30,6 +31,9 @@ class HomeView(TemplateView):
         ctx["section_visible"] = {
             "hero": is_section_visible("home", "hero_section_visible", blocks=blocks),
             "about": is_section_visible("home", "about_section_visible", blocks=blocks),
+            "personality": is_section_visible(
+                "home", "personality_section_visible", blocks=blocks
+            ),
             "gallery": is_section_visible("home", "gallery_section_visible", blocks=blocks),
             "formats": is_section_visible("home", "formats_section_visible", blocks=blocks),
             "testimonials": is_section_visible(
@@ -58,6 +62,13 @@ class HomeView(TemplateView):
             initial={
                 "source": LeadSource.HERO,
                 "language": get_language() or "ru",
+                "form_ts": str(time.time()),
+            }
+        )
+        ctx["review_form"] = ReviewForm(
+            initial={
+                "language": get_language() or "ru",
+                "rating": 5,
                 "form_ts": str(time.time()),
             }
         )

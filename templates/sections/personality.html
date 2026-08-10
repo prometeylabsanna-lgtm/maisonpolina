@@ -1,0 +1,107 @@
+{% load i18n static site_content %}
+<section class="section section--alt" id="personality" data-section="personality">
+  <div class="container">
+    <div class="personality__intro" data-reveal>
+      <p class="section__eyebrow">{% block_plain "home" "personality.eyebrow" %}</p>
+      <div class="section__rule"></div>
+      <h2 class="section__title personality__title">
+        {% block_plain "home" "personality.title" %}
+        <span class="section__title-accent">{% block_plain "home" "personality.title_accent" %}</span>
+      </h2>
+    </div>
+
+    <div class="personality__grid" data-reveal data-reveal-delay="220">
+      <div class="personality__col">
+        <h3 class="personality__subtitle">{% block_plain "home" "personality.facts_title" %}</h3>
+        <dl class="personality__facts">
+          <div class="personality__row">
+            <dt>{% trans "Возраст" %}</dt>
+            <dd>{% block_plain "home" "personality.age" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Глаза" %}</dt>
+            <dd>{% block_plain "home" "personality.eyes" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Волосы" %}</dt>
+            <dd>{% block_plain "home" "personality.hair" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Рост" %}</dt>
+            <dd>{% block_plain "home" "personality.height" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Вес" %}</dt>
+            <dd>{% block_plain "home" "personality.weight" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Параметры" %}</dt>
+            <dd>{% block_plain "home" "personality.measurements" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Обувь" %}</dt>
+            <dd>{% block_plain "home" "personality.shoes" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Размер одежды" %}</dt>
+            <dd>{% block_plain "home" "personality.clothing" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Зодиак" %}</dt>
+            <dd>{% block_plain "home" "personality.zodiac" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Тату" %}</dt>
+            <dd>{% block_plain "home" "personality.tattoo" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Пирсинг" %}</dt>
+            <dd>{% block_plain "home" "personality.piercing" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Цветы" %}</dt>
+            <dd>{% block_plain "home" "personality.flowers" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Кухня" %}</dt>
+            <dd>{% block_plain "home" "personality.cuisine" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Алкоголь" %}</dt>
+            <dd>{% block_plain "home" "personality.alcohol" %}</dd>
+          </div>
+          <div class="personality__row">
+            <dt>{% trans "Курение" %}</dt>
+            <dd>{% block_plain "home" "personality.smoking" %}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="personality__col personality__col--extra">
+        <div class="personality__media">
+          {% block_image "home" "personality.portrait" as portrait %}
+          {% if portrait %}
+          <img src="{{ portrait.url }}?v={{ static_version }}" alt="{% trans 'Портрет' %}" width="560" height="700" loading="lazy">
+          {% else %}
+          <img src="{% static 'images/personality-portrait.jpg' %}?v={{ static_version }}"
+               alt="{% trans 'Портрет' %}"
+               width="560"
+               height="700"
+               loading="lazy">
+          {% endif %}
+        </div>
+        <ul class="personality__list">
+          <li>{% block_plain "home" "personality.extra_1" %}</li>
+          <li>{% block_plain "home" "personality.extra_2" %}</li>
+          <li>{% block_plain "home" "personality.extra_3" %}</li>
+        </ul>
+        <div class="personality__notes">
+          <p>{% block_plain "home" "personality.languages" as languages_text %}{{ languages_text|emphasize_phrases:"Языки:|Languages:" }}</p>
+          <p>{% block_plain "home" "personality.respect" %}</p>
+          <p>{% block_plain "home" "personality.education" as education_text %}{{ education_text|emphasize_phrases:"высших образования|higher-education degrees" }}</p>
+          <p>{% block_plain "home" "personality.travel" as travel_text %}{{ travel_text|emphasize_phrases:"20+ стран|20+ countries" }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

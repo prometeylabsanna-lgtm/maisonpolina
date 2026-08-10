@@ -57,25 +57,25 @@
               </label>
               {% endif %}
               <div class="site-content-editor__field">
-                <label>{% trans "Зображення" %}</label>
-                <input type="file" name="block__{{ page }}__{{ key }}__image" accept="image/*">
+                <label for="id_block_{{ page }}_{{ key }}_image">{% trans "Зображення" %}</label>
+                <input id="id_block_{{ page }}_{{ key }}_image" type="file" name="block__{{ page }}__{{ key }}__image" accept="image/*">
               </div>
             {% else %}
               <div class="site-content-editor__pair">
                 <div class="site-content-editor__field">
-                  <label>RU</label>
+                  <label for="id_block_{{ page }}_{{ key }}_ru">RU</label>
                   {% if key in multiline_keys %}
-                  <textarea name="block__{{ page }}__{{ key }}__ru">{{ bobj.text_ru }}</textarea>
+                  <textarea id="id_block_{{ page }}_{{ key }}_ru" name="block__{{ page }}__{{ key }}__ru">{{ bobj.text_ru }}</textarea>
                   {% else %}
-                  <input type="text" name="block__{{ page }}__{{ key }}__ru" value="{{ bobj.text_ru }}">
+                  <input id="id_block_{{ page }}_{{ key }}_ru" type="text" name="block__{{ page }}__{{ key }}__ru" value="{{ bobj.text_ru }}">
                   {% endif %}
                 </div>
                 <div class="site-content-editor__field">
-                  <label>EN</label>
+                  <label for="id_block_{{ page }}_{{ key }}_en">EN</label>
                   {% if key in multiline_keys %}
-                  <textarea name="block__{{ page }}__{{ key }}__en" class="{% if not bobj.text_en %}is-empty-en{% endif %}">{{ bobj.text_en }}</textarea>
+                  <textarea id="id_block_{{ page }}_{{ key }}_en" name="block__{{ page }}__{{ key }}__en" class="{% if not bobj.text_en %}is-empty-en{% endif %}">{{ bobj.text_en }}</textarea>
                   {% else %}
-                  <input type="text" name="block__{{ page }}__{{ key }}__en" value="{{ bobj.text_en }}" class="{% if not bobj.text_en %}is-empty-en{% endif %}">
+                  <input id="id_block_{{ page }}_{{ key }}_en" type="text" name="block__{{ page }}__{{ key }}__en" value="{{ bobj.text_en }}" class="{% if not bobj.text_en %}is-empty-en{% endif %}">
                   {% endif %}
                 </div>
               </div>
@@ -95,7 +95,7 @@
         {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
         <div class="site-content-editor__pair">
           <div class="site-content-editor__field">
-            <label>{{ form.image.label }}</label>
+            <label for="{{ form.image.id_for_label }}">{{ form.image.label }}</label>
             {{ form.image }}
             {% if form.instance.image %}
             <p class="site-content-editor__preview">
@@ -104,26 +104,26 @@
             {% endif %}
           </div>
           <div class="site-content-editor__field">
-            <label>{{ form.is_active.label }}</label>
+            <label for="{{ form.is_active.id_for_label }}">{{ form.is_active.label }}</label>
             {{ form.is_active }}
             {% if gallery_formset.can_delete %}
-            <label class="site-content-editor__delete">{{ form.DELETE }} {% trans "Видалити" %}</label>
+            <label class="site-content-editor__delete" for="{{ form.DELETE.id_for_label }}">{{ form.DELETE }} {% trans "Видалити" %}</label>
             {% endif %}
           </div>
         </div>
         <div class="site-content-editor__pair">
-          <div class="site-content-editor__field"><label>alt RU</label>{{ form.alt_ru }}</div>
-          <div class="site-content-editor__field"><label>alt EN</label>{{ form.alt_en }}</div>
+          <div class="site-content-editor__field"><label for="{{ form.alt_ru.id_for_label }}">alt RU</label>{{ form.alt_ru }}</div>
+          <div class="site-content-editor__field"><label for="{{ form.alt_en.id_for_label }}">alt EN</label>{{ form.alt_en }}</div>
         </div>
         <div class="site-content-editor__pair">
-          <div class="site-content-editor__field"><label>caption RU</label>{{ form.caption_ru }}</div>
-          <div class="site-content-editor__field"><label>caption EN</label>{{ form.caption_en }}</div>
+          <div class="site-content-editor__field"><label for="{{ form.caption_ru.id_for_label }}">caption RU</label>{{ form.caption_ru }}</div>
+          <div class="site-content-editor__field"><label for="{{ form.caption_en.id_for_label }}">caption EN</label>{{ form.caption_en }}</div>
         </div>
         <div class="site-content-editor__pair">
-          <div class="site-content-editor__field"><label>col span</label>{{ form.col_span }}</div>
-          <div class="site-content-editor__field"><label>row span</label>{{ form.row_span }}</div>
+          <div class="site-content-editor__field"><label for="{{ form.col_span.id_for_label }}">col span</label>{{ form.col_span }}</div>
+          <div class="site-content-editor__field"><label for="{{ form.row_span.id_for_label }}">row span</label>{{ form.row_span }}</div>
         </div>
-        <div class="site-content-editor__field"><label>order</label>{{ form.order }}</div>
+        <div class="site-content-editor__field"><label for="{{ form.order.id_for_label }}">order</label>{{ form.order }}</div>
         {% if form.errors %}<div class="site-content-editor__errors">{{ form.errors }}</div>{% endif %}
       </div>
       {% endfor %}

@@ -1,4 +1,6 @@
 .header {
+  --header-fg: var(--color-text);
+  --header-fg-muted: var(--color-text-muted);
   position: fixed;
   top: 0;
   left: 0;
@@ -6,15 +8,44 @@
   z-index: var(--z-header);
   background: transparent;
   backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   padding-top: var(--safe-top);
   transition:
     background var(--t-base),
-    backdrop-filter var(--t-base);
+    backdrop-filter var(--t-base),
+    -webkit-backdrop-filter var(--t-base);
+}
+
+/* Soft dark band — як злив у hero: один тон, без світлої «горбинки» */
+.header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(var(--header-h) + var(--safe-top) + 140px);
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(14 2 4 / 0.97) 0%,
+    rgb(18 3 6 / 0.88) 22%,
+    rgb(22 3 6 / 0.62) 48%,
+    rgb(22 3 6 / 0.28) 72%,
+    rgb(22 3 6 / 0) 100%
+  );
+  transition: opacity var(--t-base);
 }
 
 .header.is-scrolled {
-  background: rgb(var(--color-bg-rgb) / 0.96);
-  backdrop-filter: blur(8px);
+  background: rgb(26 4 8 / 0.94);
+  backdrop-filter: blur(10px) saturate(1.05);
+  -webkit-backdrop-filter: blur(10px) saturate(1.05);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.header.is-scrolled::before {
+  opacity: 0;
 }
 
 .header__inner {
@@ -27,6 +58,7 @@
   min-height: var(--header-h);
   padding: 14px 0;
   position: relative;
+  z-index: 1;
 }
 
 .header__nav {
@@ -35,91 +67,99 @@
   flex-wrap: nowrap;
   gap: clamp(8px, 1.1vw, 20px);
   font-family: var(--font-display);
-  font-size: clamp(11px, 0.95vw, 13px);
-  letter-spacing: 0.05em;
+  font-size: clamp(13px, 1.15vw, 15px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--header-fg-muted);
   white-space: nowrap;
   min-width: 0;
 }
 
 .header__nav a {
-  color: var(--color-text-muted);
+  color: var(--header-fg-muted);
+  font-weight: 600;
   transition: color var(--t-base);
   flex: 0 0 auto;
 }
 
-.header__nav a:hover,
+.header__nav a:hover {
+  color: var(--color-interactive-hover);
+}
+
 .header__nav a.is-active {
-  color: var(--color-accent-mid);
+  color: var(--color-interactive);
+  font-weight: 700;
 }
 
 .header__center {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   flex: 0 0 auto;
   max-width: calc(100% - 96px);
   z-index: 1;
 }
 
 .header__brand-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
   font-family: var(--font-display);
-  font-size: clamp(11px, 3.2vw, 16px);
+  font-size: clamp(11px, 2.4vw, 13px);
+  font-weight: 500;
   line-height: 1;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   white-space: nowrap;
-  margin-right: -0.14em;
+  margin-right: -0.2em;
+  color: var(--color-champagne-soft);
+  background-image: linear-gradient(
+    165deg,
+    #f0e2cc 0%,
+    var(--color-champagne-soft) 35%,
+    var(--color-champagne) 70%,
+    var(--color-champagne-deep) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header__brand-line {
+  display: block;
+  line-height: 1;
 }
 
 .header__line {
   display: block;
-  width: 10px;
+  width: 7px;
   height: 1px;
   border: 0;
   flex: 0 0 auto;
-  background: linear-gradient(
-    90deg,
-    rgb(180 150 80 / 0.12) 0%,
-    #8f7340 10%,
-    #c9a962 38%,
-    #e8d5a3 62%,
-    #f5ecd0 88%,
-    #fff8e6 100%
-  );
+  background: var(--metal-tip);
+  opacity: 0.95;
+  -webkit-transform: scaleY(0.65);
+  transform: scaleY(0.65);
 }
 
 .header__line--left {
-  background: linear-gradient(
-    90deg,
-    rgb(180 150 80 / 0.08) 0%,
-    #7a6236 12%,
-    #b8924a 40%,
-    #d4b56e 68%,
-    #f0e2b6 90%,
-    #fffaf0 100%
-  );
+  background: var(--metal-tip-end);
 }
 
 .header__line--right {
-  background: linear-gradient(
-    90deg,
-    #fffaf0 0%,
-    #f0e2b6 10%,
-    #d4b56e 32%,
-    #b8924a 60%,
-    #7a6236 88%,
-    rgb(180 150 80 / 0.08) 100%
-  );
+  background: var(--metal-tip-start);
 }
 
 .header__brand {
   display: flex;
   align-items: center;
-  color: var(--color-text);
+  color: var(--header-fg);
   flex: 0 0 auto;
+  transition: color var(--t-base);
 }
 
 .header__actions {
@@ -133,14 +173,23 @@
 .header__phone {
   font-family: var(--font-display);
   font-size: 14px;
+  font-weight: 600;
   letter-spacing: 0.06em;
-  color: var(--color-text);
+  color: var(--header-fg);
   transition: color var(--t-base);
   white-space: nowrap;
 }
 
 .header__phone:hover {
-  color: var(--color-accent-mid);
+  color: var(--color-interactive-hover);
+}
+
+.header__actions .btn,
+.header__actions .btn--compact {
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 20px;
+  letter-spacing: 0.12em;
 }
 
 .header__burger {
@@ -159,23 +208,25 @@
   display: block;
   width: 24px;
   height: 1px;
-  background: var(--color-text);
+  background: var(--header-fg);
+  transition: background var(--t-base);
 }
 
 @media (min-width: 768px) {
   .header__line {
-    width: 14px;
+    width: 8px;
   }
 
   .header__center {
-    gap: clamp(10px, 1.2vw, 16px);
+    gap: 12px;
     max-width: 100%;
   }
 
   .header__brand-mark {
-    font-size: clamp(12px, 1.35vw, 16px);
+    font-size: 13px;
     letter-spacing: 0.22em;
     margin-right: -0.22em;
+    gap: 4px;
   }
 
   .header__inner {
@@ -183,36 +234,54 @@
   }
 }
 
-/* Повне меню: рівні проміжки між меню / брендом / діями */
-@media (min-width: 1180px) {
+/* Повне меню з’являється лише коли вистачає ширини під довшу назву */
+@media (min-width: 1280px) {
   .header__inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) auto minmax(0, 1fr);
     align-items: center;
-    justify-content: space-between;
-    gap: clamp(20px, 2.4vw, 40px);
-    width: min(var(--container-max), calc(100% - 48px));
+    column-gap: clamp(12px, 1.4vw, 24px);
+    width: min(var(--container-max), calc(100% - 40px));
     padding-inline: 0;
     box-sizing: border-box;
   }
 
   .header__nav {
     display: flex;
-    flex: 0 1 auto;
+    grid-column: 1;
+    justify-self: start;
     justify-content: flex-start;
+    gap: clamp(8px, 0.9vw, 14px);
+    font-size: clamp(11px, 0.88vw, 13px);
+    letter-spacing: 0.04em;
+    max-width: 100%;
   }
 
   .header__center {
-    flex: 0 0 auto;
+    grid-column: 2;
+    justify-self: center;
+    max-width: none;
   }
 
   .header__line {
-    width: 16px;
+    width: 8px;
   }
 
   .header__actions {
     display: flex;
-    flex: 0 1 auto;
-    justify-content: flex-end;
+    grid-column: 3;
+    justify-self: end;
+    flex: 0 0 auto;
+    gap: clamp(8px, 1vw, 14px);
+    max-width: 100%;
+  }
+
+  .header__phone {
+    display: none;
+  }
+
+  .header__actions .lang-switcher {
+    flex: 0 0 auto;
   }
 
   .header__burger {
@@ -220,13 +289,64 @@
   }
 }
 
-/* На дуже широких екранах можна трохи довші риски */
-@media (min-width: 1400px) {
+@media (min-width: 1440px) {
   .header__line {
-    width: 20px;
+    width: 9px;
   }
 
   .header__nav {
-    gap: clamp(12px, 1.4vw, 24px);
+    gap: clamp(10px, 1.1vw, 18px);
+    font-size: clamp(12px, 0.95vw, 14px);
+    letter-spacing: 0.05em;
   }
+
+  .header__brand-mark {
+    font-size: 14px;
+  }
+
+  .header__phone {
+    display: inline;
+  }
+
+  .header__actions .btn,
+  .header__actions .btn--compact {
+    font-size: 15px;
+    padding: 14px 24px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .header__nav {
+    gap: clamp(12px, 1.2vw, 20px);
+    font-size: 14px;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* Transparent header over dark hero */
+/* Header over hero — cream type on dark wall */
+.header:not(.is-scrolled) {
+  --header-fg: var(--color-cream);
+  --header-fg-muted: var(--color-type-muted);
+}
+
+.header:not(.is-scrolled) .header__nav a:hover,
+.header:not(.is-scrolled) .header__phone:hover,
+.header:not(.is-scrolled) .lang-switcher__link:hover {
+  color: var(--color-champagne-soft);
+}
+
+.header:not(.is-scrolled) .header__nav a.is-active {
+  color: var(--color-champagne);
+}
+
+.header:not(.is-scrolled) .btn--ghost {
+  border-color: var(--color-champagne);
+  color: var(--color-champagne);
+}
+
+.header:not(.is-scrolled) .btn:hover {
+  background: var(--btn-fill-hover);
+  border-color: var(--color-champagne-soft);
+  color: var(--text-on-gold);
 }

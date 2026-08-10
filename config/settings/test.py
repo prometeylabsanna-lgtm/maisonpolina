@@ -16,3 +16,5 @@ CACHES = {
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 TELEGRAM_BOT_TOKEN = ""
 TELEGRAM_CHAT_ID = ""
+TELEGRAM_WEBHOOK_SECRET = "test-webhook-secret"
+TELEGRAM_WEBHOOK_URL = "https://example.com/api/telegram/webhook/"

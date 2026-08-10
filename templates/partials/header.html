@@ -1,18 +1,22 @@
 {% load i18n %}
-<header class="header" data-sticky-header>
+{% url 'core:home' as home_url %}
+<header class="header" data-sticky-header data-enter="0">
   <div class="header__inner">
     <nav class="header__nav" data-scrollspy aria-label="{% trans 'Основная навигация' %}">
-      <a href="#about">{% trans "О себе" %}</a>
-      <a href="#gallery">{% trans "Галерея" %}</a>
-      <a href="#services">{% trans "Услуги" %}</a>
-      <a href="#reviews">{% trans "Отзывы" %}</a>
-      <a href="#faq">{% trans "Вопросы" %}</a>
-      <a href="#contact">{% trans "Контакты" %}</a>
+      <a href="{{ home_url }}#about">{% trans "Обо мне" %}</a>
+      <a href="{{ home_url }}#gallery">{% trans "Галерея" %}</a>
+      <a href="{{ home_url }}#services">{% trans "Услуги" %}</a>
+      <a href="{{ home_url }}#reviews">{% trans "Отзывы" %}</a>
+      <a href="{{ home_url }}#faq">{% trans "Вопросы" %}</a>
+      <a href="{{ home_url }}#contact">{% trans "Контакты" %}</a>
     </nav>
     <div class="header__center">
       <span class="header__line header__line--left" aria-hidden="true"></span>
-      <a href="#top" class="header__brand">
-        <span class="header__brand-mark">Private companion</span>
+      <a href="{{ home_url }}#top" class="header__brand">
+        <span class="header__brand-mark">
+          <span class="header__brand-line">MAISON</span>
+          <span class="header__brand-line">POLINA</span>
+        </span>
       </a>
       <span class="header__line header__line--right" aria-hidden="true"></span>
     </div>

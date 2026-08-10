@@ -10,13 +10,13 @@ BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "hero.title"): {
         "label": "Hero — ім'я",
-        "text_ru": "Полина",
-        "text_en": "Polina",
+        "text_ru": "MAISON POLINA",
+        "text_en": "MAISON POLINA",
     },
     ("home", "hero.subtitle"): {
         "label": "Hero — підзаголовок",
-        "text_ru": "Private companion",
-        "text_en": "Private companion",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "hero.lead"): {
         "label": "Hero — текст",
@@ -64,8 +64,8 @@ BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "about.title"): {
         "label": "Про мене — заголовок",
-        "text_ru": "Двенадцать лет",
-        "text_en": "Twelve years",
+        "text_ru": "Восемь лет",
+        "text_en": "Eight years",
     },
     ("home", "about.title_accent"): {
         "label": "Про мене — акцент у заголовку",
@@ -75,12 +75,12 @@ BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     ("home", "about.body_1"): {
         "label": "Про мене — абзац 1",
         "text_ru": (
-            "За двенадцать лет я сопровождала дипломатов, промышленников "
+            "За восемь лет я сопровождала дипломатов, промышленников "
             "и людей творческих профессий — на переговорах, приёмах и в долгих "
             "поездках. Каждый раз главным был не повод, а то, каким запомнится вечер."
         ),
         "text_en": (
-            "For twelve years I have accompanied diplomats, industrialists "
+            "For eight years I have accompanied diplomats, industrialists "
             "and people of creative professions — at negotiations, receptions "
             "and on long journeys. What mattered was never the occasion, "
             "but how the evening would be remembered."
@@ -89,12 +89,12 @@ BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     ("home", "about.body_2"): {
         "label": "Про мене — абзац 2",
         "text_ru": (
-            "Я не подстраиваюсь под шаблон встречи. Слушаю, что нужно именно "
+            "Я легко подстраиваюсь под шаблон встречи. Слушаю, что нужно именно "
             "в этот вечер: лёгкий разговор, тишина рядом или уверенное присутствие "
             "за столом переговоров."
         ),
         "text_en": (
-            "I do not follow a template. I listen to what this evening needs: "
+            "I easily adapt to the meeting. I listen to what this evening needs: "
             "light conversation, quiet presence, or confident company "
             "at the negotiating table."
         ),
@@ -117,8 +117,8 @@ BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "about.stat_1_value"): {
         "label": "Про мене — цифра 1",
-        "text_ru": "12",
-        "text_en": "12",
+        "text_ru": "8",
+        "text_en": "8",
     },
     ("home", "about.stat_1_label"): {
         "label": "Про мене — підпис 1",
@@ -152,6 +152,158 @@ BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "about.portrait"): {
         "label": "Про мене — портрет",
+        "text_ru": "Полина — выступление на мероприятии",
+        "text_en": "Polina — speaking at an event",
+    },
+    ("home", "personality_section_visible"): {
+        "label": "Особистість — видимість",
+        "text_ru": "1",
+        "text_en": "1",
+        "is_visible": True,
+    },
+    ("home", "personality.eyebrow"): {
+        "label": "Особистість — надзаголовок",
+        "text_ru": "Обо мне",
+        "text_en": "About me",
+    },
+    ("home", "personality.title"): {
+        "label": "Особистість — заголовок (світле слово)",
+        "text_ru": "Дополнительная",
+        "text_en": "Additional",
+    },
+    ("home", "personality.title_accent"): {
+        "label": "Особистість — акцент у заголовку",
+        "text_ru": "информация",
+        "text_en": "information",
+    },
+    ("home", "personality.facts_title"): {
+        "label": "Особистість — підзаголовок параметрів",
+        "text_ru": "Внешность",
+        "text_en": "Appearance",
+    },
+    ("home", "personality.age"): {
+        "label": "Особистість — вік",
+        "text_ru": "32",
+        "text_en": "32",
+    },
+    ("home", "personality.eyes"): {
+        "label": "Особистість — очі",
+        "text_ru": "серые",
+        "text_en": "gray",
+    },
+    ("home", "personality.hair"): {
+        "label": "Особистість — волосся",
+        "text_ru": "русые",
+        "text_en": "light brown",
+    },
+    ("home", "personality.height"): {
+        "label": "Особистість — зріст",
+        "text_ru": "174",
+        "text_en": "174",
+    },
+    ("home", "personality.weight"): {
+        "label": "Особистість — вага",
+        "text_ru": "59",
+        "text_en": "59",
+    },
+    ("home", "personality.measurements"): {
+        "label": "Особистість — параметри",
+        "text_ru": "90-60-94",
+        "text_en": "90-60-94",
+    },
+    ("home", "personality.shoes"): {
+        "label": "Особистість — взуття",
+        "text_ru": "39",
+        "text_en": "39",
+    },
+    ("home", "personality.clothing"): {
+        "label": "Особистість — одяг",
+        "text_ru": "38",
+        "text_en": "38",
+    },
+    ("home", "personality.zodiac"): {
+        "label": "Особистість — зодіак",
+        "text_ru": "Водолей",
+        "text_en": "Aquarius",
+    },
+    ("home", "personality.tattoo"): {
+        "label": "Особистість — тату",
+        "text_ru": "нет",
+        "text_en": "none",
+    },
+    ("home", "personality.piercing"): {
+        "label": "Особистість — пірсинг",
+        "text_ru": "нет",
+        "text_en": "none",
+    },
+    ("home", "personality.flowers"): {
+        "label": "Особистість — квіти",
+        "text_ru": "Орхидеи, Лилии",
+        "text_en": "Orchids, lilies",
+    },
+    ("home", "personality.cuisine"): {
+        "label": "Особистість — кухня",
+        "text_ru": "Итальянская",
+        "text_en": "Italian",
+    },
+    ("home", "personality.alcohol"): {
+        "label": "Особистість — алкоголь",
+        "text_ru": "уточнять",
+        "text_en": "upon request",
+    },
+    ("home", "personality.smoking"): {
+        "label": "Особистість — куріння",
+        "text_ru": "Не курю",
+        "text_en": "Non-smoker",
+    },
+    ("home", "personality.extra_title"): {
+        "label": "Особистість — підзаголовок додаткового (не використовується)",
+        "text_ru": "",
+        "text_en": "",
+    },
+    ("home", "personality.extra_1"): {
+        "label": "Особистість — пункт 1",
+        "text_ru": "мастер спорта",
+        "text_en": "Master of Sport",
+    },
+    ("home", "personality.extra_2"): {
+        "label": "Особистість — пункт 2",
+        "text_ru": "профессиональная модель",
+        "text_en": "professional model",
+    },
+    ("home", "personality.extra_3"): {
+        "label": "Особистість — пункт 3",
+        "text_ru": "фешн-журналист",
+        "text_en": "fashion journalist",
+    },
+    ("home", "personality.languages"): {
+        "label": "Особистість — мови",
+        "text_ru": (
+            "Языки: английский, русский, украинский. Знание делового этикета, "
+            "культурные различия стран."
+        ),
+        "text_en": (
+            "Languages: English, Russian, Ukrainian. Business etiquette "
+            "and cultural differences across countries."
+        ),
+    },
+    ("home", "personality.respect"): {
+        "label": "Особистість — повага до культур",
+        "text_ru": "Уважаю любую культуру, религию, традиции.",
+        "text_en": "I respect every culture, religion, and tradition.",
+    },
+    ("home", "personality.education"): {
+        "label": "Особистість — освіта",
+        "text_ru": "Два высших образования.",
+        "text_en": "Two higher-education degrees.",
+    },
+    ("home", "personality.travel"): {
+        "label": "Особистість — подорожі",
+        "text_ru": "Посетила 20+ стран.",
+        "text_en": "Visited 20+ countries.",
+    },
+    ("home", "personality.portrait"): {
+        "label": "Особистість — фото",
         "text_ru": "",
         "text_en": "",
     },

@@ -30,11 +30,13 @@ urlpatterns = [
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
+    path("api/", include("src.chat.urls")),
 ]
 
 urlpatterns += i18n_patterns(
     path("", include("src.core.urls")),
     path("lead/", include("src.leads.urls")),
+    path("review/", include("src.reviews.urls")),
     prefix_default_language=True,
 )
 

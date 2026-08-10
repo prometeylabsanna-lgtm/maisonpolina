@@ -1,0 +1,480 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-10 13:59+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: config/settings/base.py:98
+msgid "Русский"
+msgstr ""
+
+#: config/settings/base.py:99
+msgid "English"
+msgstr ""
+
+#: config/settings/base.py:196
+msgid "Вміст сторінок"
+msgstr ""
+
+#: config/settings/base.py:200
+msgid "Hero"
+msgstr ""
+
+#: config/settings/base.py:205
+msgid "Про мене"
+msgstr ""
+
+#: config/settings/base.py:210
+msgid "Особистість"
+msgstr ""
+
+#: config/settings/base.py:217 templates/partials/dock.html:17
+#: templates/partials/footer.html:38 templates/partials/header.html:7
+#: templates/partials/mobile-nav.html:10
+msgid "Галерея"
+msgstr ""
+
+#: config/settings/base.py:222
+msgid "Формати"
+msgstr ""
+
+#: config/settings/base.py:227 config/settings/base.py:258
+msgid "Відгуки"
+msgstr ""
+
+#: config/settings/base.py:232
+msgid "Питання"
+msgstr ""
+
+#: config/settings/base.py:237
+msgid "Контакти"
+msgstr ""
+
+#: config/settings/base.py:242
+msgid "Політика"
+msgstr ""
+
+#: config/settings/base.py:249
+msgid "Списки"
+msgstr ""
+
+#: config/settings/base.py:253
+msgid "Формати послуг"
+msgstr ""
+
+#: config/settings/base.py:263
+msgid "Питання й відповіді"
+msgstr ""
+
+#: config/settings/base.py:270
+msgid "Заявки"
+msgstr ""
+
+#: config/settings/base.py:274
+msgid "Усі заявки"
+msgstr ""
+
+#: config/settings/base.py:281
+msgid "Налаштування"
+msgstr ""
+
+#: config/settings/base.py:285 templates/partials/lead-form.html:44
+#: templates/partials/review-form.html:50
+msgid "Сайт"
+msgstr ""
+
+#: config/settings/base.py:290
+msgid "SEO"
+msgstr ""
+
+#: src/leads/forms.py:10 src/reviews/forms.py:10
+#: templates/partials/lead-form.html:18 templates/partials/review-form.html:14
+msgid "Имя"
+msgstr ""
+
+#: src/leads/forms.py:15 templates/partials/lead-form.html:23
+msgid "Телефон или e-mail"
+msgstr ""
+
+#: src/leads/forms.py:20 templates/partials/lead-form.html:28
+msgid "Комментарий"
+msgstr ""
+
+#: src/leads/forms.py:24
+msgid "Согласен на обработку персональных данных"
+msgstr ""
+
+#: src/leads/forms.py:25
+msgid "Необходимо согласие на обработку данных"
+msgstr ""
+
+#: src/leads/forms.py:57
+msgid "Укажите телефон или e-mail"
+msgstr ""
+
+#: src/reviews/forms.py:16 templates/partials/review-form.html:43
+msgid "Отзыв"
+msgstr ""
+
+#: src/reviews/forms.py:19
+msgid "Напишите чуть подробнее — минимум 10 символов"
+msgstr ""
+
+#: src/reviews/forms.py:25 templates/partials/review-form.html:21
+#: templates/partials/review-form.html:22
+msgid "Оценка"
+msgstr ""
+
+#: src/reviews/forms.py:27 src/reviews/forms.py:28
+msgid "Выберите оценку от 1 до 5"
+msgstr ""
+
+#: src/reviews/forms.py:29
+msgid "Выберите оценку"
+msgstr ""
+
+#: templates/404.html:19
+msgid "Страница не найдена. Вернитесь на главную."
+msgstr ""
+
+#: templates/404.html:20
+msgid "На главную"
+msgstr ""
+
+#: templates/admin/site_content_page.html:21
+msgid "Перегляд на сайті"
+msgstr ""
+
+#: templates/admin/site_content_page.html:36
+msgid "Показувати секцію на сайті"
+msgstr ""
+
+#: templates/admin/site_content_page.html:56
+msgid "Видалити зображення"
+msgstr ""
+
+#: templates/admin/site_content_page.html:60
+msgid "Зображення"
+msgstr ""
+
+#: templates/admin/site_content_page.html:91
+msgid "Фото галереї"
+msgstr ""
+
+#: templates/admin/site_content_page.html:110
+msgid "Видалити"
+msgstr ""
+
+#: templates/admin/site_content_page.html:134
+msgid "Зберегти"
+msgstr ""
+
+#: templates/partials/chat-error.html:3
+msgid "Слишком много сообщений. Попробуйте позже."
+msgstr ""
+
+#: templates/partials/chat-error.html:5
+msgid "Сессия недоступна. Обновите страницу."
+msgstr ""
+
+#: templates/partials/chat-error.html:7
+msgid "Не удалось отправить сообщение."
+msgstr ""
+
+#: templates/partials/chat-messages.html:14
+msgid "Напишите сообщение — ответим в ближайшее время."
+msgstr ""
+
+#: templates/partials/chat-widget.html:14
+msgid "Открыть чат"
+msgstr ""
+
+#: templates/partials/chat-widget.html:24
+msgid "Чат"
+msgstr ""
+
+#: templates/partials/chat-widget.html:27
+msgid "Сообщение"
+msgstr ""
+
+#: templates/partials/chat-widget.html:28
+msgid "Приватный диалог"
+msgstr ""
+
+#: templates/partials/chat-widget.html:34
+msgid "Закрыть чат"
+msgstr ""
+
+#: templates/partials/chat-widget.html:50
+msgid "Ваше сообщение"
+msgstr ""
+
+#: templates/partials/chat-widget.html:58
+msgid "Введите сообщение…"
+msgstr ""
+
+#: templates/partials/chat-widget.html:62 templates/partials/lead-form.html:46
+#: templates/partials/review-form.html:52
+msgid "Отправить"
+msgstr ""
+
+#: templates/partials/dock.html:2
+msgid "Мобильная панель"
+msgstr ""
+
+#: templates/partials/dock.html:8
+msgid "Главная"
+msgstr ""
+
+#: templates/partials/dock.html:24 templates/partials/footer.html:48
+#: templates/partials/header.html:11 templates/partials/mobile-nav.html:14
+msgid "Контакты"
+msgstr ""
+
+#: templates/partials/footer.html:13
+msgid "Локация"
+msgstr ""
+
+#: templates/partials/footer.html:19
+msgid "Связаться"
+msgstr ""
+
+#: templates/partials/footer.html:26 templates/sections/contacts.html:26
+msgid "Telegram"
+msgstr ""
+
+#: templates/partials/footer.html:27 templates/sections/contacts.html:27
+msgid "Написать в чат-бот"
+msgstr ""
+
+#: templates/partials/footer.html:34 templates/partials/header.html:29
+msgid "Меню"
+msgstr ""
+
+#: templates/partials/footer.html:35
+msgid "Меню футера"
+msgstr ""
+
+#: templates/partials/footer.html:36 templates/partials/header.html:5
+#: templates/partials/mobile-nav.html:8
+msgid "О себе"
+msgstr ""
+
+#: templates/partials/footer.html:37 templates/partials/header.html:6
+#: templates/partials/mobile-nav.html:9
+msgid "Личность"
+msgstr ""
+
+#: templates/partials/footer.html:39 templates/partials/header.html:8
+#: templates/partials/mobile-nav.html:11
+msgid "Услуги"
+msgstr ""
+
+#: templates/partials/footer.html:40 templates/partials/header.html:9
+#: templates/partials/mobile-nav.html:12
+msgid "Отзывы"
+msgstr ""
+
+#: templates/partials/footer.html:44
+msgid "Показать ещё"
+msgstr ""
+
+#: templates/partials/footer.html:47 templates/partials/header.html:10
+#: templates/partials/mobile-nav.html:13
+msgid "Вопросы"
+msgstr ""
+
+#: templates/partials/footer.html:50
+msgid "Политика"
+msgstr ""
+
+#: templates/partials/footer.html:51
+msgid "конфиденциальности"
+msgstr ""
+
+#: templates/partials/header.html:4
+msgid "Основная навигация"
+msgstr ""
+
+#: templates/partials/header.html:26 templates/partials/mobile-nav.html:21
+#: templates/sections/contacts.html:35
+msgid "Заявка"
+msgstr ""
+
+#: templates/partials/lang-switcher.html:2
+msgid "Язык"
+msgstr ""
+
+#: templates/partials/lead-form.html:12
+msgid "Выбранная услуга:"
+msgstr ""
+
+#: templates/partials/lead-form.html:35
+#, python-format
+msgid ""
+"Согласен на обработку персональных данных и принимаю <a "
+"href=\"%(privacy_url)s\">политику конфиденциальности</a>"
+msgstr ""
+
+#: templates/partials/lead-modal.html:5
+msgid "Оставить заявку"
+msgstr ""
+
+#: templates/partials/lead-modal.html:6 templates/partials/lead-success.html:6
+#: templates/partials/mobile-nav.html:5 templates/partials/review-modal.html:6
+#: templates/partials/review-success.html:6 templates/sections/gallery.html:62
+msgid "Закрыть"
+msgstr ""
+
+#: templates/partials/lead-success.html:4
+#: templates/partials/review-success.html:4
+msgid "Благодарю вас"
+msgstr ""
+
+#: templates/partials/lead-success.html:5
+msgid "Я получу заявку и отвечу лично в течение суток."
+msgstr ""
+
+#: templates/partials/mobile-nav.html:7
+msgid "Мобильная навигация"
+msgstr ""
+
+#: templates/partials/review-form.html:29
+#, python-format
+msgid "%(n)s из 5"
+msgstr ""
+
+#: templates/partials/review-modal.html:5
+#: templates/sections/testimonials.html:48
+msgid "Оставить отзыв"
+msgstr ""
+
+#: templates/partials/review-success.html:5
+msgid "Отзыв отправлен на модерацию и появится после проверки."
+msgstr ""
+
+#: templates/sections/formats.html:42
+msgid "Чаще всего"
+msgstr ""
+
+#: templates/sections/formats.html:50
+msgid "Что входит"
+msgstr ""
+
+#: templates/sections/formats.html:68
+msgid "Заказать"
+msgstr ""
+
+#: templates/sections/gallery.html:23
+msgid "Открыть фото"
+msgstr ""
+
+#: templates/sections/gallery.html:45
+msgid "Предыдущие фото"
+msgstr ""
+
+#: templates/sections/gallery.html:51
+msgid "Следующие фото"
+msgstr ""
+
+#: templates/sections/gallery.html:63
+msgid "Предыдущее"
+msgstr ""
+
+#: templates/sections/gallery.html:65
+msgid "Следующее"
+msgstr ""
+
+#: templates/sections/personality.html:15
+msgid "Возраст"
+msgstr ""
+
+#: templates/sections/personality.html:19
+msgid "Глаза"
+msgstr ""
+
+#: templates/sections/personality.html:23
+msgid "Волосы"
+msgstr ""
+
+#: templates/sections/personality.html:27
+msgid "Рост"
+msgstr ""
+
+#: templates/sections/personality.html:31
+msgid "Вес"
+msgstr ""
+
+#: templates/sections/personality.html:35
+msgid "Параметры"
+msgstr ""
+
+#: templates/sections/personality.html:39
+msgid "Обувь"
+msgstr ""
+
+#: templates/sections/personality.html:43
+msgid "Размер одежды"
+msgstr ""
+
+#: templates/sections/personality.html:47
+msgid "Зодиак"
+msgstr ""
+
+#: templates/sections/personality.html:51
+msgid "Тату"
+msgstr ""
+
+#: templates/sections/personality.html:55
+msgid "Пирсинг"
+msgstr ""
+
+#: templates/sections/personality.html:59
+msgid "Цветы"
+msgstr ""
+
+#: templates/sections/personality.html:63
+msgid "Кухня"
+msgstr ""
+
+#: templates/sections/personality.html:67
+msgid "Алкоголь"
+msgstr ""
+
+#: templates/sections/personality.html:71
+msgid "Курение"
+msgstr ""
+
+#: templates/sections/testimonials.html:10
+msgid "Предыдущий отзыв"
+msgstr ""
+
+#: templates/sections/testimonials.html:17
+#, python-format
+msgid "Оценка %(n)s из 5"
+msgstr ""
+
+#: templates/sections/testimonials.html:36
+msgid "Следующий отзыв"
+msgstr ""
+
+#: templates/sections/testimonials.html:42
+#, python-format
+msgid "Отзыв %(n)s"
+msgstr ""

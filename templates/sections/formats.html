@@ -9,7 +9,7 @@
         <span class="section__title-accent">{% block_plain "home" "formats.title_accent" %}</span>
       </h2>
     </div>
-    <div class="formats__grid" data-reveal>
+    <div class="formats__grid" data-reveal data-reveal-delay="220">
       {% for fmt in formats %}
       <article class="card{% if fmt.is_featured %} card--featured{% endif %}">
         <div class="card__head">
@@ -70,6 +70,6 @@
       </article>
       {% endfor %}
     </div>
-    <p class="formats__note" data-reveal>{% block_plain "home" "formats.note" %}</p>
+    <p class="formats__note" data-reveal data-reveal-delay="360">{% block_plain "home" "formats.note" %}</p>
   </div>
 </section>

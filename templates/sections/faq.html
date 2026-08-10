@@ -9,7 +9,7 @@
         <span class="section__title-accent">{% block_plain "home" "faq.title_accent" %}</span>
       </h2>
     </div>
-    <div class="accordion" data-accordion data-reveal>
+    <div class="accordion" data-accordion data-reveal data-reveal-delay="220">
       {% for item in faq_items %}
       <div class="accordion__item{% if forloop.first %} is-open{% endif %}">
         <button type="button"

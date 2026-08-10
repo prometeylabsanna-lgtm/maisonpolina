@@ -32,7 +32,8 @@ export function initLightbox() {
   const close = () => {
     box.classList.remove("is-open");
     box.hidden = true;
-    img.src = "";
+    img.removeAttribute("src");
+    img.alt = "";
     document.removeEventListener("keydown", onKey);
     if (lastFocus) lastFocus.focus();
   };

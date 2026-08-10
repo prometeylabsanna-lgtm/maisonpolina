@@ -11,7 +11,7 @@
         </h2>
       </div>
     </div>
-    <div class="gallery" data-gallery data-reveal>
+    <div class="gallery" data-gallery data-reveal data-reveal-delay="220">
       <div class="gallery__track" data-gallery-track data-lightbox-root>
         {% for photo in gallery_photos %}
         <figure class="gallery__item">
@@ -24,9 +24,9 @@
             {% if photo.image %}
             <img class="gallery__img"
                  src="{{ photo.image.url }}"
-                 alt="{{ photo.alt }}"
-                 width="1024"
-                 height="768"
+                 alt="{{ photo.alt|default:photo.caption }}"
+                 width="768"
+                 height="1024"
                  loading="lazy">
             {% else %}
             <span class="gallery__placeholder">{{ forloop.counter|stringformat:"02d" }}</span>
@@ -61,6 +61,6 @@
 <div class="lightbox" id="lightbox" data-lightbox hidden>
   <button type="button" class="lightbox__close" data-lightbox-close aria-label="{% trans 'Закрыть' %}">✕</button>
   <button type="button" class="lightbox__prev" data-lightbox-prev aria-label="{% trans 'Предыдущее' %}">‹</button>
-  <img class="lightbox__img" data-lightbox-img src="" alt="">
+  <img class="lightbox__img" data-lightbox-img alt="">
   <button type="button" class="lightbox__next" data-lightbox-next aria-label="{% trans 'Следующее' %}">›</button>
 </div>

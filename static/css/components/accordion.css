@@ -34,7 +34,7 @@
 .accordion__icon::after {
   content: "";
   position: absolute;
-  background: var(--color-text-muted);
+  background: var(--color-metal);
   transition: transform var(--t-base), opacity var(--t-base);
 }
 
@@ -75,10 +75,10 @@
 
 .accordion__answer {
   padding: 0 0 14px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--color-text-muted);
-  max-width: 64ch;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--color-type-muted);
+  max-width: min(80ch, 100%);
 }
 
 .faq__cta {

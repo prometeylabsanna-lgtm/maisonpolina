@@ -46,3 +46,23 @@ def nl2p(value):
     paragraphs = [p.strip() for p in str(value).split("\n\n") if p.strip()]
     html = "".join(f"<p>{escape(p).replace(chr(10), '<br>')}</p>" for p in paragraphs)
     return mark_safe(html)
+
+
+@register.filter
+def emphasize_phrases(value, phrases: str):
+    """Wrap first match of each phrase in <span class="personality__em">."""
+    if not value:
+        return ""
+    text = escape(str(value))
+    for raw in phrases.split("|"):
+        phrase = raw.strip()
+        if not phrase:
+            continue
+        needle = escape(phrase)
+        if needle in text:
+            text = text.replace(
+                needle,
+                f'<span class="personality__em">{needle}</span>',
+                1,
+            )
+    return mark_safe(text)

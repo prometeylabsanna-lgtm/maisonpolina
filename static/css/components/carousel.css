@@ -52,7 +52,7 @@
   font-family: var(--font-display);
   font-size: 64px;
   line-height: 0.6;
-  color: var(--color-accent-mid);
+  color: var(--color-metal);
   height: 40px;
 }
 
@@ -96,13 +96,13 @@
   height: 1px;
   border: 0;
   padding: 0;
-  background: rgb(255 255 255 / 0.25);
+  background: rgb(var(--color-metal-rgb) / 0.22);
   cursor: pointer;
   transition: background var(--t-base);
 }
 
 .carousel__dot.is-active {
-  background: var(--color-accent-mid);
+  background: var(--metal-tip);
 }
 
 /* Планшет+ : три відгуки, центр чіткий, боки з блюром */

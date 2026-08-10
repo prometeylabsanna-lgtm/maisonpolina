@@ -3,15 +3,15 @@
   <div class="hero__banner">
     <div class="hero__bg" aria-hidden="true"></div>
     {% block_image "home" "hero.media" as hero_media %}
-    <div class="hero__media">
+    <div class="hero__media" data-enter="1">
       {% if hero_media %}
       <img src="{{ hero_media.url }}" alt="" fetchpriority="high">
       {% else %}
       <img class="hero__portrait"
-           src="{% static 'images/hero-portrait.jpg' %}?v={{ static_version }}"
+           src="{% static 'images/hero-portrait.png' %}?v={{ static_version }}"
            alt=""
-           width="1452"
-           height="1083"
+           width="1400"
+           height="1400"
            fetchpriority="high">
       {% endif %}
     </div>
@@ -19,17 +19,20 @@
     <div class="hero__shade-y" aria-hidden="true"></div>
     <div class="hero__content">
       <div class="hero__copy">
-        <h1 class="hero__title">{% block_plain "home" "hero.title" %}</h1>
-        <p class="hero__subtitle">{% block_plain "home" "hero.subtitle" %}</p>
-        <p class="hero__lead">{% block_plain "home" "hero.lead" %}</p>
-        <div class="hero__actions">
+        <h1 class="hero__title" data-enter="2">{% block_plain "home" "hero.title" %}</h1>
+        {% block_plain "home" "hero.subtitle" as hero_subtitle %}
+        {% if hero_subtitle %}
+        <p class="hero__subtitle" data-enter="3">{{ hero_subtitle }}</p>
+        {% endif %}
+        <p class="hero__lead" data-enter="4">{% block_plain "home" "hero.lead" %}</p>
+        <div class="hero__actions" data-enter="5">
           <button type="button" class="btn" data-open-lead data-source="hero" data-service="">
             {% block_plain "home" "hero.cta_primary" %}
           </button>
         </div>
       </div>
     </div>
-    <div class="hero__strip">
+    <div class="hero__strip" data-enter="6">
       <span class="hero__strip-text">{% block_plain "home" "hero.tagline" %}</span>
       <span class="hero__strip-line" aria-hidden="true"></span>
       <a class="hero__strip-link" href="#services">{% block_plain "home" "hero.cta_secondary" %}</a>

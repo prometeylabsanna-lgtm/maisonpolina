@@ -18,17 +18,16 @@
   <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
   <meta property="og:locale" content="{% if current_language == 'en' %}en_US{% else %}ru_RU{% endif %}">
   {% endblock %}
-  <link rel="preload" href="{% static 'fonts/bodoni-moda-sc-400.woff2' %}" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="{% static 'fonts/cormorant-garamond-400-cyr.woff2' %}" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="{% static 'fonts/cormorant-garamond-400.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/lora-400-cyr.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/lora-400.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{% static 'css/tokens.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/fonts-lora.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/reset.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/typography.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/animations.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/layout/header.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/layout/footer.css' %}?v={{ static_version }}">
-  <link rel="stylesheet" href="{% static 'css/layout/grid.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/components/button.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/components/form.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/components/modal.css' %}?v={{ static_version }}">
@@ -37,8 +36,9 @@
   <link rel="stylesheet" href="{% static 'css/components/lang-switcher.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/components/gallery.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/components/carousel.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/rating.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/components/accordion.css' %}?v={{ static_version }}">
-  <link rel="stylesheet" href="{% static 'css/components/tg-float.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/chat-widget.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/components/dock.css' %}?v={{ static_version }}">
   {% block page_css %}{% endblock %}
   <script src="{% static 'js/htmx.min.js' %}" defer></script>
@@ -53,7 +53,8 @@
   </main>
   {% include "partials/footer.html" %}
   {% include "partials/lead-modal.html" %}
-  {% include "partials/tg-float.html" %}
+  {% include "partials/review-modal.html" %}
+  {% include "partials/chat-widget.html" %}
   {% include "partials/dock.html" %}
   <script type="module" src="{% static 'js/main.js' %}?v={{ static_version }}"></script>
   {% block page_js %}{% endblock %}

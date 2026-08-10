@@ -1,0 +1,70 @@
+{% load i18n static %}
+<div
+  class="chat-widget"
+  id="chat"
+  data-chat-widget
+  data-session-url="{% url 'chat:session' %}"
+  data-messages-url="{% url 'chat:messages' %}"
+  data-send-url="{% url 'chat:send' %}">
+  <button
+    type="button"
+    class="chat-widget__toggle"
+    data-chat-toggle
+    aria-expanded="false"
+    aria-controls="chat-widget-panel"
+    aria-label="{% trans 'Открыть чат' %}">
+    {% include "partials/icon-chat-bot.html" with class="chat-widget__toggle-icon" size=52 %}
+    <span class="chat-widget__badge" data-chat-badge hidden aria-hidden="true"></span>
+  </button>
+
+  <section
+    id="chat-widget-panel"
+    class="chat-widget__panel"
+    data-chat-panel
+    hidden
+    aria-label="{% trans 'Чат' %}">
+    <header class="chat-widget__header">
+      <div class="chat-widget__header-text">
+        <p class="chat-widget__title">{% trans "Сообщение" %}</p>
+        <p class="chat-widget__subtitle">{% trans "Приватный диалог" %}</p>
+      </div>
+      <button
+        type="button"
+        class="chat-widget__close"
+        data-chat-close
+        aria-label="{% trans 'Закрыть чат' %}">
+        <span aria-hidden="true">✕</span>
+      </button>
+    </header>
+
+    <div
+      class="chat-widget__messages"
+      id="chat-widget-messages"
+      data-chat-messages
+      role="log"
+      aria-live="polite"
+      aria-relevant="additions">
+    </div>
+
+    <form class="chat-widget__form" data-chat-form>
+      {% csrf_token %}
+      <label class="visually-hidden" for="chat-widget-input">{% trans "Ваше сообщение" %}</label>
+      <textarea
+        id="chat-widget-input"
+        class="chat-widget__input"
+        name="text"
+        rows="1"
+        maxlength="2000"
+        required
+        placeholder="{% trans 'Введите сообщение…' %}"
+        data-chat-input
+        enterkeyhint="send"
+        autocomplete="off"></textarea>
+      <button type="submit" class="chat-widget__send" data-chat-send aria-label="{% trans 'Отправить' %}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4.5 12h15M13 6.5 19.5 12 13 17.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </form>
+  </section>
+</div>

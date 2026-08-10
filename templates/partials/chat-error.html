@@ -1,0 +1,8 @@
+{% load i18n %}
+{% if error == "rate_limited" %}
+<p class="chat-widget__error" role="alert">{% trans "Слишком много сообщений. Попробуйте позже." %}</p>
+{% elif error == "session" %}
+<p class="chat-widget__error" role="alert">{% trans "Сессия недоступна. Обновите страницу." %}</p>
+{% else %}
+<p class="chat-widget__error" role="alert">{% trans "Не удалось отправить сообщение." %}</p>
+{% endif %}

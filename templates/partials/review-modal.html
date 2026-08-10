@@ -1,0 +1,12 @@
+{% load i18n %}
+<div class="modal" id="review-modal" data-modal data-modal-id="review" hidden>
+  <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="review-modal-title" data-modal-dialog>
+    <div class="modal__head">
+      <h2 class="modal__title" id="review-modal-title">{% trans "Оставить отзыв" %}</h2>
+      <button type="button" class="modal__close" data-close-modal aria-label="{% trans 'Закрыть' %}">✕</button>
+    </div>
+    <div id="review-form-body">
+      {% include "partials/review-form.html" with form=review_form|default:None %}
+    </div>
+  </div>
+</div>

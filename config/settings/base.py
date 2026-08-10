@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "src.reviews",
     "src.faq",
     "src.leads",
+    "src.chat",
 ]
 
 MIDDLEWARE = [
@@ -144,6 +145,8 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 
 TELEGRAM_BOT_TOKEN = config("TELEGRAM_BOT_TOKEN", default="")
 TELEGRAM_CHAT_ID = config("TELEGRAM_CHAT_ID", default="")
+TELEGRAM_WEBHOOK_SECRET = config("TELEGRAM_WEBHOOK_SECRET", default="")
+TELEGRAM_WEBHOOK_URL = config("TELEGRAM_WEBHOOK_URL", default="")
 
 SITE_URL = config("SITE_URL", default="http://localhost:8000")
 
@@ -202,6 +205,13 @@ UNFOLD = {
                         "title": _("Про мене"),
                         "icon": "person",
                         "link": reverse_lazy("admin:core_homeaboutsettings_changelist"),
+                    },
+                    {
+                        "title": _("Особистість"),
+                        "icon": "badge",
+                        "link": reverse_lazy(
+                            "admin:core_homepersonalitysettings_changelist"
+                        ),
                     },
                     {
                         "title": _("Галерея"),

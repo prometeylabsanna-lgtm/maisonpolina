@@ -1,37 +1,184 @@
+/* ==========================================================================
+   COLOR PALETTE & DESIGN SYSTEM
+   Dark wine wall (ref) · Champagne CTA · Cream type
+   Tech: Pure CSS + HTML5 + HTMX + Vanilla JS
+   ========================================================================== */
+
 :root {
-  --color-bg: #1c1c1c;
-  --color-bg-alt: #222222;
-  --color-surface: #272727;
-  --color-surface-hover: #2d2d2d;
+  /* --------------------------------------------------------------------------
+     Brand swatches — velvet burgundy from fabric reference (#4c0d13)
+     -------------------------------------------------------------------------- */
+  --color-floral: #4c0d13;
+  --color-floral-soft: #5a1218;
+  --color-floral-deep: #3a0a0f;
+  --color-floral-rgb: 76 13 19;
 
-  /* Канали --color-bg для напівпрозорих шарів (шторки hero, фон хедера) */
-  --color-bg-rgb: 28 28 28;
-  /* Оверлеї мусять бути темнішими за --color-bg, інакше затемнення не читається */
-  --color-overlay-rgb: 18 18 18;
+  /* Champagne metal — CTA fill (ref gradient button) */
+  --color-champagne: #cab695;
+  --color-champagne-soft: #dfccb7;
+  --color-champagne-deep: #b09572;
+  --color-champagne-rgb: 202 182 149;
+  --color-champagne-hover: #d4c0a4;
 
-  /* Основний акцент #1e583f, додатковий #2c8863 */
-  --color-accent: #1e583f;
-  --color-accent-mid: #2c8863;
-  --color-accent-deep: #1e583f;
-  --color-accent-dark: #193e2c;
-  --color-accent-dim: #193e2c;
-  --color-accent-rgb: 30 88 63;
-  --color-accent-2-rgb: 44 136 99;
+  /* Bordeaux aliases → champagne (primary CTA) */
+  --color-bordeaux: var(--color-champagne);
+  --color-bordeaux-hover: var(--color-champagne-hover);
+  --color-bordeaux-deep: var(--color-champagne-deep);
+  --color-bordeaux-rgb: var(--color-champagne-rgb);
 
-  --color-line: rgb(var(--color-accent-2-rgb) / 0.45);
-  --color-line-soft: rgb(var(--color-accent-2-rgb) / 0.2);
+  /* Type — cream on dark wall; charcoal only on champagne buttons */
+  --color-cream: #d6c8bc;
+  --color-cream-rgb: 214 200 188;
+  --color-charcoal: #1a0a0a;
+  --color-charcoal-rgb: 26 10 10;
+  --color-type-muted: #c0b0a4;
+  --color-type-subtle: #a8988c;
 
-  --color-text: #ffffff;
-  --color-text-muted: #a8a8a8;
-  --color-text-subtle: #6e6e6e;
+  /* --------------------------------------------------------------------------
+     Semantic aliases
+     -------------------------------------------------------------------------- */
+  --bg-primary: var(--color-floral);
+  --bg-surface: #5a1218;
+  --bg-alt: var(--color-floral-soft);
+  --color-burgundy: var(--color-champagne);
+  --color-burgundy-hover: var(--color-champagne-hover);
+  --color-silver: var(--color-type-muted);
+  --color-gold: var(--color-champagne);
+  --color-gold-warm: var(--color-champagne-soft);
+  --color-gold-warm-soft: var(--color-champagne-deep);
+  --color-gold-warm-rgb: var(--color-champagne-rgb);
+  --color-gold-hover: var(--color-champagne-hover);
+  --text-main: var(--color-cream);
+  --text-muted: var(--color-type-muted);
+  --text-light: var(--color-cream);
+  --text-on-gold: var(--color-charcoal);
+  --text-on-bordeaux: var(--color-charcoal);
+  --border-subtle: rgb(var(--color-cream-rgb) / 0.14);
+  --shadow-lux: 0 10px 30px rgb(0 0 0 / 0.35);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --color-green: var(--color-champagne);
+  --color-green-hover: var(--color-champagne-hover);
+
+  /* --------------------------------------------------------------------------
+     Canonical surfaces
+     -------------------------------------------------------------------------- */
+  --color-bg: var(--bg-primary);
+  --color-bg-alt: var(--bg-alt);
+  --color-surface: var(--bg-surface);
+  --color-surface-hover: #6a161e;
+
+  --color-ink: var(--color-cream);
+  --color-ink-deep: #ebe0d6;
+  --color-ink-rgb: var(--color-cream-rgb);
+  --color-hero-mid: var(--color-floral);
+  --color-hero-mid-rgb: var(--color-floral-rgb);
+
+  --color-bg-rgb: var(--color-floral-rgb);
+  --color-overlay-rgb: 20 4 6;
+  --color-silver-rgb: 154 139 130;
+  --color-bg-edge: var(--color-floral-deep);
+  --color-bg-edge-rgb: 58 10 15;
+
+  /* Subtle depth — same hue family as velvet ref (no muddy brown) */
+  --bg-atmosphere: radial-gradient(
+    ellipse 90% 80% at 58% 42%,
+    #5a1218 0%,
+    var(--color-floral) 48%,
+    #3f0b10 100%
+  );
+  --bg-atmosphere-alt: radial-gradient(
+    ellipse 90% 80% at 50% 40%,
+    #551018 0%,
+    var(--color-floral) 52%,
+    #3a0a0f 100%
+  );
+
+  /* --------------------------------------------------------------------------
+     Accents
+     -------------------------------------------------------------------------- */
+  --color-accent: var(--color-champagne);
+  --color-accent-mid: var(--color-champagne);
+  --color-accent-deep: var(--color-champagne-deep);
+  --color-accent-dark: var(--color-champagne-deep);
+  --color-accent-dim: var(--color-floral-soft);
+  --color-accent-rgb: var(--color-champagne-rgb);
+  --color-accent-2-rgb: var(--color-silver-rgb);
+  --color-interactive: var(--color-champagne);
+  --color-interactive-hover: var(--color-champagne-hover);
+
+  --color-gold-soft: var(--color-cream);
+  --color-gold-deep: var(--color-champagne-deep);
+  --color-gold-rgb: var(--color-champagne-rgb);
+
+  --color-metal: #cab695;
+  --color-metal-soft: #dfccb7;
+  --color-metal-bright: #ead9c0;
+  --color-metal-deep: #b09572;
+  --color-metal-rgb: 202 182 149;
+  --metal-tip: linear-gradient(
+    90deg,
+    rgb(var(--color-metal-rgb) / 0.08) 0%,
+    var(--color-metal-deep) 16%,
+    var(--color-metal-bright) 38%,
+    var(--color-metal-soft) 52%,
+    var(--color-metal) 68%,
+    var(--color-metal-deep) 88%,
+    rgb(var(--color-metal-rgb) / 0.1) 100%
+  );
+  --metal-tip-end: linear-gradient(
+    90deg,
+    rgb(var(--color-metal-rgb) / 0.06) 0%,
+    var(--color-metal-deep) 20%,
+    var(--color-metal) 48%,
+    var(--color-metal-bright) 78%,
+    var(--color-metal-soft) 92%,
+    rgb(var(--color-metal-rgb) / 0.15) 100%
+  );
+  --metal-tip-start: linear-gradient(
+    90deg,
+    rgb(var(--color-metal-rgb) / 0.15) 0%,
+    var(--color-metal-soft) 8%,
+    var(--color-metal-bright) 22%,
+    var(--color-metal) 55%,
+    var(--color-metal-deep) 84%,
+    rgb(var(--color-metal-rgb) / 0.06) 100%
+  );
+
+  --color-btn: var(--color-champagne);
+  --color-btn-hover: var(--color-champagne-hover);
+  --color-btn-text: var(--text-on-gold);
+  --color-btn-rgb: var(--color-champagne-rgb);
+  --btn-fill: linear-gradient(
+    180deg,
+    var(--color-champagne-soft) 0%,
+    var(--color-champagne) 48%,
+    var(--color-champagne-deep) 100%
+  );
+  --btn-fill-hover: linear-gradient(
+    180deg,
+    #e8d7c0 0%,
+    var(--color-champagne-soft) 45%,
+    var(--color-champagne) 100%
+  );
+
+  --btn-border-width: 1px;
+
+  --color-line: rgb(var(--color-cream-rgb) / 0.22);
+  --color-line-soft: rgb(var(--color-cream-rgb) / 0.12);
+
+  --color-text: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--color-type-subtle);
+  --color-text-inverse: #ffffff;
+  --color-text-inverse-muted: rgb(255 255 255 / 0.72);
 
   --border-hairline: var(--color-line-soft);
   --border-strong: var(--color-line);
 
-  --font-display: "Bodoni Moda SC", "Bodoni Moda", "Cormorant Garamond", Georgia, serif;
-  --font-body: "Cormorant Garamond", Georgia, serif;
+  --font-display: "Lora", "Forum", "Cormorant Garamond", Georgia, serif;
+  --font-body: "Lora", "Cormorant Garamond", Georgia, serif;
 
-  /* спільна сітка для всіх блоків: хедер, банер, секції, футер */
   --container-max: 1240px;
   --section-pad-m: 64px 20px;
   --section-pad-t: 96px 32px;
@@ -55,4 +202,40 @@
   --header-h: clamp(64px, 7vw, 96px);
   --dock-h: 64px;
   --radius: 0;
+
+  /* --------------------------------------------------------------------------
+     Velvet — fine sharp grain in #4c0d13 (ref fabric), CSS-driven stack
+     -------------------------------------------------------------------------- */
+  --texture-velvet: url("/static/images/bg-velvet.png");
+  /* CSS micro-nap (styles only) — fine, crisp, low contrast */
+  --texture-velvet-css:
+    repeating-linear-gradient(
+      0deg,
+      rgb(255 220 220 / 0.025) 0 1px,
+      transparent 1px 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgb(0 0 0 / 0.045) 0 1px,
+      transparent 1px 2px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 3px,
+      rgb(255 200 200 / 0.02) 3px 4px
+    );
+
+  /* Tile small = finer perceived grain; atmosphere under for soft depth */
+  --bg-depth:
+    var(--texture-velvet-css),
+    var(--texture-velvet),
+    var(--bg-atmosphere);
+  --bg-depth-alt:
+    var(--texture-velvet-css),
+    var(--texture-velvet),
+    var(--bg-atmosphere-alt);
+  --bg-depth-size: 3px 3px, 3px 3px, 4px 4px, 168px 168px, 100% 100%;
+  --bg-depth-repeat: repeat, repeat, repeat, repeat, no-repeat;
+  --bg-depth-position: 0 0, 0 0, 0 0, 0 0, center;
+  --bg-depth-blend: soft-light, soft-light, soft-light, soft-light, normal;
 }

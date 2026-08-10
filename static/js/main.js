@@ -8,7 +8,9 @@ import { initAccordion } from "./modules/accordion.js";
 import { initModal } from "./modules/modal.js";
 import { initReveal } from "./modules/reveal.js";
 import { initLeadForm } from "./modules/lead-form.js";
+import { initReviewForm } from "./modules/review-form.js";
 import { initContactsParallax } from "./modules/contacts-parallax.js";
+import { initChatWidget } from "./modules/chat-widget.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initStickyHeader();
@@ -21,5 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initModal();
   initReveal();
   initLeadForm();
+  initReviewForm();
   initContactsParallax();
+  initChatWidget();
 });

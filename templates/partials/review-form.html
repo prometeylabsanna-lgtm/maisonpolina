@@ -1,0 +1,53 @@
+{% load i18n %}
+<form class="form"
+      method="post"
+      action="{% url 'reviews:submit' %}"
+      hx-post="{% url 'reviews:submit' %}"
+      hx-target="#review-form-body"
+      hx-swap="innerHTML"
+      data-review-form>
+  {% csrf_token %}
+  {% if form and form.non_field_errors %}
+  <div class="form__errors">{{ form.non_field_errors }}</div>
+  {% endif %}
+  <label class="form__field">
+    {% trans "Имя" %}
+    <input class="form__input" type="text" name="name" required maxlength="128"
+           value="{% if form %}{{ form.name.value|default:'' }}{% endif %}"
+           autocomplete="name">
+    {% if form and form.name.errors %}<span class="form__field-error">{{ form.name.errors.0 }}</span>{% endif %}
+  </label>
+  <fieldset class="form__field rating-field">
+    <legend class="rating-field__legend">{% trans "Оценка" %}</legend>
+    <div class="rating" data-rating role="radiogroup" aria-label="{% trans 'Оценка' %}">
+      {% for star in "12345" %}
+      <button type="button"
+              class="rating__star"
+              data-rating-value="{{ forloop.counter }}"
+              role="radio"
+              aria-checked="false"
+              aria-label="{% blocktrans with n=forloop.counter %}{{ n }} из 5{% endblocktrans %}">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true">
+          <path d="M12 3.2l2.4 4.86 5.36.78-3.88 3.78.92 5.34L12 15.5l-4.8 2.52.92-5.34-3.88-3.78 5.36-.78L12 3.2z"></path>
+        </svg>
+      </button>
+      {% endfor %}
+    </div>
+    <input type="hidden"
+           name="rating"
+           value="{% if form and form.rating.value %}{{ form.rating.value }}{% else %}5{% endif %}"
+           data-rating-input>
+    {% if form and form.rating.errors %}<span class="form__field-error">{{ form.rating.errors.0 }}</span>{% endif %}
+  </fieldset>
+  <label class="form__field">
+    {% trans "Отзыв" %}
+    <textarea class="form__textarea" name="text" rows="4" required maxlength="1200">{% if form %}{{ form.text.value|default:'' }}{% endif %}</textarea>
+    {% if form and form.text.errors %}<span class="form__field-error">{{ form.text.errors.0 }}</span>{% endif %}
+  </label>
+  <input type="hidden" name="language" value="{% if form %}{{ form.language.value|default:current_language|default:'ru' }}{% else %}{{ current_language|default:'ru' }}{% endif %}">
+  <input type="hidden" name="form_ts" value="{% if form %}{{ form.form_ts.value|default:'' }}{% endif %}" data-review-ts>
+  <div class="honeypot" aria-hidden="true">
+    <label>{% trans "Сайт" %}<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+  </div>
+  <button type="submit" class="btn btn--solid btn--block">{% trans "Отправить" %}</button>
+</form>

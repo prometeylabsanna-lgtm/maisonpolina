@@ -1,0 +1,16 @@
+{% load i18n %}
+{% for message in messages %}
+<article
+  class="chat-widget__msg chat-widget__msg--{{ message.sender_type }}"
+  data-msg-id="{{ message.pk }}"
+  data-sender="{{ message.sender_type }}">
+  <p class="chat-widget__msg-text">{{ message.text }}</p>
+  <time class="chat-widget__msg-time" datetime="{{ message.created_at|date:'c' }}">
+    {{ message.created_at|time:"H:i" }}
+  </time>
+</article>
+{% empty %}
+{% if not poll_append %}
+<p class="chat-widget__empty">{% trans "Напишите сообщение — ответим в ближайшее время." %}</p>
+{% endif %}
+{% endfor %}

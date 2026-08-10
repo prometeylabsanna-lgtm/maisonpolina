@@ -1,21 +1,73 @@
+/* Soft presentation motion — slow, barely perceptible */
+
+:root {
+  --reveal-duration: 1.65s;
+  --reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --reveal-distance: 8px;
+  --enter-duration: 1.85s;
+  --enter-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --enter-distance: 10px;
+  --enter-base: 160ms;
+  --enter-stagger: 200ms;
+}
+
+@keyframes present-in {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, var(--enter-distance), 0);
+    transform: translate3d(0, var(--enter-distance), 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Page-load cascade (hero, header) */
+[data-enter] {
+  --enter-i: 0;
+  opacity: 0;
+  -webkit-animation: present-in var(--enter-duration) var(--enter-ease) both;
+  animation: present-in var(--enter-duration) var(--enter-ease) both;
+  -webkit-animation-delay: calc(var(--enter-base) + (var(--enter-i) * var(--enter-stagger)));
+  animation-delay: calc(var(--enter-base) + (var(--enter-i) * var(--enter-stagger)));
+}
+
+[data-enter="1"] { --enter-i: 1; }
+[data-enter="2"] { --enter-i: 2; }
+[data-enter="3"] { --enter-i: 3; }
+[data-enter="4"] { --enter-i: 4; }
+[data-enter="5"] { --enter-i: 5; }
+[data-enter="6"] { --enter-i: 6; }
+[data-enter="7"] { --enter-i: 7; }
+
+/* Scroll reveals — slower presentation cadence */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
+  -webkit-transform: translate3d(0, var(--reveal-distance), 0);
+  transform: translate3d(0, var(--reveal-distance), 0);
   transition:
-    opacity 0.5s var(--ease),
-    transform 0.5s var(--ease);
+    opacity var(--reveal-duration) var(--reveal-ease),
+    transform var(--reveal-duration) var(--reveal-ease);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
 [data-reveal].is-visible {
   opacity: 1;
-  transform: none;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  [data-enter],
   [data-reveal],
   [data-reveal].is-visible {
     opacity: 1;
+    -webkit-transform: none;
     transform: none;
+    -webkit-animation: none;
+    animation: none;
     transition: none;
   }
 }

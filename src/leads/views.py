@@ -16,6 +16,8 @@ logger = logging.getLogger(__name__)
 RATE_LIMIT = 5
 RATE_WINDOW = 3600
 
+ALLOWED_FORM_TARGETS = {"#lead-form-body", "#contacts-form"}
+
 
 def _client_ip(request: HttpRequest) -> str:
     forwarded = request.META.get("HTTP_X_FORWARDED_FOR", "")
@@ -35,6 +37,11 @@ def _rate_limited(ip: str) -> bool:
     return False
 
 
+def _form_target(request: HttpRequest) -> str:
+    raw = request.POST.get("form_target") or request.GET.get("form_target") or "#lead-form-body"
+    return raw if raw in ALLOWED_FORM_TARGETS else "#lead-form-body"
+
+
 @require_http_methods(["GET"])
 def lead_form(request: HttpRequest) -> HttpResponse:
     form = LeadForm(
@@ -51,6 +58,7 @@ def lead_form(request: HttpRequest) -> HttpResponse:
         {
             "form": form,
             "service_label": request.GET.get("service", ""),
+            "form_target": _form_target(request),
         },
     )
 
@@ -60,11 +68,16 @@ def lead_submit(request: HttpRequest) -> HttpResponse:
     form = LeadForm(request.POST)
     template_form = "partials/lead-form.html"
     template_success = "partials/lead-success.html"
+    form_target = _form_target(request)
 
     if form.is_valid():
         # Honeypot filled — pretend success, do not save.
         if form.cleaned_data.get("website"):
-            return render(request, template_success)
+            return render(
+                request,
+                template_success,
+                {"form_target": form_target},
+            )
 
         ip = _client_ip(request)
         if _rate_limited(ip):
@@ -72,7 +85,11 @@ def lead_submit(request: HttpRequest) -> HttpResponse:
             return render(
                 request,
                 template_form,
-                {"form": form, "service_label": form.cleaned_data.get("service", "")},
+                {
+                    "form": form,
+                    "service_label": form.cleaned_data.get("service", ""),
+                    "form_target": form_target,
+                },
                 status=429,
             )
 
@@ -98,7 +115,11 @@ def lead_submit(request: HttpRequest) -> HttpResponse:
         except Exception:
             logger.exception("Unexpected notify failure for lead %s", lead.pk)
 
-        return render(request, template_success)
+        return render(
+            request,
+            template_success,
+            {"form_target": form_target},
+        )
 
     return render(
         request,
@@ -106,6 +127,7 @@ def lead_submit(request: HttpRequest) -> HttpResponse:
         {
             "form": form,
             "service_label": request.POST.get("service", ""),
+            "form_target": form_target,
         },
         status=422,
     )

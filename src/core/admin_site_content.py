@@ -14,6 +14,7 @@ from src.core.models import (
     HomeFormatsSettings,
     HomeGallerySettings,
     HomeHeroSettings,
+    HomePersonalitySettings,
     HomeTestimonialsSettings,
     PrivacySettings,
     SiteBlock,
@@ -23,7 +24,7 @@ from src.core.services import invalidate_site_blocks_cache
 from src.core.site_content_registry import CONTENT_SECTIONS, get_section
 from src.gallery.models import GalleryPhoto
 
-IMAGE_KEYS = {"hero.media", "about.portrait"}
+IMAGE_KEYS = {"hero.media", "about.portrait", "personality.portrait"}
 MULTILINE_KEYS = {
     "hero.lead",
     "about.body_1",
@@ -33,6 +34,10 @@ MULTILINE_KEYS = {
     "formats.note",
     "contacts.lead",
     "privacy.body",
+    "personality.languages",
+    "personality.respect",
+    "personality.education",
+    "personality.travel",
 }
 
 
@@ -206,6 +211,7 @@ def register_site_content_section_admins():
     mapping = (
         (HomeHeroSettings, "home", "hero"),
         (HomeAboutSettings, "home", "about"),
+        (HomePersonalitySettings, "home", "personality"),
         (HomeGallerySettings, "home", "gallery"),
         (HomeFormatsSettings, "home", "formats"),
         (HomeTestimonialsSettings, "home", "testimonials"),

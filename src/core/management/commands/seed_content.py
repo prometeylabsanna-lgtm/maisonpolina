@@ -43,8 +43,8 @@ class Command(BaseCommand):
         SeoMeta.objects.get_or_create(
             page="home",
             defaults={
-                "title_ru": "Полина — Private companion",
-                "title_en": "Polina — Private companion",
+                "title_ru": "Полина",
+                "title_en": "Polina",
                 "description_ru": (
                     "Приватное сопровождение на ужины, приёмы и деловые поездки."
                 ),
@@ -87,14 +87,13 @@ class Command(BaseCommand):
                     "An hour and a half of private conversation: purpose, "
                     "meeting format, mutual expectations."
                 ),
-                "price_text_ru": "30 000 ₽",
-                "price_text_en": "30 000 ₽",
+                "price_text_ru": "400 $",
+                "price_text_en": "400 $",
                 "is_featured": False,
                 "order": 1,
                 "features": [
                     ("Обсуждение формата и целей", "Discussion of format and goals"),
                     ("Условия конфиденциальности", "Privacy terms"),
-                    ("Письменное резюме встречи", "Written summary of the meeting"),
                 ],
             },
             {
@@ -110,8 +109,8 @@ class Command(BaseCommand):
                     "Full accompaniment for a business reception, premiere or dinner — "
                     "from greeting to farewell."
                 ),
-                "price_text_ru": "от 90 000 ₽",
-                "price_text_en": "from 90 000 ₽",
+                "price_text_ru": "1000 $",
+                "price_text_en": "1000 $",
                 "is_featured": True,
                 "order": 2,
                 "features": [
@@ -131,26 +130,37 @@ class Command(BaseCommand):
                 ],
             },
             {
-                "title_ru": "Долгосрочное соглашение",
-                "title_en": "Long-term arrangement",
+                "title_ru": "Поездка",
+                "title_en": "Trip",
                 "label_ru": "Формат III",
                 "label_en": "Format III",
                 "description_ru": (
-                    "Годовой формат: я рядом на деловых поездках, приёмах "
-                    "и значимых событиях."
+                    "Сопровождение в деловой или частной поездке — "
+                    "от выезда до возвращения. "
+                    "Отдельная комната для меня — обязательное условие."
                 ),
                 "description_en": (
-                    "Annual format: I am present for business trips, receptions "
-                    "and significant events."
+                    "Accompaniment on a business or private trip — "
+                    "from departure to return. "
+                    "A separate room for me is required."
                 ),
-                "price_text_ru": "По запросу",
-                "price_text_en": "On request",
+                "price_text_ru": "По договорённости",
+                "price_text_en": "By arrangement",
                 "is_featured": False,
                 "order": 3,
                 "features": [
-                    ("Календарь событий на год", "Yearly event calendar"),
-                    ("Дорожный график и логистика", "Travel schedule and logistics"),
-                    ("Связь без выходных", "Contact without days off"),
+                    (
+                        "Согласование маршрута и расписания",
+                        "Itinerary and schedule alignment",
+                    ),
+                    (
+                        "Присутствие на встречах и событиях",
+                        "Presence at meetings and events",
+                    ),
+                    (
+                        "Логистика и связь на всём пути",
+                        "Logistics and contact throughout the trip",
+                    ),
                 ],
             },
         ]
@@ -234,11 +244,11 @@ class Command(BaseCommand):
                 "question_ru": "Где проходят встречи?",
                 "question_en": "Where do meetings take place?",
                 "answer_ru": (
-                    "В Москве и по договорённости в других городах. "
+                    "В Киеве и по договорённости в других городах. "
                     "Логистика за пределами города обсуждается отдельно."
                 ),
                 "answer_en": (
-                    "In Moscow and, by arrangement, in other cities. "
+                    "In Kyiv and, by arrangement, in other cities. "
                     "Travel outside the city is discussed separately."
                 ),
                 "order": 2,

@@ -1,7 +1,13 @@
 .footer {
-  background: #1a1a1a;
+  background-color: var(--color-floral-soft);
+  background-image: var(--bg-depth-alt);
+  background-size: var(--bg-depth-size);
+  background-repeat: var(--bg-depth-repeat);
+  background-position: var(--bg-depth-position);
+  background-blend-mode: var(--bg-depth-blend);
+  color: var(--color-text);
   padding: clamp(28px, 4vw, 44px) 0 calc(22px + var(--safe-bottom));
-  border-top: 1px solid rgb(255 255 255 / 0.05);
+  border-top: 1px solid rgb(var(--color-gold-rgb) / 0.2);
 }
 
 .footer__inner {
@@ -30,27 +36,11 @@
 }
 
 .footer__line--left {
-  background: linear-gradient(
-    90deg,
-    rgb(180 150 80 / 0.08) 0%,
-    #7a6236 12%,
-    #b8924a 40%,
-    #d4b56e 68%,
-    #f0e2b6 90%,
-    #fffaf0 100%
-  );
+  background: var(--metal-tip-end);
 }
 
 .footer__line--right {
-  background: linear-gradient(
-    90deg,
-    #fffaf0 0%,
-    #f0e2b6 10%,
-    #d4b56e 32%,
-    #b8924a 60%,
-    #7a6236 88%,
-    rgb(180 150 80 / 0.08) 100%
-  );
+  background: var(--metal-tip-start);
 }
 
 .footer__brand {
@@ -62,75 +52,31 @@
 
 .footer__brand-mark {
   font-family: var(--font-display);
-  font-size: clamp(12px, 1.4vw, 16px);
+  font-size: clamp(11px, 1.2vw, 14px);
   line-height: 1.15;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-text);
+  color: var(--color-champagne-soft);
   white-space: nowrap;
-  margin-right: -0.18em;
-}
-
-.footer__tagline {
-  display: none;
-}
-
-.footer__social {
-  margin-top: 14px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-}
-
-.footer__social-link {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border: 0;
-  background: transparent;
-  filter:
-    drop-shadow(0 2px 4px rgb(0 0 0 / 0.45))
-    drop-shadow(0 0 8px rgb(212 181 110 / 0.28));
-  transition:
-    opacity var(--t-base),
-    filter var(--t-base),
-    transform var(--t-base);
-}
-
-.footer__social-link:hover {
-  opacity: 0.92;
-  transform: translateY(-1px);
-  filter:
-    drop-shadow(0 3px 6px rgb(0 0 0 / 0.5))
-    drop-shadow(0 0 12px rgb(232 212 138 / 0.4));
-}
-
-.footer__social-img {
-  display: block;
-  width: 34px;
-  height: auto;
-  object-fit: contain;
-}
-
-.footer__social-link .metal-icon {
-  display: block;
-  overflow: visible;
-  width: 34px;
-  height: 34px;
+  margin-right: -0.14em;
+  background-image: linear-gradient(
+    165deg,
+    #f0e2cc 0%,
+    var(--color-champagne-soft) 35%,
+    var(--color-champagne) 70%,
+    var(--color-champagne-deep) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .footer__label {
   margin: 0 0 10px;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-text-subtle);
-}
-
-.footer__label--spaced {
-  margin-top: 20px;
+  color: var(--color-type-muted);
 }
 
 .footer__label--brand {
@@ -146,17 +92,16 @@
   line-height: 1.15;
   letter-spacing: 0.03em;
   color: var(--color-text);
-  border-bottom: 1px solid rgb(212 181 110 / 0.55);
+  border-bottom: 1px solid rgb(var(--color-gold-rgb) / 0.55);
   padding-bottom: 4px;
-  text-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
   transition:
     color var(--t-base),
     border-color var(--t-base);
 }
 
 .footer__phone:hover {
-  color: #e0c57a;
-  border-bottom-color: #e0c57a;
+  color: var(--color-interactive-hover);
+  border-bottom-color: var(--color-interactive-hover);
 }
 
 /* Telegram + email — один вертикальний блок */
@@ -184,7 +129,7 @@
 }
 
 .footer__telegram:hover .footer__telegram-title {
-  color: #3db887;
+  color: var(--color-gold-soft);
 }
 
 .footer__telegram-title {
@@ -192,38 +137,14 @@
   font-size: clamp(22px, 2.6vw, 28px);
   line-height: 1.15;
   letter-spacing: 0.04em;
-  color: var(--color-accent-mid);
-  text-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
+  color: var(--color-gold);
 }
 
 .footer__telegram-sub {
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #ececec;
-}
-
-.footer__email {
-  display: inline-block;
-  margin-left: 0;
-  font-size: 14px;
-  line-height: 1.4;
-  letter-spacing: 0.02em;
-  color: #ececec;
-  border-bottom: 1px solid rgb(255 255 255 / 0.28);
-  padding-bottom: 2px;
-  transition:
-    color var(--t-base),
-    border-color var(--t-base);
-}
-
-.footer__channels:not(:has(.footer__telegram)) .footer__email {
-  margin-left: 0;
-}
-
-.footer__email:hover {
-  color: #ffffff;
-  border-bottom-color: rgb(255 255 255 / 0.55);
+  color: var(--color-text-muted);
 }
 
 .footer__text {
@@ -242,16 +163,16 @@
 
 .footer__menu-link {
   font-family: var(--font-display);
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-text);
+  color: var(--color-cream);
   line-height: 1.35;
   transition: color var(--t-base);
 }
 
 .footer__menu-link:hover {
-  color: #3db887;
+  color: var(--color-interactive-hover);
 }
 
 .footer__menu-link--privacy {
@@ -293,7 +214,7 @@
 .footer__menu-toggle-icon::after {
   content: "";
   position: absolute;
-  background: var(--color-accent-mid);
+  background: var(--color-gold);
   transition:
     transform var(--t-base),
     opacity var(--t-base);
@@ -382,7 +303,6 @@
   }
 
   .footer__brand,
-  .footer__tagline,
   .footer__text,
   .footer__phone,
   .footer__channels {
@@ -404,10 +324,6 @@
   }
 
   .footer__telegram-sub {
-    text-align: center;
-  }
-
-  .footer__email {
     text-align: center;
   }
 
@@ -477,11 +393,5 @@
 
   .footer__menu-extra {
     align-items: flex-end;
-  }
-}
-
-@media (min-width: 1024px) {
-  .footer__tagline {
-    max-width: 32ch;
   }
 }

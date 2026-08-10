@@ -18,8 +18,13 @@
     padding-bottom: calc(10px + var(--safe-bottom));
     padding-inline: max(20px, env(safe-area-inset-left, 0px))
       max(20px, env(safe-area-inset-right, 0px));
-    background: #1a1a1a;
-    border-top: 1px solid rgb(255 255 255 / 0.08);
+    background-color: var(--color-floral-soft);
+    background-image: var(--bg-depth-alt);
+    background-size: var(--bg-depth-size);
+    background-repeat: var(--bg-depth-repeat);
+    background-position: var(--bg-depth-position);
+    background-blend-mode: var(--bg-depth-blend);
+    border-top: 1px solid rgb(var(--color-gold-rgb) / 0.22);
   }
 
   .dock__item {
@@ -44,22 +49,25 @@
   }
 
   .dock__item:hover .dock__icon,
-  .dock__item:focus-visible .dock__icon,
+  .dock__item:focus-visible .dock__icon {
+    color: var(--color-interactive-hover);
+  }
+
   .dock__item.is-active .dock__icon {
-    color: #d4b56e;
+    color: var(--color-interactive);
   }
 
   .dock__icon {
     display: block;
     width: 30px;
     height: 30px;
-    color: var(--color-accent-mid);
+    color: var(--color-gold-soft);
     transition: color var(--t-base);
   }
 
   .dock__label {
     font-family: var(--font-display);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     line-height: 1.2;

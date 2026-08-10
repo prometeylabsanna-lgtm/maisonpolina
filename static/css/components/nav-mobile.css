@@ -9,15 +9,14 @@
   flex-direction: column;
   padding: 20px 22px 24px;
   border-radius: 16px;
-  border: 1px solid rgb(255 255 255 / 0.12);
-  background: rgb(var(--color-bg-rgb) / 0.62);
-  -webkit-backdrop-filter: blur(22px) saturate(1.25);
-  backdrop-filter: blur(22px) saturate(1.25);
-  box-shadow:
-    0 12px 40px rgb(0 0 0 / 0.45),
-    inset 0 1px 0 rgb(255 255 255 / 0.08);
+  border: 1px solid var(--border-subtle);
+  background: rgb(var(--color-floral-rgb) / 0.94);
+  -webkit-backdrop-filter: blur(22px) saturate(1.1);
+  backdrop-filter: blur(22px) saturate(1.1);
+  box-shadow: var(--shadow-lux);
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
+  color: var(--color-text);
 }
 
 .mobile-nav.is-open {
@@ -33,6 +32,7 @@
 
 .mobile-nav__top .header__brand-mark {
   font-size: 14px;
+  color: var(--color-text);
 }
 
 .mobile-nav__close {
@@ -41,7 +41,7 @@
   color: var(--color-text);
   font-size: 22px;
   line-height: 1;
-  border: 1px solid rgb(255 255 255 / 0.14);
+  border: 1px solid var(--border-subtle);
   border-radius: 8px;
   background: rgb(255 255 255 / 0.04);
 }
@@ -60,7 +60,12 @@
 .mobile-nav__list a {
   color: var(--color-text);
   padding: 16px 0;
-  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  border-bottom: 1px solid var(--color-line-soft);
+  transition: color var(--t-base);
+}
+
+.mobile-nav__list a:hover {
+  color: var(--color-interactive-hover);
 }
 
 .mobile-nav__bottom {
@@ -82,17 +87,16 @@
   line-height: 1.15;
   letter-spacing: 0.03em;
   color: var(--color-text);
-  border-bottom: 1px solid rgb(212 181 110 / 0.55);
+  border-bottom: 1px solid rgb(var(--color-gold-rgb) / 0.55);
   padding-bottom: 4px;
-  text-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
   transition:
     color var(--t-base),
     border-color var(--t-base);
 }
 
 .mobile-nav__phone:hover {
-  color: #e0c57a;
-  border-bottom-color: #e0c57a;
+  color: var(--color-interactive-hover);
+  border-bottom-color: var(--color-interactive-hover);
 }
 
 .mobile-nav__bottom .btn {
@@ -101,6 +105,6 @@
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .mobile-nav {
-    background: rgb(var(--color-bg-rgb) / 0.94);
+    background: rgb(var(--color-floral-rgb) / 0.98);
   }
 }

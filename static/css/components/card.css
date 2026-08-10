@@ -1,12 +1,6 @@
 .card {
   --card-radius: 14px;
-  background:
-    radial-gradient(
-      ellipse 90% 55% at 50% -10%,
-      rgb(var(--color-accent-2-rgb) / 0.08),
-      transparent 62%
-    ),
-    var(--color-surface);
+  background: var(--color-surface);
   border: 1px solid var(--color-line-soft);
   border-radius: var(--card-radius);
   padding: clamp(14px, 1.5vw, 18px);
@@ -16,6 +10,7 @@
   overflow: hidden;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
+  box-shadow: var(--shadow-lux);
   transition:
     background var(--t-slow),
     border-color var(--t-slow),
@@ -24,28 +19,22 @@
 }
 
 .card:hover {
-  border-color: var(--color-accent-mid);
-  background:
-    radial-gradient(
-      ellipse 90% 55% at 50% -10%,
-      rgb(var(--color-accent-2-rgb) / 0.14),
-      transparent 62%
-    ),
-    var(--color-surface-hover);
+  border-color: rgb(var(--color-cream-rgb) / 0.22);
+  background: #6a161e;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 0.28);
 }
 
 .card--featured {
-  border-color: rgb(var(--color-accent-2-rgb) / 0.55);
-  background:
-    radial-gradient(
-      ellipse 85% 50% at 50% -8%,
-      rgb(var(--color-accent-2-rgb) / 0.2),
-      transparent 65%
-    ),
-    var(--color-surface-hover);
+  border-color: rgb(var(--color-cream-rgb) / 0.2);
+  background: #5a1218;
   box-shadow:
-    0 0 0 1px rgb(var(--color-accent-2-rgb) / 0.22),
-    0 14px 28px rgb(0 0 0 / 0.28);
+    0 0 0 1px rgb(var(--color-cream-rgb) / 0.08),
+    var(--shadow-lux);
+}
+
+.card--featured:hover {
+  border-color: rgb(var(--color-cream-rgb) / 0.28);
+  background: #7a1a22;
 }
 
 .card__head {
@@ -61,8 +50,8 @@
   place-items: center;
   border-radius: 50%;
   color: var(--color-accent-mid);
-  background: rgb(var(--color-accent-2-rgb) / 0.14);
-  border: 1px solid rgb(var(--color-accent-2-rgb) / 0.4);
+  background: rgb(var(--color-accent-2-rgb) / 0.08);
+  border: 1px solid rgb(var(--color-gold-rgb) / 0.35);
   margin-bottom: 10px;
 }
 
@@ -75,9 +64,9 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  background: rgb(var(--color-accent-2-rgb) / 0.16);
-  color: var(--color-accent-mid);
-  border: 1px solid rgb(var(--color-accent-2-rgb) / 0.4);
+  background: rgb(var(--color-gold-rgb) / 0.12);
+  color: var(--color-gold-soft);
+  border: 1px solid rgb(var(--color-gold-rgb) / 0.4);
   border-radius: 999px;
   font-size: 9px;
   letter-spacing: 0.14em;
@@ -87,18 +76,21 @@
 
 .card__label {
   font-family: var(--font-display);
-  font-size: 10px;
-  letter-spacing: 0.2em;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  line-height: 1.45;
   text-transform: uppercase;
-  color: var(--color-text-subtle);
+  color: var(--color-type-muted);
 }
 
 .card__title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(20px, 2vw, 24px);
-  line-height: 1.15;
+  font-size: clamp(22px, 2.2vw, 26px);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
   margin: 6px 0 6px;
+  color: var(--color-cream);
 }
 
 .card--featured .card__title {
@@ -106,13 +98,10 @@
 }
 
 .card__text {
-  font-size: 12px;
-  line-height: 1.4;
-  color: var(--color-text-muted);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: 0.015em;
+  color: var(--color-type-muted);
 }
 
 .card__price {
@@ -126,15 +115,16 @@
 .card__divider {
   height: 1px;
   margin: 10px 0 8px;
-  background: var(--color-line-soft);
+  border: 0;
+  background: var(--metal-tip);
 }
 
 .card__includes {
   margin: 0 0 6px;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-text-subtle);
+  color: var(--color-type-muted);
 }
 
 .card__list {
@@ -142,9 +132,9 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  font-size: 12px;
-  line-height: 1.35;
-  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--color-type-muted);
 }
 
 .card__list-item {
@@ -161,9 +151,9 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  color: var(--color-accent-mid);
-  background: rgb(var(--color-accent-2-rgb) / 0.12);
-  border: 1px solid rgb(var(--color-accent-2-rgb) / 0.35);
+  color: var(--color-metal-deep);
+  background: rgb(var(--color-metal-rgb) / 0.1);
+  border: 1px solid rgb(var(--color-metal-rgb) / 0.4);
 }
 
 .card__check svg {

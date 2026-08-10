@@ -3,5 +3,15 @@
   <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><circle cx="28" cy="28" r="26"></circle><path d="M17 29l8 8 15-18"></path></svg>
   <p class="lead-success__title">{% trans "Благодарю вас" %}</p>
   <p class="lead-success__text">{% trans "Я получу заявку и отвечу лично в течение суток." %}</p>
+  {% if form_target == "#contacts-form" %}
+  <button type="button"
+          class="btn lead-success__action"
+          hx-get="{% url 'leads:form' %}?form_target=%23contacts-form&source=contacts"
+          hx-target="#contacts-form"
+          hx-swap="innerHTML">
+    {% trans "Закрыть" %}
+  </button>
+  {% else %}
   <button type="button" class="btn lead-success__action" data-close-modal>{% trans "Закрыть" %}</button>
+  {% endif %}
 </div>

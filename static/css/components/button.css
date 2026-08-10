@@ -1,11 +1,12 @@
+/* Champagne CTA buttons — gradient fill, dark type (ref) */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: transparent;
-  border: 1px solid var(--color-accent-mid);
-  color: var(--color-text);
+  background: var(--btn-fill);
+  border: var(--btn-border-width) solid var(--color-champagne-deep);
+  color: var(--text-on-gold);
   font-family: var(--font-display);
   font-weight: 700;
   text-transform: uppercase;
@@ -21,54 +22,36 @@
 }
 
 .btn:hover {
-  background: var(--color-accent-mid);
-  color: #07140f;
-  border-color: var(--color-accent-mid);
+  background: var(--btn-fill-hover);
+  border-color: var(--color-champagne);
+  color: var(--text-on-gold);
 }
 
 .btn--ghost {
-  border-color: rgb(var(--color-accent-2-rgb) / 0.65);
-  color: var(--color-text);
+  background: transparent;
+  border-color: var(--color-champagne);
+  color: var(--color-champagne);
 }
 
 .btn--ghost:hover {
-  background: transparent;
-  color: var(--color-accent-mid);
-  border-color: var(--color-accent-mid);
+  background: var(--btn-fill);
+  border-color: var(--color-champagne-deep);
+  color: var(--text-on-gold);
 }
 
-.btn--solid {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: #f4fffa;
-}
-
-.btn--solid:hover {
-  background: var(--color-accent-mid);
-  color: #07140f;
-  border-color: var(--color-accent-mid);
-}
-
+/* Semantic aliases — same fill as base .btn */
+.btn--solid,
 .btn--gradient {
-  background: linear-gradient(
-    135deg,
-    var(--color-accent-dark) 0%,
-    var(--color-accent) 48%,
-    var(--color-accent-mid) 100%
-  );
-  border-color: transparent;
-  color: #f4fffa;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1);
+  background: var(--btn-fill);
+  border-color: var(--color-champagne-deep);
+  color: var(--text-on-gold);
 }
 
+.btn--solid:hover,
 .btn--gradient:hover {
-  background: linear-gradient(
-    135deg,
-    var(--color-accent) 0%,
-    var(--color-accent-mid) 100%
-  );
-  border-color: transparent;
-  color: #07140f;
+  background: var(--btn-fill-hover);
+  border-color: var(--color-champagne);
+  color: var(--text-on-gold);
 }
 
 .btn--block {
@@ -80,4 +63,32 @@
   font-size: 14px;
   font-weight: 700;
   line-height: 1.2;
+}
+
+.hero .btn,
+.footer .btn {
+  background: var(--btn-fill);
+  border-color: var(--color-champagne-deep);
+  color: var(--text-on-gold);
+}
+
+.hero .btn:hover,
+.footer .btn:hover {
+  background: var(--btn-fill-hover);
+  border-color: var(--color-champagne);
+  color: var(--text-on-gold);
+}
+
+.hero .btn--ghost,
+.footer .btn--ghost {
+  background: transparent;
+  border-color: var(--color-champagne);
+  color: var(--color-champagne);
+}
+
+.hero .btn--ghost:hover,
+.footer .btn--ghost:hover {
+  background: var(--btn-fill);
+  border-color: var(--color-champagne-deep);
+  color: var(--text-on-gold);
 }

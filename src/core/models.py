@@ -4,16 +4,16 @@ from src.core.mixins import BilingualTextMixin
 
 
 class SiteSettings(models.Model):
-    brand_name = models.CharField(max_length=128, default="Полина")
+    brand_name = models.CharField(max_length=128, default="MAISON POLINA")
     logo = models.ImageField(upload_to="brand/", blank=True)
-    phone = models.CharField(max_length=64, blank=True, default="+380 00 000 00 00")
+    phone = models.CharField(max_length=64, blank=True, default="+380 95 472 7859")
     email = models.EmailField(blank=True, default="hello@example.com")
     telegram_url = models.URLField(blank=True, default="https://t.me/")
     instagram_url = models.URLField(blank=True, default="https://instagram.com/")
     whatsapp_url = models.URLField(blank=True, default="https://wa.me/")
-    copyright_name = models.CharField(max_length=128, default="Полина")
-    location_ru = models.CharField(max_length=255, blank=True, default="Киев, по договорённости")
-    location_en = models.CharField(max_length=255, blank=True, default="Kyiv, by appointment")
+    copyright_name = models.CharField(max_length=128, default="MAISON POLINA")
+    location_ru = models.CharField(max_length=255, blank=True, default="ЖК «Нова Конча-Заспа»")
+    location_en = models.CharField(max_length=255, blank=True, default="Nova Koncha-Zaspa RC")
 
     class Meta:
         verbose_name = "Налаштування сайту"
@@ -100,6 +100,13 @@ class HomeAboutSettings(SiteSettings):
         proxy = True
         verbose_name = "Головна — Про мене"
         verbose_name_plural = "Головна — Про мене"
+
+
+class HomePersonalitySettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = "Головна — Особистість"
+        verbose_name_plural = "Головна — Особистість"
 
 
 class HomeGallerySettings(SiteSettings):

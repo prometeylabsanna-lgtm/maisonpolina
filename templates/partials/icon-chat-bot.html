@@ -1,0 +1,11 @@
+{% load static %}
+{# Іконка чат-бота (бульбашка + робот), без фону #}
+<picture class="{{ class|default:'icon-chat-bot' }}">
+  <source type="image/webp" srcset="{% static 'images/icon-chat-bot.webp' %}?v={{ static_version }}">
+  <img src="{% static 'images/icon-chat-bot.png' %}?v={{ static_version }}"
+       alt=""
+       width="{{ size|default:48 }}"
+       height="{{ size|default:48 }}"
+       decoding="async"
+       draggable="false">
+</picture>
