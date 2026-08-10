@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from decouple import config
-from django.urls import reverse_lazy
 
 
 def _resolve_base_dir() -> Path:
@@ -15,7 +14,8 @@ def _resolve_base_dir() -> Path:
     return here
 
 
-BASE_DIR = _resolve_base_dir()
+_BASE_PATH = _resolve_base_dir()
+BASE_DIR = str(_BASE_PATH)
 
 SECRET_KEY = config(
     "SECRET_KEY",
@@ -67,7 +67,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [str(_BASE_PATH / "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -88,7 +88,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": str(_BASE_PATH / "db.sqlite3"),
     }
 }
 
@@ -113,17 +113,17 @@ LANGUAGES = [
     ("ru", "Русский"),
     ("en", "English"),
 ]
-LOCALE_PATHS = [BASE_DIR / "locale"]
+LOCALE_PATHS = [str(_BASE_PATH / "locale")]
 TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = str(_BASE_PATH / "staticfiles")
+STATICFILES_DIRS = [str(_BASE_PATH / "static")]
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = str(_BASE_PATH / "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -136,17 +136,17 @@ X_FRAME_OPTIONS = "DENY"
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 CONTENT_SECURITY_POLICY = {
-    "EXCLUDE_URL_PREFIXES": ("/admin/",),
+    "EXCLUDE_URL_PREFIXES": ["/admin/"],
     "DIRECTIVES": {
-        "default-src": ("'self'",),
-        "script-src": ("'self'",),
-        "style-src": ("'self'", "'unsafe-inline'"),
-        "font-src": ("'self'", "data:"),
-        "img-src": ("'self'", "data:", "blob:"),
-        "connect-src": ("'self'",),
-        "frame-ancestors": ("'none'",),
-        "base-uri": ("'self'",),
-        "form-action": ("'self'",),
+        "default-src": ["'self'"],
+        "script-src": ["'self'"],
+        "style-src": ["'self'", "'unsafe-inline'"],
+        "font-src": ["'self'", "data:"],
+        "img-src": ["'self'", "data:", "blob:"],
+        "connect-src": ["'self'"],
+        "frame-ancestors": ["'none'"],
+        "base-uri": ["'self'"],
+        "form-action": ["'self'"],
     },
 }
 
@@ -214,49 +214,47 @@ UNFOLD = {
                     {
                         "title": "Hero",
                         "icon": "image",
-                        "link": reverse_lazy("admin:core_homeherosettings_changelist"),
+                        "link": "/admin/core/homeherosettings/",
                     },
                     {
                         "title": "Про мене",
                         "icon": "person",
-                        "link": reverse_lazy("admin:core_homeaboutsettings_changelist"),
+                        "link": "/admin/core/homeaboutsettings/",
                     },
                     {
                         "title": "Особистість",
                         "icon": "badge",
-                        "link": reverse_lazy(
-                            "admin:core_homepersonalitysettings_changelist"
-                        ),
+                        "link": "/admin/core/homepersonalitysettings/",
                     },
                     {
                         "title": "Галерея",
                         "icon": "photo_library",
-                        "link": reverse_lazy("admin:core_homegallerysettings_changelist"),
+                        "link": "/admin/core/homegallerysettings/",
                     },
                     {
                         "title": "Формати",
                         "icon": "view_agenda",
-                        "link": reverse_lazy("admin:core_homeformatssettings_changelist"),
+                        "link": "/admin/core/homeformatssettings/",
                     },
                     {
                         "title": "Відгуки",
                         "icon": "format_quote",
-                        "link": reverse_lazy("admin:core_hometestimonialssettings_changelist"),
+                        "link": "/admin/core/hometestimonialssettings/",
                     },
                     {
                         "title": "Питання",
                         "icon": "help",
-                        "link": reverse_lazy("admin:core_homefaqsettings_changelist"),
+                        "link": "/admin/core/homefaqsettings/",
                     },
                     {
                         "title": "Контакти",
                         "icon": "mail",
-                        "link": reverse_lazy("admin:core_homecontactssettings_changelist"),
+                        "link": "/admin/core/homecontactssettings/",
                     },
                     {
                         "title": "Політика",
                         "icon": "policy",
-                        "link": reverse_lazy("admin:core_privacysettings_changelist"),
+                        "link": "/admin/core/privacysettings/",
                     },
                 ],
             },
@@ -267,17 +265,17 @@ UNFOLD = {
                     {
                         "title": "Формати послуг",
                         "icon": "sell",
-                        "link": reverse_lazy("admin:formats_serviceformat_changelist"),
+                        "link": "/admin/formats/serviceformat/",
                     },
                     {
                         "title": "Відгуки",
                         "icon": "reviews",
-                        "link": reverse_lazy("admin:reviews_testimonial_changelist"),
+                        "link": "/admin/reviews/testimonial/",
                     },
                     {
                         "title": "Питання й відповіді",
                         "icon": "quiz",
-                        "link": reverse_lazy("admin:faq_faqitem_changelist"),
+                        "link": "/admin/faq/faqitem/",
                     },
                 ],
             },
@@ -288,7 +286,7 @@ UNFOLD = {
                     {
                         "title": "Усі заявки",
                         "icon": "inbox",
-                        "link": reverse_lazy("admin:leads_lead_changelist"),
+                        "link": "/admin/leads/lead/",
                     },
                 ],
             },
@@ -299,12 +297,12 @@ UNFOLD = {
                     {
                         "title": "Сайт",
                         "icon": "settings",
-                        "link": reverse_lazy("admin:core_sitesettings_changelist"),
+                        "link": "/admin/core/sitesettings/",
                     },
                     {
                         "title": "SEO",
                         "icon": "travel_explore",
-                        "link": reverse_lazy("admin:core_seometa_changelist"),
+                        "link": "/admin/core/seometa/",
                     },
                 ],
             },
