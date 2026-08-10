@@ -1,4 +1,4 @@
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse
 import os
 
 from decouple import Csv, config
@@ -33,19 +33,25 @@ SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
-_database_url = config("DATABASE_URL", default="")
+IS_VERCEL = bool(os.environ.get("VERCEL"))
+
+DATABASE_URL = config("DATABASE_URL", default="").strip()
 _postgres_db = config("POSTGRES_DB", default="")
 
-if _database_url:
-    _db = urlparse(_database_url)
+if DATABASE_URL.startswith("postgres"):
+    # Managed Postgres (Supabase / Neon / DigitalOcean) — same pattern as AJERES
+    _db = urlparse(DATABASE_URL)
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": (_db.path or "").lstrip("/"),
-            "USER": _db.username or "",
-            "PASSWORD": _db.password or "",
+            "NAME": (_db.path or "/").lstrip("/") or "postgres",
+            "USER": unquote(_db.username or ""),
+            "PASSWORD": unquote(_db.password or ""),
             "HOST": _db.hostname or "",
             "PORT": str(_db.port or 5432),
+            "OPTIONS": {
+                "sslmode": config("DB_SSLMODE", default="require"),
+            },
         }
     }
 elif _postgres_db:
@@ -59,16 +65,18 @@ elif _postgres_db:
             "PORT": config("DB_PORT", default="5432"),
         }
     }
-elif os.environ.get("VERCEL"):
-    # Serverless FS is read-only except /tmp — local sqlite path would 500.
+elif IS_VERCEL:
+    # Serverless FS is read-only except /tmp — demo SQLite (ephemeral).
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": "/tmp/maisonpolina.sqlite3",
         }
     }
-    MEDIA_ROOT = "/tmp/maisonpolina-media"
 # else: keep SQLite from base (local collectstatic / build without DB)
+
+if IS_VERCEL:
+    MEDIA_ROOT = "/tmp/maisonpolina-media"
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 

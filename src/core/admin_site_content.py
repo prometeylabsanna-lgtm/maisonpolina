@@ -45,6 +45,7 @@ class GalleryPhotoForm(forms.ModelForm):
     class Meta:
         model = GalleryPhoto
         fields = (
+            "static_image",
             "image",
             "alt_ru",
             "alt_en",

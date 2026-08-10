@@ -1,4 +1,5 @@
 {% load i18n site_content %}
+{% comment %}gallery_image_url — static first (Vercel-safe), else media{% endcomment %}
 <section class="section" id="gallery" data-section="gallery">
   <div class="container">
     <div class="gallery__head" data-reveal>
@@ -15,15 +16,16 @@
       <div class="gallery__track" data-gallery-track data-lightbox-root>
         {% for photo in gallery_photos %}
         <figure class="gallery__item">
+          {% gallery_image_url photo as photo_url %}
           <button type="button"
                   class="gallery__button"
                   data-lightbox-open
-                  data-full="{{ photo.image.url }}"
+                  data-full="{{ photo_url }}"
                   data-alt="{{ photo.alt|default:photo.caption }}"
                   aria-label="{% trans 'Открыть фото' %}">
-            {% if photo.image %}
+            {% if photo_url %}
             <img class="gallery__img"
-                 src="{{ photo.image.url }}"
+                 src="{{ photo_url }}"
                  alt="{{ photo.alt|default:photo.caption }}"
                  width="768"
                  height="1024"

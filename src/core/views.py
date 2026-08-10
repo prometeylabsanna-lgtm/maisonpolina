@@ -20,9 +20,27 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        blocks = get_site_blocks()
+        try:
+            from src.core.vercel_bootstrap import bootstrap_vercel_db
+
+            bootstrap_vercel_db()
+            blocks = get_site_blocks()
+            seo = SeoMeta.objects.filter(page="home").first()
+            gallery_photos = GalleryPhoto.objects.filter(is_active=True)
+            formats = ServiceFormat.objects.filter(is_active=True).prefetch_related(
+                "features"
+            )
+            testimonials = Testimonial.objects.filter(is_active=True)
+            faq_items = FaqItem.objects.filter(is_active=True)
+        except Exception:
+            blocks = {}
+            seo = None
+            gallery_photos = GalleryPhoto.objects.none()
+            formats = ServiceFormat.objects.none()
+            testimonials = Testimonial.objects.none()
+            faq_items = FaqItem.objects.none()
+
         ctx["page_title"] = "MAISON POLINA"
-        seo = SeoMeta.objects.filter(page="home").first()
         ctx["seo"] = seo
         if seo:
             ctx["seo_title"] = seo.get_text("title")
@@ -44,12 +62,10 @@ class HomeView(TemplateView):
                 "home", "contacts_section_visible", blocks=blocks
             ),
         }
-        ctx["gallery_photos"] = GalleryPhoto.objects.filter(is_active=True)
-        ctx["formats"] = ServiceFormat.objects.filter(is_active=True).prefetch_related(
-            "features"
-        )
-        ctx["testimonials"] = Testimonial.objects.filter(is_active=True)
-        ctx["faq_items"] = FaqItem.objects.filter(is_active=True)
+        ctx["gallery_photos"] = gallery_photos
+        ctx["formats"] = formats
+        ctx["testimonials"] = testimonials
+        ctx["faq_items"] = faq_items
         form = LeadForm(
             initial={
                 "source": LeadSource.CONTACTS,

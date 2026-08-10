@@ -39,6 +39,15 @@ def block_image(context, page, key):
     return None
 
 
+@register.simple_tag
+def gallery_image_url(photo):
+    """Prefer shipped static gallery images (Vercel-safe), else media."""
+    getter = getattr(photo, "get_image_url", None)
+    if callable(getter):
+        return getter()
+    return ""
+
+
 @register.filter
 def nl2p(value):
     if not value:

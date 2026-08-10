@@ -4,6 +4,7 @@ from src.core.block_defaults import BLOCK_DEFAULTS
 from src.core.models import SeoMeta, SiteBlock, SiteSettings
 from src.faq.models import FaqItem
 from src.formats.models import FormatFeature, ServiceFormat
+from src.gallery.models import GalleryPhoto
 from src.reviews.models import Testimonial
 
 
@@ -66,9 +67,41 @@ class Command(BaseCommand):
         self._seed_formats()
         self._seed_testimonials()
         self._seed_faq()
+        self._seed_gallery()
         self.stdout.write(
             self.style.SUCCESS(f"Seed done. New blocks: {created_blocks}")
         )
+
+    def _seed_gallery(self) -> None:
+        """Ship gallery from static/images/gallery (Vercel-safe, like AJERES)."""
+        items = [
+            ("images/gallery/gallery-01.jpg", "Кадр вечера", "Evening frame"),
+            ("images/gallery/gallery-02.jpg", "Кадр вечера", "Evening frame"),
+            ("images/gallery/gallery-03.jpg", "Кадр вечера", "Evening frame"),
+            ("images/gallery/gallery-04.jpg", "Кадр вечера", "Evening frame"),
+            ("images/gallery/gallery-05.jpg", "Кадр вечера", "Evening frame"),
+            ("images/gallery/gallery-06.jpg", "Кадр вечера", "Evening frame"),
+        ]
+        for order, (path, caption_ru, caption_en) in enumerate(items, start=1):
+            name = path.rsplit("/", 1)[-1]
+            existing = (
+                GalleryPhoto.objects.filter(static_image=path).first()
+                or GalleryPhoto.objects.filter(image__endswith=name).first()
+            )
+            if existing:
+                if existing.static_image != path:
+                    existing.static_image = path
+                    existing.save(update_fields=["static_image"])
+                continue
+            GalleryPhoto.objects.create(
+                static_image=path,
+                caption_ru=caption_ru,
+                caption_en=caption_en,
+                alt_ru=caption_ru,
+                alt_en=caption_en,
+                order=order,
+                is_active=True,
+            )
 
     def _seed_formats(self) -> None:
         if ServiceFormat.objects.exists():
