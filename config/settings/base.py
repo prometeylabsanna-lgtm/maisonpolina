@@ -3,7 +3,19 @@ from pathlib import Path
 from decouple import config
 from django.urls import reverse_lazy
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+def _resolve_base_dir() -> Path:
+    """Prefer repo root (manage.py/templates), not site-packages if config was installed."""
+    here = Path(__file__).resolve().parent.parent.parent
+    if (here / "manage.py").exists() or (here / "templates").is_dir():
+        return here
+    cwd = Path.cwd()
+    if (cwd / "manage.py").exists() or (cwd / "templates").is_dir():
+        return cwd
+    return here
+
+
+BASE_DIR = _resolve_base_dir()
 
 SECRET_KEY = config(
     "SECRET_KEY",

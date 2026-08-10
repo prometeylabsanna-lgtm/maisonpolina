@@ -16,5 +16,9 @@ dependencies = [
   "requests==2.34.2",
 ]
 
+# Do not install this repo as a site-packages wheel — keep imports from project root.
+[tool.uv]
+package = false
+
 [tool.vercel]
-entrypoint = "config.wsgi:application"
+entrypoint = "wsgi:application"

@@ -1,4 +1,5 @@
 from urllib.parse import urlparse
+import os
 
 from decouple import Csv, config
 
@@ -21,7 +22,11 @@ CSRF_TRUSTED_ORIGINS = config(
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 USE_X_FORWARDED_HOST = True
-SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=True, cast=bool)
+SECURE_SSL_REDIRECT = config(
+    "SECURE_SSL_REDIRECT",
+    default=not bool(os.environ.get("VERCEL")),
+    cast=bool,
+)
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 31536000
