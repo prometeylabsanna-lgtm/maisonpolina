@@ -9,9 +9,15 @@ from src.core.services import get_site_blocks
 
 
 def site_context(request):
+    try:
+        site_settings = SiteSettings.get_solo()
+        site_blocks = get_site_blocks()
+    except Exception:
+        site_settings = SiteSettings(pk=1)
+        site_blocks = {}
     return {
-        "site_settings": SiteSettings.get_solo(),
-        "site_blocks": get_site_blocks(),
+        "site_settings": site_settings,
+        "site_blocks": site_blocks,
         "current_language": get_language() or "ru",
     }
 
