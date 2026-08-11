@@ -4,7 +4,16 @@ from django.contrib import admin, messages
 from django.http import HttpResponse
 from unfold.admin import ModelAdmin
 
+from src.core.admin_tinymce import TinyMCEAdminMixin
+from src.core.admin_utils import status_badge
 from src.leads.models import Lead, LeadStatus
+
+_STATUS_TONE = {
+    LeadStatus.NEW: "info",
+    LeadStatus.IN_PROGRESS: "warning",
+    LeadStatus.WON: "success",
+    LeadStatus.LOST: "danger",
+}
 
 
 @admin.action(description="Позначити «В роботі»")
@@ -68,7 +77,7 @@ def export_csv(modeladmin, request, queryset):
 
 
 @admin.register(Lead)
-class LeadAdmin(ModelAdmin):
+class LeadAdmin(TinyMCEAdminMixin, ModelAdmin):
     list_display = (
         "created_at",
         "name",
@@ -76,11 +85,12 @@ class LeadAdmin(ModelAdmin):
         "service",
         "source",
         "language",
-        "status",
+        "status_badge",
         "notified_at",
     )
     list_filter = ("status", "source", "language", "created_at")
     search_fields = ("name", "contact", "service", "message")
+    tinymce_fields = ("admin_note",)
     readonly_fields = (
         "created_at",
         "ip",
@@ -93,7 +103,19 @@ class LeadAdmin(ModelAdmin):
     actions = [mark_in_progress, mark_won, mark_lost, export_csv]
     date_hierarchy = "created_at"
     fieldsets = (
-        (None, {"fields": ("name", "contact", "message", "service", "source", "language")}),
+        (
+            None,
+            {
+                "fields": (
+                    "name",
+                    "contact",
+                    "message",
+                    "service",
+                    "source",
+                    "language",
+                )
+            },
+        ),
         ("Статус", {"fields": ("status", "admin_note", "notified_at")}),
         (
             "Технічне",
@@ -110,3 +132,10 @@ class LeadAdmin(ModelAdmin):
             },
         ),
     )
+
+    @admin.display(description="Статус", ordering="status")
+    def status_badge(self, obj):
+        return status_badge(
+            obj.get_status_display(),
+            tone=_STATUS_TONE.get(obj.status, "neutral"),
+        )

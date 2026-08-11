@@ -1,9 +1,9 @@
-{% load i18n %}
+{% load site_content %}
 <div class="modal" id="lead-modal" data-modal data-modal-id="lead" hidden>
   <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title" data-modal-dialog>
     <div class="modal__head">
-      <h2 class="modal__title" id="lead-modal-title">{% trans "Оставить заявку" %}</h2>
-      <button type="button" class="modal__close" data-close-modal aria-label="{% trans 'Закрыть' %}">✕</button>
+      <h2 class="modal__title" id="lead-modal-title">{% block_plain "site" "lead.modal_title" %}</h2>
+      <button type="button" class="modal__close" data-close-modal aria-label="{% block_plain 'site' 'ui.close' %}">✕</button>
     </div>
     <div id="lead-form-body">
       {% include "partials/lead-form.html" with form=lead_form|default:None service_label="" %}

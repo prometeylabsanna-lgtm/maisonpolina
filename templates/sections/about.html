@@ -28,10 +28,10 @@
         {% endif %}
       </div>
       <div class="about__body">
-        <p class="about__text">{% block_plain "home" "about.body_1" %}</p>
-        <p class="about__text">{% block_plain "home" "about.body_2" %}</p>
-        <p class="about__text">{% block_plain "home" "about.body_3" %}</p>
-        <blockquote class="about__quote">{% block_plain "home" "about.quote" %}</blockquote>
+        <div class="about__text">{% block_html "home" "about.body_1" %}</div>
+        <div class="about__text">{% block_html "home" "about.body_2" %}</div>
+        <div class="about__text">{% block_html "home" "about.body_3" %}</div>
+        <blockquote class="about__quote">{% block_html "home" "about.quote" %}</blockquote>
         <div class="about__stats">
           <div>
             <p class="about__stat-value">{% block_plain "home" "about.stat_1_value" %}</p>

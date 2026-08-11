@@ -1,4 +1,4 @@
-{% load i18n site_content static %}
+{% load site_content static %}
 {% url 'core:home' as home_url %}
 <footer class="footer">
   <div class="container footer__inner">
@@ -6,47 +6,47 @@
       <div class="footer__brand-row">
         <span class="footer__line footer__line--left" aria-hidden="true"></span>
         <a href="{{ home_url }}#top" class="footer__brand">
-          <span class="footer__brand-mark">MAISON POLINA</span>
+          <span class="footer__brand-mark">{% block_plain "site" "footer.brand" %}</span>
         </a>
         <span class="footer__line footer__line--right" aria-hidden="true"></span>
       </div>
       {% if site_settings.get_location %}
-      <p class="footer__label footer__label--brand footer__location-label">{% trans "Локация" %}</p>
+      <p class="footer__label footer__label--brand footer__location-label">{% block_plain "site" "footer.location_label" %}</p>
       <p class="footer__text footer__location">{{ site_settings.get_location }}</p>
       {% endif %}
     </div>
 
     <div class="footer__col footer__col--contact">
-      <p class="footer__label">{% trans "Связаться" %}</p>
+      <p class="footer__label">{% block_plain "site" "footer.contact_label" %}</p>
       {% if site_settings.phone %}
       <a class="footer__phone" href="tel:{{ site_settings.phone|cut:' '|cut:'-' }}">{{ site_settings.phone }}</a>
       {% endif %}
       <div class="footer__channels">
         <a class="footer__telegram" href="#chat" data-open-chat>
-          <span class="footer__telegram-title">{% trans "Telegram" %}</span>
-          <span class="footer__telegram-sub">{% trans "Написать в чат-бот" %}</span>
+          <span class="footer__telegram-title">{% block_plain "site" "footer.telegram_title" %}</span>
+          <span class="footer__telegram-sub">{% block_plain "site" "footer.telegram_sub" %}</span>
         </a>
       </div>
     </div>
 
     <div class="footer__col footer__col--menu">
-      <p class="footer__label">{% trans "Меню" %}</p>
-      <nav class="footer__menu" aria-label="{% trans 'Меню футера' %}">
-        <a class="footer__menu-link" href="{{ home_url }}#about">{% trans "Обо мне" %}</a>
-        <a class="footer__menu-link" href="{{ home_url }}#gallery">{% trans "Галерея" %}</a>
-        <a class="footer__menu-link" href="{{ home_url }}#services">{% trans "Услуги" %}</a>
-        <a class="footer__menu-link" href="{{ home_url }}#reviews">{% trans "Отзывы" %}</a>
+      <p class="footer__label">{% block_plain "site" "footer.menu_label" %}</p>
+      <nav class="footer__menu" aria-label="{% block_plain 'site' 'footer.menu_aria' %}">
+        <a class="footer__menu-link" href="{{ home_url }}#about">{% block_plain "site" "nav.about" %}</a>
+        <a class="footer__menu-link" href="{{ home_url }}#gallery">{% block_plain "site" "nav.gallery" %}</a>
+        <a class="footer__menu-link" href="{{ home_url }}#services">{% block_plain "site" "nav.services" %}</a>
+        <a class="footer__menu-link" href="{{ home_url }}#reviews">{% block_plain "site" "nav.reviews" %}</a>
         <details class="footer__menu-more">
           <summary class="footer__menu-toggle">
             <span class="footer__menu-toggle-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">{% trans "Показать ещё" %}</span>
+            <span class="visually-hidden">{% block_plain "site" "footer.menu_more" %}</span>
           </summary>
           <div class="footer__menu-extra">
-            <a class="footer__menu-link" href="{{ home_url }}#faq">{% trans "Вопросы" %}</a>
-            <a class="footer__menu-link" href="{{ home_url }}#contact">{% trans "Контакты" %}</a>
+            <a class="footer__menu-link" href="{{ home_url }}#faq">{% block_plain "site" "nav.faq" %}</a>
+            <a class="footer__menu-link" href="{{ home_url }}#contact">{% block_plain "site" "nav.contact" %}</a>
             <a class="footer__menu-link footer__menu-link--privacy" href="{% url 'core:privacy' %}">
-              <span>{% trans "Политика" %}</span>
-              <span>{% trans "конфиденциальности" %}</span>
+              <span>{% block_plain "site" "footer.privacy_1" %}</span>
+              <span>{% block_plain "site" "footer.privacy_2" %}</span>
             </a>
           </div>
         </details>

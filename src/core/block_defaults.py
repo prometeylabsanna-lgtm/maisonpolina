@@ -1,7 +1,9 @@
 """Default SiteBlock values. No model imports — safe at import time."""
 
+from src.core.block_defaults_chrome import CHROME_BLOCK_DEFAULTS
+
 # (page, key) -> dict with text_ru, text_en, label, is_visible
-BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
+_PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     ("home", "hero_section_visible"): {
         "label": "Hero — видимість",
         "text_ru": "1",
@@ -460,6 +462,11 @@ BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
             "listed in the contacts section."
         ),
     },
+}
+
+BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
+    **_PAGE_BLOCK_DEFAULTS,
+    **CHROME_BLOCK_DEFAULTS,
 }
 
 

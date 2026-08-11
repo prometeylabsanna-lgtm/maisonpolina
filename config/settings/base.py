@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sitemaps",
     "django_htmx",
     "csp",
+    "tinymce",
     "src.core",
     "src.gallery",
     "src.formats",
@@ -136,7 +137,7 @@ X_FRAME_OPTIONS = "DENY"
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 CONTENT_SECURITY_POLICY = {
-    "EXCLUDE_URL_PREFIXES": ["/admin/"],
+    "EXCLUDE_URL_PREFIXES": ("/admin/",),
     "DIRECTIVES": {
         "default-src": ["'self'"],
         "script-src": ["'self'"],
@@ -206,106 +207,31 @@ UNFOLD = {
         "show_search": True,
         "command_search": True,
         "show_all_applications": False,
-        "navigation": [
-            {
-                "title": "Вміст сторінок",
-                "separator": True,
-                "items": [
-                    {
-                        "title": "Hero",
-                        "icon": "image",
-                        "link": "/admin/core/homeherosettings/",
-                    },
-                    {
-                        "title": "Про мене",
-                        "icon": "person",
-                        "link": "/admin/core/homeaboutsettings/",
-                    },
-                    {
-                        "title": "Особистість",
-                        "icon": "badge",
-                        "link": "/admin/core/homepersonalitysettings/",
-                    },
-                    {
-                        "title": "Галерея",
-                        "icon": "photo_library",
-                        "link": "/admin/core/homegallerysettings/",
-                    },
-                    {
-                        "title": "Формати",
-                        "icon": "view_agenda",
-                        "link": "/admin/core/homeformatssettings/",
-                    },
-                    {
-                        "title": "Відгуки",
-                        "icon": "format_quote",
-                        "link": "/admin/core/hometestimonialssettings/",
-                    },
-                    {
-                        "title": "Питання",
-                        "icon": "help",
-                        "link": "/admin/core/homefaqsettings/",
-                    },
-                    {
-                        "title": "Контакти",
-                        "icon": "mail",
-                        "link": "/admin/core/homecontactssettings/",
-                    },
-                    {
-                        "title": "Політика",
-                        "icon": "policy",
-                        "link": "/admin/core/privacysettings/",
-                    },
-                ],
-            },
-            {
-                "title": "Списки",
-                "separator": True,
-                "items": [
-                    {
-                        "title": "Формати послуг",
-                        "icon": "sell",
-                        "link": "/admin/formats/serviceformat/",
-                    },
-                    {
-                        "title": "Відгуки",
-                        "icon": "reviews",
-                        "link": "/admin/reviews/testimonial/",
-                    },
-                    {
-                        "title": "Питання й відповіді",
-                        "icon": "quiz",
-                        "link": "/admin/faq/faqitem/",
-                    },
-                ],
-            },
-            {
-                "title": "Заявки",
-                "separator": True,
-                "items": [
-                    {
-                        "title": "Усі заявки",
-                        "icon": "inbox",
-                        "link": "/admin/leads/lead/",
-                    },
-                ],
-            },
-            {
-                "title": "Налаштування",
-                "separator": True,
-                "items": [
-                    {
-                        "title": "Сайт",
-                        "icon": "settings",
-                        "link": "/admin/core/sitesettings/",
-                    },
-                    {
-                        "title": "SEO",
-                        "icon": "travel_explore",
-                        "link": "/admin/core/seometa/",
-                    },
-                ],
-            },
-        ],
+        "navigation": "src.core.admin_nav.build_admin_navigation",
     },
 }
+
+TINYMCE_DEFAULT_CONFIG = {
+    "height": 360,
+    "menubar": "edit insert view format",
+    "plugins": (
+        "advlist autolink lists link charmap preview "
+        "searchreplace visualblocks code fullscreen "
+        "wordcount quickbars"
+    ),
+    "toolbar": (
+        "undo redo | blocks | bold italic underline | "
+        "alignleft aligncenter alignright | bullist numlist | "
+        "link | removeformat | code"
+    ),
+    "block_formats": "Абзац=p; Заголовок 2=h2; Заголовок 3=h3; Цитата=blockquote",
+    "browser_spellcheck": True,
+    "promotion": False,
+    "branding": False,
+    "skin": "oxide",
+    "content_css": False,
+    "relative_urls": False,
+    "remove_script_host": False,
+    "convert_urls": True,
+}
+TINYMCE_COMPRESSOR = False

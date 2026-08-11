@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 
 from src.core.block_defaults import BLOCK_DEFAULTS
 from src.core.models import SeoMeta, SiteBlock, SiteSettings
+from src.core.style_defaults import ensure_section_styles
 from src.faq.models import FaqItem
 from src.formats.models import FormatFeature, ServiceFormat
 from src.gallery.models import GalleryPhoto
@@ -9,7 +10,7 @@ from src.reviews.models import Testimonial
 
 
 class Command(BaseCommand):
-    help = "Idempotent seed of SiteBlocks, formats, reviews, FAQ"
+    help = "Idempotent seed of SiteBlocks, section styles, formats, reviews, FAQ"
 
     def handle(self, *args, **options):
         settings = SiteSettings.get_solo()
@@ -41,6 +42,8 @@ class Command(BaseCommand):
             if created:
                 created_blocks += 1
 
+        styles_created = ensure_section_styles()
+
         SeoMeta.objects.get_or_create(
             page="home",
             defaults={
@@ -69,7 +72,9 @@ class Command(BaseCommand):
         self._seed_faq()
         self._seed_gallery()
         self.stdout.write(
-            self.style.SUCCESS(f"Seed done. New blocks: {created_blocks}")
+            self.style.SUCCESS(
+                f"Seed done. New blocks: {created_blocks}, styles: {styles_created}"
+            )
         )
 
     def _seed_gallery(self) -> None:
@@ -210,12 +215,12 @@ class Command(BaseCommand):
             return
         items = [
             {
-                "author_name": "Марина Т.",
+                "author_name": "Дмитрий К.",
                 "role_ru": "Основатель инвестиционного фонда",
                 "role_en": "Founder of an investment fund",
                 "text_ru": (
                     "Полина сопровождала меня на переговорах длиной в целый год. "
-                    "Ни одной неловкой паузы — и ни одной ситуации, где я чувствовала "
+                    "Ни одной неловкой паузы — и ни одной ситуации, где я чувствовал "
                     "себя не на месте."
                 ),
                 "text_en": (

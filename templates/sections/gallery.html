@@ -22,7 +22,7 @@
                   data-lightbox-open
                   data-full="{{ photo_url }}"
                   data-alt="{{ photo.alt|default:photo.caption }}"
-                  aria-label="{% trans 'Открыть фото' %}">
+                  aria-label="{% block_plain 'site' 'gallery.open' %}">
             {% if photo_url %}
             <img class="gallery__img"
                  src="{{ photo_url }}"
@@ -44,13 +44,13 @@
         {% endfor %}
       </div>
       <div class="gallery__controls">
-        <button type="button" class="gallery__arrow" data-gallery-prev aria-label="{% trans 'Предыдущие фото' %}">
+        <button type="button" class="gallery__arrow" data-gallery-prev aria-label="{% block_plain 'site' 'gallery.prev' %}">
           <svg width="40" height="12" viewBox="0 0 40 12" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
             <path d="M39 6H1"></path>
             <path d="M7 1L1 6l6 5"></path>
           </svg>
         </button>
-        <button type="button" class="gallery__arrow" data-gallery-next aria-label="{% trans 'Следующие фото' %}">
+        <button type="button" class="gallery__arrow" data-gallery-next aria-label="{% block_plain 'site' 'gallery.next' %}">
           <svg width="40" height="12" viewBox="0 0 40 12" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
             <path d="M1 6h38"></path>
             <path d="M33 1l6 5-6 5"></path>
@@ -61,8 +61,8 @@
   </div>
 </section>
 <div class="lightbox" id="lightbox" data-lightbox hidden>
-  <button type="button" class="lightbox__close" data-lightbox-close aria-label="{% trans 'Закрыть' %}">✕</button>
-  <button type="button" class="lightbox__prev" data-lightbox-prev aria-label="{% trans 'Предыдущее' %}">‹</button>
+  <button type="button" class="lightbox__close" data-lightbox-close aria-label="{% block_plain 'site' 'lightbox.close' %}">✕</button>
+  <button type="button" class="lightbox__prev" data-lightbox-prev aria-label="{% block_plain 'site' 'lightbox.prev' %}">‹</button>
   <img class="lightbox__img" data-lightbox-img alt="">
-  <button type="button" class="lightbox__next" data-lightbox-next aria-label="{% trans 'Следующее' %}">›</button>
+  <button type="button" class="lightbox__next" data-lightbox-next aria-label="{% block_plain 'site' 'lightbox.next' %}">›</button>
 </div>

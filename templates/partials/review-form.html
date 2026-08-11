@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n site_content %}
 <form class="form"
       method="post"
       action="{% url 'reviews:submit' %}"
@@ -11,15 +11,15 @@
   <div class="form__errors">{{ form.non_field_errors }}</div>
   {% endif %}
   <label class="form__field">
-    {% trans "Имя" %}
+    {% block_plain "site" "review.form_name" %}
     <input class="form__input" type="text" name="name" required maxlength="128"
            value="{% if form %}{{ form.name.value|default:'' }}{% endif %}"
            autocomplete="name">
     {% if form and form.name.errors %}<span class="form__field-error">{{ form.name.errors.0 }}</span>{% endif %}
   </label>
   <fieldset class="form__field rating-field">
-    <legend class="rating-field__legend">{% trans "Оценка" %}</legend>
-    <div class="rating" data-rating role="radiogroup" aria-label="{% trans 'Оценка' %}">
+    <legend class="rating-field__legend">{% block_plain "site" "review.form_rating" %}</legend>
+    <div class="rating" data-rating role="radiogroup" aria-label="{% block_plain 'site' 'review.form_rating' %}">
       {% for star in "12345" %}
       <button type="button"
               class="rating__star"
@@ -40,14 +40,14 @@
     {% if form and form.rating.errors %}<span class="form__field-error">{{ form.rating.errors.0 }}</span>{% endif %}
   </fieldset>
   <label class="form__field">
-    {% trans "Отзыв" %}
+    {% block_plain "site" "review.form_text" %}
     <textarea class="form__textarea" name="text" rows="4" required maxlength="1200">{% if form %}{{ form.text.value|default:'' }}{% endif %}</textarea>
     {% if form and form.text.errors %}<span class="form__field-error">{{ form.text.errors.0 }}</span>{% endif %}
   </label>
   <input type="hidden" name="language" value="{% if form %}{{ form.language.value|default:current_language|default:'ru' }}{% else %}{{ current_language|default:'ru' }}{% endif %}">
   <input type="hidden" name="form_ts" value="{% if form %}{{ form.form_ts.value|default:'' }}{% endif %}" data-review-ts>
   <div class="honeypot" aria-hidden="true">
-    <label>{% trans "Сайт" %}<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+    <label>{% block_plain "site" "form.honeypot" %}<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
   </div>
-  <button type="submit" class="btn btn--solid btn--block">{% trans "Отправить" %}</button>
+  <button type="submit" class="btn btn--solid btn--block">{% block_plain "site" "review.submit" %}</button>
 </form>

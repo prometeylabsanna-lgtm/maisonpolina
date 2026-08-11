@@ -1,12 +1,22 @@
-{% load i18n static site_content %}
+{% load static site_content %}
 <section class="section contacts" id="contact" data-section="contacts">
   <div class="contacts__bg" aria-hidden="true">
+    {% block_image "site" "contacts.bg" as contacts_bg %}
+    {% if contacts_bg %}
+    <img class="contacts__bg-img"
+         src="{{ contacts_bg.url }}"
+         alt=""
+         width="1915"
+         height="821"
+         decoding="async">
+    {% else %}
     <img class="contacts__bg-img"
          src="{% static 'images/contacts-bg.jpg' %}?v={{ static_version }}"
          alt=""
          width="1915"
          height="821"
          decoding="async">
+    {% endif %}
     <div class="contacts__bg-matte"></div>
   </div>
   <div class="container contacts__layout">
@@ -15,22 +25,22 @@
         {% block_plain "home" "contacts.title" %}<br>
         <span class="contacts__title-accent">{% block_plain "home" "contacts.title_accent" %}</span>
       </h2>
-      <p class="contacts__lead">{% block_plain "home" "contacts.lead" %}</p>
+      <div class="contacts__lead">{% block_html "home" "contacts.lead" %}</div>
 
       <div class="contacts__primary">
         {% if site_settings.phone %}
         <a class="contacts__phone" href="tel:{{ site_settings.phone|cut:' '|cut:'-' }}">{{ site_settings.phone }}</a>
         {% endif %}
         <a class="contacts__telegram" href="#chat" data-open-chat>
-          <span class="contacts__telegram-title">{% trans "Telegram" %}</span>
-          <span class="contacts__telegram-sub">{% trans "Написать в чат-бот" %}</span>
+          <span class="contacts__telegram-title">{% block_plain "site" "contacts.telegram_title" %}</span>
+          <span class="contacts__telegram-sub">{% block_plain "site" "contacts.telegram_sub" %}</span>
         </a>
       </div>
     </div>
 
     <div class="contacts__glass" data-reveal data-reveal-delay="220">
       <div class="contacts__glass-inner">
-        <p class="contacts__glass-label">{% trans "Заявка" %}</p>
+        <p class="contacts__glass-label">{% block_plain "site" "contacts.form_label" %}</p>
         <div class="contacts__form-wrap" id="contacts-form">
           {% include "partials/lead-form.html" with form=contacts_form service_label="" form_target="#contacts-form" %}
         </div>

@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load site_content %}
 {% url 'core:privacy' as privacy_url %}
 {% with form_target=form_target|default:"#lead-form-body" %}
 <form class="form"
@@ -11,31 +11,31 @@
   {% csrf_token %}
   <input type="hidden" name="form_target" value="{{ form_target }}">
   {% if service_label %}
-  <p class="form__hint">{% trans "Выбранная услуга:" %} <strong>{{ service_label }}</strong></p>
+  <p class="form__hint">{% block_plain "site" "form.service_hint" %} <strong>{{ service_label }}</strong></p>
   {% endif %}
   {% if form and form.non_field_errors %}
   <div class="form__errors">{{ form.non_field_errors }}</div>
   {% endif %}
   <label class="form__field">
-    {% trans "Имя" %}
+    {% block_plain "site" "form.name" %}
     <input class="form__input" type="text" name="name" required value="{% if form %}{{ form.name.value|default:'' }}{% endif %}" autocomplete="name">
     {% if form and form.name.errors %}<span class="form__field-error">{{ form.name.errors.0 }}</span>{% endif %}
   </label>
   <label class="form__field">
-    {% trans "Телефон или e-mail" %}
+    {% block_plain "site" "form.contact" %}
     <input class="form__input" type="text" name="contact" required value="{% if form %}{{ form.contact.value|default:'' }}{% endif %}" autocomplete="tel">
     {% if form and form.contact.errors %}<span class="form__field-error">{{ form.contact.errors.0 }}</span>{% endif %}
   </label>
   <label class="form__field">
-    {% trans "Комментарий" %}
+    {% block_plain "site" "form.message" %}
     <textarea class="form__textarea" name="message" rows="3">{% if form %}{{ form.message.value|default:'' }}{% endif %}</textarea>
   </label>
   <div class="form__consent">
     <input id="lead-consent" type="checkbox" name="consent" required {% if form and form.consent.value %}checked{% endif %}>
     <p class="form__consent-text">
       <label for="lead-consent">
-        {% blocktrans %}Согласен на обработку персональных данных и принимаю{% endblocktrans %}
-        <a href="{{ privacy_url }}">{% trans "политику конфиденциальности" %}</a>
+        {% block_plain "site" "form.consent_prefix" %}
+        <a href="{{ privacy_url }}">{% block_plain "site" "form.privacy_link" %}</a>
       </label>
     </p>
   </div>
@@ -45,8 +45,8 @@
   <input type="hidden" name="language" value="{% if form %}{{ form.language.value|default:current_language|default:'ru' }}{% else %}{{ current_language|default:'ru' }}{% endif %}">
   <input type="hidden" name="form_ts" value="{% if form %}{{ form.form_ts.value|default:'' }}{% endif %}" data-lead-ts>
   <div class="honeypot" aria-hidden="true">
-    <label>{% trans "Сайт" %}<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+    <label>{% block_plain "site" "form.honeypot" %}<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
   </div>
-  <button type="submit" class="btn btn--solid btn--block">{% trans "Отправить" %}</button>
+  <button type="submit" class="btn btn--solid btn--block">{% block_plain "site" "form.submit" %}</button>
 </form>
 {% endwith %}

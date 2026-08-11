@@ -1,11 +1,16 @@
 from django import forms
 from django.contrib import admin, messages
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.forms import modelformset_factory
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.urls import reverse
 from unfold.admin import ModelAdmin
 
+from src.core.admin_tinymce import (
+    PLAIN_TEXTAREA_KEYS,
+    RICH_TEXT_KEYS,
+    cms_tinymce_widget,
+)
 from src.core.block_defaults import BLOCK_DEFAULTS
 from src.core.models import (
     HomeAboutSettings,
@@ -18,27 +23,19 @@ from src.core.models import (
     HomeTestimonialsSettings,
     PrivacySettings,
     SiteBlock,
+    SiteChatSettings,
+    SiteErrorsSettings,
+    SiteFooterSettings,
+    SiteHeaderSettings,
     SiteSettings,
+    SiteUiSettings,
 )
 from src.core.services import invalidate_site_blocks_cache
 from src.core.site_content_registry import CONTENT_SECTIONS, get_section
 from src.gallery.models import GalleryPhoto
 
-IMAGE_KEYS = {"hero.media", "about.portrait", "personality.portrait"}
-MULTILINE_KEYS = {
-    "hero.lead",
-    "about.body_1",
-    "about.body_2",
-    "about.body_3",
-    "about.quote",
-    "formats.note",
-    "contacts.lead",
-    "privacy.body",
-    "personality.languages",
-    "personality.respect",
-    "personality.education",
-    "personality.travel",
-}
+IMAGE_KEYS = {"hero.media", "about.portrait", "personality.portrait", "contacts.bg"}
+MULTILINE_KEYS = RICH_TEXT_KEYS | PLAIN_TEXTAREA_KEYS
 
 
 class GalleryPhotoForm(forms.ModelForm):
@@ -56,6 +53,16 @@ class GalleryPhotoForm(forms.ModelForm):
             "order",
             "is_active",
         )
+        widgets = {
+            "static_image": forms.TextInput(attrs={"class": "cms-admin-input"}),
+            "alt_ru": forms.TextInput(attrs={"class": "cms-admin-input"}),
+            "alt_en": forms.TextInput(attrs={"class": "cms-admin-input"}),
+            "caption_ru": forms.TextInput(attrs={"class": "cms-admin-input"}),
+            "caption_en": forms.TextInput(attrs={"class": "cms-admin-input"}),
+            "col_span": forms.NumberInput(attrs={"class": "cms-admin-input"}),
+            "row_span": forms.NumberInput(attrs={"class": "cms-admin-input"}),
+            "order": forms.NumberInput(attrs={"class": "cms-admin-input"}),
+        }
 
 
 GalleryPhotoFormSet = modelformset_factory(
@@ -107,7 +114,7 @@ def site_content_section_view(
     section = get_section(page_slug, section_slug)
     if section is None:
         messages.error(request, "Секцію не знайдено")
-        return redirect("admin:index")
+        return HttpResponseRedirect(reverse("admin:index"))
 
     blocks = _ensure_blocks(section)
     gallery_formset = None
@@ -155,7 +162,7 @@ def site_content_section_view(
 
         invalidate_site_blocks_cache()
         messages.success(request, "Збережено")
-        return redirect(request.path)
+        return HttpResponseRedirect(request.path)
 
     if section.has_gallery:
         gallery_formset = GalleryPhotoFormSet(
@@ -167,6 +174,24 @@ def site_content_section_view(
 
 
 def _render_section(request, section, blocks, gallery_formset, model_admin):
+    rich_widgets: dict[str, dict[str, object]] = {}
+    media = None
+    for page, key in section.blocks:
+        if key not in RICH_TEXT_KEYS:
+            continue
+        block = blocks.get(key)
+        if not block:
+            continue
+        rich_widgets[key] = {}
+        for lang in ("ru", "en"):
+            name = f"block__{page}__{key}__{lang}"
+            field_id = f"id_cms_{page}_{key}_{lang}".replace(".", "_")
+            widget = cms_tinymce_widget(height=420 if key == "privacy.body" else 280)
+            value = getattr(block, f"text_{lang}", "") or ""
+            html = widget.render(name, value, attrs={"id": field_id})
+            rich_widgets[key][lang] = html
+            media = widget.media if media is None else media + widget.media
+
     context = {
         **(model_admin.admin_site.each_context(request) if model_admin else {}),
         "title": section.title,
@@ -174,6 +199,9 @@ def _render_section(request, section, blocks, gallery_formset, model_admin):
         "blocks": blocks,
         "image_keys": IMAGE_KEYS,
         "multiline_keys": MULTILINE_KEYS,
+        "rich_text_keys": RICH_TEXT_KEYS,
+        "rich_widgets": rich_widgets,
+        "tinymce_media": media,
         "gallery_formset": gallery_formset,
         "opts": model_admin.model._meta if model_admin else None,
     }
@@ -191,8 +219,8 @@ class SingletonSettingsAdmin(ModelAdmin):
         return False
 
     def changelist_view(self, request, extra_context=None):
-        SiteSettings.get_solo()
-        return redirect(
+        SiteSettings.objects.get_or_create(pk=1)
+        return HttpResponseRedirect(
             reverse(
                 f"admin:core_{self.model._meta.model_name}_change",
                 args=[1],
@@ -219,6 +247,11 @@ def register_site_content_section_admins():
         (HomeFaqSettings, "home", "faq"),
         (HomeContactsSettings, "home", "contacts"),
         (PrivacySettings, "privacy", "privacy"),
+        (SiteHeaderSettings, "site", "header"),
+        (SiteFooterSettings, "site", "footer"),
+        (SiteUiSettings, "site", "ui"),
+        (SiteChatSettings, "site", "chat"),
+        (SiteErrorsSettings, "site", "errors"),
     )
     for model, page, slug in mapping:
         admin_cls = type(

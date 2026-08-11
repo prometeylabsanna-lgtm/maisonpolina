@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load site_content %}
 {% for message in messages %}
 <article
   class="chat-widget__msg chat-widget__msg--{{ message.sender_type }}"
@@ -11,6 +11,6 @@
 </article>
 {% empty %}
 {% if not poll_append %}
-<p class="chat-widget__empty">{% trans "Напишите сообщение — ответим в ближайшее время." %}</p>
+<p class="chat-widget__empty">{% block_plain "site" "chat.empty" %}</p>
 {% endif %}
 {% endfor %}

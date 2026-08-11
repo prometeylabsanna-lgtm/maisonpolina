@@ -1,10 +1,10 @@
 from django.contrib import admin
-from unfold.admin import ModelAdmin
+from unfold.admin import ModelAdmin, TabularInline
 
 from src.chat.models import ChatMessage, TelegramChatSession
 
 
-class ChatMessageInline(admin.TabularInline):
+class ChatMessageInline(TabularInline):
     model = ChatMessage
     extra = 0
     readonly_fields = (

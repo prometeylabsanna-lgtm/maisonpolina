@@ -26,7 +26,7 @@
              role="region"
              aria-labelledby="faq-trigger-{{ item.pk }}">
           <div class="accordion__panel-inner">
-            <p class="accordion__answer">{{ item.answer }}</p>
+            <div class="accordion__answer">{{ item.answer|richtext }}</div>
           </div>
         </div>
       </div>

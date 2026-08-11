@@ -21,6 +21,7 @@ def healthz(_request):
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("tinymce/", include("tinymce.urls")),
     path("healthz/", healthz, name="healthz"),
     path("i18n/setlang/", set_language, name="set_language"),
     path("robots.txt", robots_txt, name="robots_txt"),

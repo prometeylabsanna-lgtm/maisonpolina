@@ -39,15 +39,15 @@
             {% endif %}
           </span>
           {% if fmt.is_featured %}
-          <span class="card__badge">{% trans "Чаще всего" %}</span>
+          <span class="card__badge">{% block_plain "site" "formats.featured_badge" %}</span>
           {% endif %}
           <span class="card__label">{{ fmt.label }}</span>
           <h3 class="card__title">{{ fmt.title }}</h3>
-          <p class="card__text">{{ fmt.description }}</p>
+          <div class="card__text">{{ fmt.description|richtext }}</div>
           <p class="card__price">{{ fmt.price_text }}</p>
         </div>
         <div class="card__divider" aria-hidden="true"></div>
-        <p class="card__includes">{% trans "Что входит" %}</p>
+        <p class="card__includes">{% block_plain "site" "formats.includes" %}</p>
         <ul class="card__list">
           {% for feature in fmt.features.all %}
           <li class="card__list-item">
@@ -65,11 +65,11 @@
                 data-open-lead
                 data-source="formats"
                 data-service="{{ fmt.title }}">
-          {% trans "Заказать" %}
+          {% block_plain "site" "formats.order_cta" %}
         </button>
       </article>
       {% endfor %}
     </div>
-    <p class="formats__note" data-reveal data-reveal-delay="360">{% block_plain "home" "formats.note" %}</p>
+    <div class="formats__note" data-reveal data-reveal-delay="360">{% block_html "home" "formats.note" %}</div>
   </div>
 </section>

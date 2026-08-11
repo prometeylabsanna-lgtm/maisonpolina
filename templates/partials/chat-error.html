@@ -1,8 +1,8 @@
-{% load i18n %}
+{% load site_content %}
 {% if error == "rate_limited" %}
-<p class="chat-widget__error" role="alert">{% trans "Слишком много сообщений. Попробуйте позже." %}</p>
+<p class="chat-widget__error" role="alert">{% block_plain "site" "chat.error_rate" %}</p>
 {% elif error == "session" %}
-<p class="chat-widget__error" role="alert">{% trans "Сессия недоступна. Обновите страницу." %}</p>
+<p class="chat-widget__error" role="alert">{% block_plain "site" "chat.error_session" %}</p>
 {% else %}
-<p class="chat-widget__error" role="alert">{% trans "Не удалось отправить сообщение." %}</p>
+<p class="chat-widget__error" role="alert">{% block_plain "site" "chat.error_send" %}</p>
 {% endif %}

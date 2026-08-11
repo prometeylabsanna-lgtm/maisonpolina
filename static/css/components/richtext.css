@@ -1,0 +1,25 @@
+.about__text p,
+.hero__lead p,
+.contacts__lead p,
+.formats__note p,
+.accordion__answer p,
+.card__text p,
+.carousel__text p,
+.personality__notes p,
+.lead-success__text p,
+.privacy__body p {
+  margin: 0 0 0.75em;
+}
+
+.about__text p:last-child,
+.hero__lead p:last-child,
+.contacts__lead p:last-child,
+.formats__note p:last-child,
+.accordion__answer p:last-child,
+.card__text p:last-child,
+.carousel__text p:last-child,
+.personality__notes p:last-child,
+.lead-success__text p:last-child,
+.privacy__body p:last-child {
+  margin-bottom: 0;
+}

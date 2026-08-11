@@ -46,7 +46,11 @@
   <link rel="stylesheet" href="{% static 'css/components/accordion.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/components/chat-widget.css' %}?v={{ static_version }}">
   <link rel="stylesheet" href="{% static 'css/components/dock.css' %}?v={{ static_version }}">
+  <link rel="stylesheet" href="{% static 'css/components/richtext.css' %}?v={{ static_version }}">
   {% block page_css %}{% endblock %}
+  {% if section_styles_css %}
+  <style id="cms-section-styles">{{ section_styles_css|safe }}</style>
+  {% endif %}
   <script src="{% static 'js/htmx.min.js' %}" defer></script>
   {% django_htmx_script %}
 </head>

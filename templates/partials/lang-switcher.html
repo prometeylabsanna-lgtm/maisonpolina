@@ -1,5 +1,5 @@
-{% load i18n %}
-<nav class="lang-switcher" aria-label="{% trans 'Язык' %}">
+{% load site_content %}
+<nav class="lang-switcher" aria-label="{% block_plain 'site' 'lang.aria' %}">
   <a class="lang-switcher__link{% if current_language == 'ru' %} is-active{% endif %}"
      href="{{ alternate_urls.ru }}"
      hreflang="ru"

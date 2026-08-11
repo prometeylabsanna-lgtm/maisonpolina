@@ -24,7 +24,7 @@
         {% if hero_subtitle %}
         <p class="hero__subtitle" data-enter="3">{{ hero_subtitle }}</p>
         {% endif %}
-        <p class="hero__lead" data-enter="4">{% block_plain "home" "hero.lead" %}</p>
+        <div class="hero__lead" data-enter="4">{% block_html "home" "hero.lead" %}</div>
         <div class="hero__actions" data-enter="5">
           <button type="button" class="btn" data-open-lead data-source="hero" data-service="">
             {% block_plain "home" "hero.cta_primary" %}

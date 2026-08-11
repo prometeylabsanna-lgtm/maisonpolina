@@ -5,6 +5,7 @@ from django.urls import translate_url
 from django.utils.translation import get_language
 
 from src.core.models import SiteSettings
+from src.core.section_styles import get_section_styles_css
 from src.core.services import get_site_blocks
 
 
@@ -12,12 +13,15 @@ def site_context(request):
     try:
         site_settings = SiteSettings.get_solo()
         site_blocks = get_site_blocks()
+        section_styles_css = get_section_styles_css()
     except Exception:
         site_settings = SiteSettings(pk=1)
         site_blocks = {}
+        section_styles_css = ""
     return {
         "site_settings": site_settings,
         "site_blocks": site_blocks,
+        "section_styles_css": section_styles_css,
         "current_language": get_language() or "ru",
     }
 

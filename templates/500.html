@@ -1,6 +1,6 @@
-{% load static i18n %}
+{% load static site_content %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ LANGUAGE_CODE|default:'ru' }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -11,13 +11,16 @@
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/components/button.css' %}">
   <link rel="stylesheet" href="{% static 'css/pages/privacy.css' %}">
+  {% if section_styles_css %}
+  <style id="cms-section-styles">{{ section_styles_css|safe }}</style>
+  {% endif %}
 </head>
 <body>
   <div class="error-page">
     <div>
       <p class="error-page__code">500</p>
-      <p class="error-page__text">Временный сбой. Попробуйте обновить страницу позже.</p>
-      <a class="btn" href="/">На главную</a>
+      <p class="error-page__text">{% block_plain "site" "error.500_text" %}</p>
+      <a class="btn" href="/">{% block_plain "site" "error.500_cta" %}</a>
     </div>
   </div>
 </body>

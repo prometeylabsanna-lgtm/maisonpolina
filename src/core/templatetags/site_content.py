@@ -9,19 +9,59 @@ from src.core.services import get_block, get_block_text, is_section_visible
 register = template.Library()
 
 
-@register.simple_tag(takes_context=True)
-def block_plain(context, page, key, fallback=""):
+def _looks_like_html(text: str) -> bool:
+    return "<" in text and ">" in text
+
+
+def _resolve_block_text(context, page, key, fallback="") -> str:
     blocks = context.get("site_blocks") or context.get("blocks")
     text = get_block_text(page, key, blocks=blocks, fallback="")
-    if not text:
-        defaults = BLOCK_DEFAULTS.get((page, key), {})
-        lang = (get_language() or "ru")[:2]
-        text = (
-            defaults.get(f"text_{lang}", "")
-            or defaults.get("text_ru", "")
-            or fallback
-        )
-    return text
+    if text:
+        return text
+    defaults = BLOCK_DEFAULTS.get((page, key), {})
+    lang = (get_language() or "ru")[:2]
+    return (
+        defaults.get(f"text_{lang}", "")
+        or defaults.get("text_ru", "")
+        or fallback
+    )
+
+
+@register.filter
+def get_item(mapping, key):
+    if mapping is None:
+        return None
+    try:
+        return mapping.get(key)
+    except AttributeError:
+        return None
+
+
+@register.filter
+def richtext(value):
+    """Render TinyMCE HTML as-is; plain text → escaped paragraphs."""
+    if not value:
+        return ""
+    text = str(value)
+    if _looks_like_html(text):
+        return mark_safe(text)
+    paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
+    if not paragraphs:
+        return mark_safe(escape(text).replace("\n", "<br>"))
+    html = "".join(
+        f"<p>{escape(p).replace(chr(10), '<br>')}</p>" for p in paragraphs
+    )
+    return mark_safe(html)
+
+
+@register.simple_tag(takes_context=True)
+def block_plain(context, page, key, fallback=""):
+    return _resolve_block_text(context, page, key, fallback)
+
+
+@register.simple_tag(takes_context=True)
+def block_html(context, page, key, fallback=""):
+    return richtext(_resolve_block_text(context, page, key, fallback))
 
 
 @register.simple_tag(takes_context=True)
@@ -50,11 +90,7 @@ def gallery_image_url(photo):
 
 @register.filter
 def nl2p(value):
-    if not value:
-        return ""
-    paragraphs = [p.strip() for p in str(value).split("\n\n") if p.strip()]
-    html = "".join(f"<p>{escape(p).replace(chr(10), '<br>')}</p>" for p in paragraphs)
-    return mark_safe(html)
+    return richtext(value)
 
 
 @register.filter
@@ -62,9 +98,12 @@ def emphasize_phrases(value, phrases: str):
     """Wrap first match of each phrase in <span class="personality__em">."""
     if not value:
         return ""
-    text = escape(str(value))
-    for raw in phrases.split("|"):
-        phrase = raw.strip()
+    raw = str(value)
+    if _looks_like_html(raw):
+        return mark_safe(raw)
+    text = escape(raw)
+    for part in phrases.split("|"):
+        phrase = part.strip()
         if not phrase:
             continue
         needle = escape(phrase)

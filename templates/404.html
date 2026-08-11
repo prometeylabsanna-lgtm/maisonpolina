@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load static site_content %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'ru' }}">
 <head>
@@ -11,13 +11,16 @@
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/components/button.css' %}">
   <link rel="stylesheet" href="{% static 'css/pages/privacy.css' %}">
+  {% if section_styles_css %}
+  <style id="cms-section-styles">{{ section_styles_css|safe }}</style>
+  {% endif %}
 </head>
 <body>
   <div class="error-page">
     <div>
       <p class="error-page__code">404</p>
-      <p class="error-page__text">{% trans "Страница не найдена. Вернитесь на главную." %}</p>
-      <a class="btn" href="/">{% trans "На главную" %}</a>
+      <p class="error-page__text">{% block_plain "site" "error.404_text" %}</p>
+      <a class="btn" href="/">{% block_plain "site" "error.404_cta" %}</a>
     </div>
   </div>
 </body>
