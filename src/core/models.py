@@ -68,32 +68,43 @@ class SiteSettings(models.Model):
 
 
 class SiteBlock(BilingualTextMixin, models.Model):
+    class ContentType(models.TextChoices):
+        TEXT = "text", "Текст"
+        IMAGE = "image", "Фото"
+
     class Page(models.TextChoices):
-        HOME = "home", "Головна"
-        PRIVACY = "privacy", "Політика"
+        HOME = "home", "Главная"
+        PRIVACY = "privacy", "Политика"
         SITE = "site", "Сайт"
 
-    page = models.CharField(max_length=32, choices=Page.choices)
-    key = models.CharField(max_length=64)
-    label = models.CharField(max_length=128, blank=True)
-    text_ru = models.TextField(blank=True)
-    text_en = models.TextField(blank=True)
-    image = models.ImageField(upload_to="blocks/", blank=True)
+    page = models.CharField(max_length=32, choices=Page.choices, verbose_name="Страница")
+    key = models.CharField(max_length=64, verbose_name="Ключ блока")
+    label = models.CharField(max_length=128, blank=True, verbose_name="Название в админке")
+    content_type = models.CharField(
+        max_length=16,
+        choices=ContentType.choices,
+        default=ContentType.TEXT,
+        verbose_name="Тип контента",
+    )
+    text_ru = models.TextField(blank=True, verbose_name="Текст RU")
+    text_en = models.TextField(blank=True, verbose_name="Текст EN")
+    image = models.ImageField(upload_to="blocks/", blank=True, verbose_name="Изображение")
     video_file = models.FileField(upload_to="blocks/video/", blank=True)
     video_url = models.URLField(blank=True)
-    is_visible = models.BooleanField(default=True)
+    sort_order = models.PositiveSmallIntegerField(default=0, verbose_name="Порядок")
+    is_active = models.BooleanField(default=True, verbose_name="Активен")
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "Блок вмісту"
-        verbose_name_plural = "Блоки вмісту"
+        verbose_name = "Блок контента"
+        verbose_name_plural = "Блоки контента"
         constraints = [
             models.UniqueConstraint(fields=["page", "key"], name="unique_site_block_page_key"),
         ]
-        ordering = ["page", "key"]
+        ordering = ["page", "sort_order", "key"]
 
     def __str__(self) -> str:
-        return f"{self.page}.{self.key}"
+        return f"{self.get_page_display()} · {self.label or self.key}"
 
     @property
     def cache_key(self) -> str:
@@ -101,6 +112,9 @@ class SiteBlock(BilingualTextMixin, models.Model):
 
     def get_text_value(self) -> str:
         return self.get_text("text")
+
+    def visibility_on(self) -> bool:
+        return self.text_ru.strip() in {"1", "true", "True"}
 
 
 class SeoMeta(BilingualTextMixin, models.Model):
@@ -123,64 +137,64 @@ class SeoMeta(BilingualTextMixin, models.Model):
 class HomeHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Головна — Hero"
-        verbose_name_plural = "Головна — Hero"
+        verbose_name = "Главная — Hero"
+        verbose_name_plural = "Главная — Hero"
 
 
 class HomeAboutSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Головна — Про мене"
-        verbose_name_plural = "Головна — Про мене"
+        verbose_name = "Главная — Обо мне"
+        verbose_name_plural = "Главная — Обо мне"
 
 
 class HomePersonalitySettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Головна — Особистість"
-        verbose_name_plural = "Головна — Особистість"
+        verbose_name = "Главная — Личность"
+        verbose_name_plural = "Главная — Личность"
 
 
 class HomeGallerySettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Головна — Галерея"
-        verbose_name_plural = "Головна — Галерея"
+        verbose_name = "Главная — Галерея"
+        verbose_name_plural = "Главная — Галерея"
 
 
 class HomeFormatsSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Головна — Формати"
-        verbose_name_plural = "Головна — Формати"
+        verbose_name = "Главная — Форматы"
+        verbose_name_plural = "Главная — Форматы"
 
 
 class HomeTestimonialsSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Головна — Відгуки"
-        verbose_name_plural = "Головна — Відгуки"
+        verbose_name = "Главная — Отзывы"
+        verbose_name_plural = "Главная — Отзывы"
 
 
 class HomeFaqSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Головна — Питання"
-        verbose_name_plural = "Головна — Питання"
+        verbose_name = "Главная — Вопросы"
+        verbose_name_plural = "Главная — Вопросы"
 
 
 class HomeContactsSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Головна — Контакти"
-        verbose_name_plural = "Головна — Контакти"
+        verbose_name = "Главная — Контакты"
+        verbose_name_plural = "Главная — Контакты"
 
 
 class PrivacySettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Політика конфіденційності"
-        verbose_name_plural = "Політика конфіденційності"
+        verbose_name = "Политика конфиденциальности"
+        verbose_name_plural = "Политика конфиденциальности"
 
 
 class SiteHeaderSettings(SiteSettings):
@@ -193,15 +207,15 @@ class SiteHeaderSettings(SiteSettings):
 class SiteFooterSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Підвал"
-        verbose_name_plural = "Підвал"
+        verbose_name = "Подвал"
+        verbose_name_plural = "Подвал"
 
 
 class SiteUiSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Інтерфейс і форми"
-        verbose_name_plural = "Інтерфейс і форми"
+        verbose_name = "Интерфейс и формы"
+        verbose_name_plural = "Интерфейс и формы"
 
 
 class SiteChatSettings(SiteSettings):
@@ -214,15 +228,15 @@ class SiteChatSettings(SiteSettings):
 class SiteErrorsSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Сторінки помилок"
-        verbose_name_plural = "Сторінки помилок"
+        verbose_name = "Страницы ошибок"
+        verbose_name_plural = "Страницы ошибок"
 
 
 class ThemeStylesSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Стилі"
-        verbose_name_plural = "Стилі"
+        verbose_name = "Стили"
+        verbose_name_plural = "Стили"
 
 
 class SectionStyle(models.Model):

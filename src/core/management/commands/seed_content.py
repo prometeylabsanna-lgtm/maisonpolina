@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from src.core.block_defaults import BLOCK_DEFAULTS
+from src.core.block_defaults import BLOCK_DEFAULTS, block_content_type
 from src.core.models import SeoMeta, SiteBlock, SiteSettings
 from src.core.style_defaults import ensure_section_styles
 from src.faq.models import FaqItem
@@ -36,7 +36,9 @@ class Command(BaseCommand):
                     "label": defaults.get("label", key),
                     "text_ru": defaults.get("text_ru", ""),
                     "text_en": defaults.get("text_en", ""),
-                    "is_visible": defaults.get("is_visible", True),
+                    "content_type": block_content_type(key),
+                    "is_active": True,
+                    "sort_order": 0,
                 },
             )
             if created:

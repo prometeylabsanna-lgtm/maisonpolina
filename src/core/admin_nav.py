@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 def build_admin_navigation(_request=None):
     return [
         {
-            "title": "Вміст сторінок",
+            "title": "Содержимое страниц",
             "separator": True,
             "items": [
                 {
@@ -15,12 +15,12 @@ def build_admin_navigation(_request=None):
                     "link": reverse_lazy("admin:core_homeherosettings_changelist"),
                 },
                 {
-                    "title": "Про мене",
+                    "title": "Обо мне",
                     "icon": "person",
                     "link": reverse_lazy("admin:core_homeaboutsettings_changelist"),
                 },
                 {
-                    "title": "Особистість",
+                    "title": "Личность",
                     "icon": "badge",
                     "link": reverse_lazy("admin:core_homepersonalitysettings_changelist"),
                 },
@@ -30,24 +30,24 @@ def build_admin_navigation(_request=None):
                     "link": reverse_lazy("admin:core_homegallerysettings_changelist"),
                 },
                 {
-                    "title": "Формати",
+                    "title": "Форматы",
                     "icon": "view_agenda",
                     "link": reverse_lazy("admin:core_homeformatssettings_changelist"),
                 },
                 {
-                    "title": "Відгуки",
+                    "title": "Отзывы",
                     "icon": "format_quote",
                     "link": reverse_lazy(
                         "admin:core_hometestimonialssettings_changelist"
                     ),
                 },
                 {
-                    "title": "Питання",
+                    "title": "Вопросы",
                     "icon": "help",
                     "link": reverse_lazy("admin:core_homefaqsettings_changelist"),
                 },
                 {
-                    "title": "Контакти",
+                    "title": "Контакты",
                     "icon": "mail",
                     "link": reverse_lazy("admin:core_homecontactssettings_changelist"),
                 },
@@ -57,32 +57,32 @@ def build_admin_navigation(_request=None):
                     "link": reverse_lazy("admin:core_siteheadersettings_changelist"),
                 },
                 {
-                    "title": "Підвал",
+                    "title": "Подвал",
                     "icon": "horizontal_rule",
                     "link": reverse_lazy("admin:core_sitefootersettings_changelist"),
                 },
                 {
-                    "title": "Інтерфейс",
+                    "title": "Интерфейс",
                     "icon": "tune",
                     "link": reverse_lazy("admin:core_siteuisettings_changelist"),
                 },
                 {
-                    "title": "Чат (тексти)",
+                    "title": "Чат (тексты)",
                     "icon": "chat",
                     "link": reverse_lazy("admin:core_sitechatsettings_changelist"),
                 },
                 {
-                    "title": "Помилки",
+                    "title": "Ошибки",
                     "icon": "error",
                     "link": reverse_lazy("admin:core_siteerrorssettings_changelist"),
                 },
                 {
-                    "title": "Політика",
+                    "title": "Политика",
                     "icon": "policy",
                     "link": reverse_lazy("admin:core_privacysettings_changelist"),
                 },
                 {
-                    "title": "Стилі",
+                    "title": "Стили",
                     "icon": "palette",
                     "link": reverse_lazy("admin:core_themestylessettings_changelist"),
                 },
@@ -93,33 +93,33 @@ def build_admin_navigation(_request=None):
             "separator": True,
             "items": [
                 {
-                    "title": "Формати послуг",
+                    "title": "Форматы услуг",
                     "icon": "sell",
                     "link": reverse_lazy("admin:formats_serviceformat_changelist"),
                 },
                 {
-                    "title": "Відгуки",
+                    "title": "Отзывы",
                     "icon": "reviews",
                     "link": reverse_lazy("admin:reviews_testimonial_changelist"),
                 },
                 {
-                    "title": "Питання й відповіді",
+                    "title": "Вопросы и ответы",
                     "icon": "quiz",
                     "link": reverse_lazy("admin:faq_faqitem_changelist"),
                 },
             ],
         },
         {
-            "title": "Заявки та чат",
+            "title": "Заявки и чат",
             "separator": True,
             "items": [
                 {
-                    "title": "Усі заявки",
+                    "title": "Все заявки",
                     "icon": "inbox",
                     "link": reverse_lazy("admin:leads_lead_changelist"),
                 },
                 {
-                    "title": "Чати Telegram",
+                    "title": "Чаты Telegram",
                     "icon": "forum",
                     "link": reverse_lazy(
                         "admin:chat_telegramchatsession_changelist"
@@ -128,7 +128,7 @@ def build_admin_navigation(_request=None):
             ],
         },
         {
-            "title": "Налаштування",
+            "title": "Настройки",
             "separator": True,
             "items": [
                 {

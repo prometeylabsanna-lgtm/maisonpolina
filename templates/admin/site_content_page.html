@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n static site_content %}
+{% load i18n static %}
 
 {% block title %}{{ title }} | {{ site_title }}{% endblock %}
 
@@ -15,22 +15,25 @@
 {% endblock %}
 
 {% block content %}
-<div class="site-content-editor max-w-5xl"
+<div class="site-content-editor"
      x-data
      x-on:cms-lang-changed.window="window.cmsResizeTinyMCE && window.cmsResizeTinyMCE()">
-  <div class="mb-6 flex flex-wrap items-start justify-between gap-4">
+  <div class="site-content-editor__head">
     <div>
-      <h1 class="text-xl font-semibold text-font-important-light dark:text-font-important-dark">
+      <p class="site-content-editor__eyebrow text-font-subtle-light dark:text-font-subtle-dark">
+        Содержимое страниц → {{ section.sidebar_title|default:section.title }}
+      </p>
+      <h1 class="site-content-editor__title text-font-important-light dark:text-font-important-dark">
         {{ section.title }}
       </h1>
       {% if section.description %}
-      <p class="mt-1 text-sm text-font-subtle-light dark:text-font-subtle-dark">{{ section.description }}</p>
+      <p class="site-content-editor__section-desc text-font-subtle-light dark:text-font-subtle-dark">{{ section.description }}</p>
       {% endif %}
     </div>
-    <div class="flex flex-wrap items-center gap-3">
+    <div class="site-content-editor__head-actions">
       <div class="cms-lang-tabs cms-lang-tabs--page"
            role="tablist"
-           aria-label="{% trans 'Мова редагування' %}">
+           aria-label="Язык редактирования">
         <button type="button"
                 class="cms-lang-tab"
                 role="tab"
@@ -46,180 +49,91 @@
                 :aria-selected="($store.cmsLang.current === 'en').toString()"
                 @click="$store.cmsLang.set('en')">EN</button>
       </div>
-      <a href="{{ section.preview_url }}"
+      <a href="{{ preview_url }}"
          target="_blank"
          rel="noopener"
-         class="border border-base-200 dark:border-base-700 rounded-default px-3 py-2 text-sm hover:bg-base-100 dark:hover:bg-base-800">
-        {% trans "Перегляд на сайті" %}
+         class="site-content-editor__preview border border-base-200 dark:border-base-700 text-font-default-light dark:text-font-default-dark hover:border-primary-500 dark:hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-500/10">
+        Смотреть на сайте
       </a>
     </div>
   </div>
 
-  <form method="post" enctype="multipart/form-data" class="flex flex-col gap-4">
+  {% include "unfold/helpers/messages.html" %}
+
+  <form method="post" enctype="multipart/form-data" novalidate class="site-content-editor__form">
     {% csrf_token %}
 
-    {% if section.visibility_key %}
-    <div class="border border-base-200 dark:border-base-700 rounded-default bg-white dark:bg-base-900 p-4">
-      {% for key, block in blocks.items %}
-        {% if key == section.visibility_key %}
-        <label class="inline-flex items-center gap-2 text-sm">
-          <input type="checkbox"
-                 name="block__{{ section.page_slug }}__{{ section.visibility_key }}__visible"
-                 {% if block.is_visible %}checked{% endif %}>
-          {% trans "Показувати секцію на сайті" %}
-        </label>
+    {% if form.non_field_errors %}
+      <div class="text-sm text-red-500 mb-4">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <div class="site-content-editor__fieldsets">
+      {% for fieldset_title, fieldset_rows in fieldsets %}
+      <section class="site-content-fieldset border border-base-200 dark:border-base-700 rounded-default shadow-sm dark:bg-base-900 p-4 md:p-5">
+        {% if fieldset_title %}
+        <h2 class="site-content-fieldset__title text-font-important-light dark:text-font-important-dark">{{ fieldset_title }}</h2>
         {% endif %}
-      {% endfor %}
-    </div>
-    {% endif %}
-
-    <div class="grid gap-4">
-      {% for page, key in section.blocks %}
-        {% for bkey, bobj in blocks.items %}
-          {% if bkey == key %}
-          <div class="border border-base-200 dark:border-base-700 rounded-default bg-white dark:bg-base-900 p-4">
-            <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <p class="text-sm font-medium text-font-important-light dark:text-font-important-dark">
-                {{ bobj.label|default:key }}
-              </p>
-              {% if key not in image_keys %}
-              <div class="cms-lang-tabs" role="tablist" aria-label="{% trans 'Мова поля' %}">
-                <button type="button"
-                        class="cms-lang-tab"
-                        role="tab"
-                        :class="$store.cmsLang.current === 'ru' && 'is-active'"
-                        :aria-selected="($store.cmsLang.current === 'ru').toString()"
-                        @click="$store.cmsLang.set('ru')">RU</button>
-                <button type="button"
-                        class="cms-lang-tab"
-                        role="tab"
-                        :class="$store.cmsLang.current === 'en' && 'is-active'"
-                        :aria-selected="($store.cmsLang.current === 'en').toString()"
-                        @click="$store.cmsLang.set('en')">EN</button>
+        <div class="site-content-fieldset__fields">
+          {% for row in fieldset_rows %}
+            {% if row.kind == "visibility" %}
+              <div class="site-content-editor__field site-content-editor__field--visibility">
+                <label class="inline-flex items-center gap-2 text-sm" for="{{ row.field.id_for_label }}">
+                  {{ row.field.as_widget }}
+                  <span>{{ row.field.label }}</span>
+                </label>
               </div>
-              {% endif %}
-            </div>
-
-            {% if key in image_keys %}
-              {% if bobj.image %}
-              <p class="mb-3">
-                <img src="{{ bobj.image.url }}" alt="" width="180" height="120"
-                     class="rounded-default object-cover border border-base-200 dark:border-base-700">
-              </p>
-              <label class="mb-3 inline-flex items-center gap-2 text-sm">
-                <input type="checkbox" name="block__{{ page }}__{{ key }}__clear_image">
-                {% trans "Видалити зображення" %}
-              </label>
-              {% endif %}
+            {% elif row.is_image %}
               <div class="site-content-editor__field">
-                <label for="id_block_{{ page }}_{{ key }}_image" class="mb-1 block text-xs uppercase tracking-wide opacity-70">{% trans "Зображення" %}</label>
-                <input id="id_block_{{ page }}_{{ key }}_image" type="file" name="block__{{ page }}__{{ key }}__image" accept="image/*">
+                <p class="site-content-editor__field-label">{{ row.label }}</p>
+                {% if row.block.image %}
+                <p class="mb-3">
+                  <img src="{{ row.block.image.url }}" alt="" width="180" height="120"
+                       class="rounded-default object-cover border border-base-200 dark:border-base-700">
+                </p>
+                {% endif %}
+                {% if row.image %}
+                <div class="mb-2">{{ row.image.as_widget }}</div>
+                {% endif %}
+                {% if row.clear_image %}
+                <label class="inline-flex items-center gap-2 text-sm" for="{{ row.clear_image.id_for_label }}">
+                  {{ row.clear_image.as_widget }}
+                  <span>{{ row.clear_image.label }}</span>
+                </label>
+                {% endif %}
               </div>
-            {% elif key in rich_text_keys %}
-              {% with rw=rich_widgets|get_item:key %}
-              <div class="cms-lang-panes">
-                <div class="site-content-editor__field cms-tinymce-field cms-lang-pane"
-                     x-show="$store.cmsLang.current === 'ru'"
-                     x-cloak>
-                  {{ rw|get_item:"ru" }}
-                </div>
-                <div class="site-content-editor__field cms-tinymce-field cms-lang-pane"
-                     x-show="$store.cmsLang.current === 'en'"
-                     x-cloak>
-                  {{ rw|get_item:"en" }}
-                </div>
-              </div>
-              {% endwith %}
             {% else %}
-              <div class="cms-lang-panes">
-                <div class="site-content-editor__field cms-lang-pane"
-                     x-show="$store.cmsLang.current === 'ru'"
-                     x-cloak>
-                  {% if key in multiline_keys %}
-                  <textarea id="id_block_{{ page }}_{{ key }}_ru" name="block__{{ page }}__{{ key }}__ru" class="cms-admin-input">{{ bobj.text_ru }}</textarea>
-                  {% else %}
-                  <input id="id_block_{{ page }}_{{ key }}_ru" type="text" name="block__{{ page }}__{{ key }}__ru" value="{{ bobj.text_ru }}" class="cms-admin-input">
-                  {% endif %}
-                </div>
-                <div class="site-content-editor__field cms-lang-pane"
-                     x-show="$store.cmsLang.current === 'en'"
-                     x-cloak>
-                  {% if key in multiline_keys %}
-                  <textarea id="id_block_{{ page }}_{{ key }}_en" name="block__{{ page }}__{{ key }}__en" class="cms-admin-input{% if not bobj.text_en %} is-empty-en{% endif %}">{{ bobj.text_en }}</textarea>
-                  {% else %}
-                  <input id="id_block_{{ page }}_{{ key }}_en" type="text" name="block__{{ page }}__{{ key }}__en" value="{{ bobj.text_en }}" class="cms-admin-input{% if not bobj.text_en %} is-empty-en{% endif %}">
-                  {% endif %}
+              <div class="site-content-editor__field">
+                <p class="site-content-editor__field-label">{{ row.label }}</p>
+                <div class="cms-lang-panes">
+                  <div class="cms-lang-pane" x-show="$store.cmsLang.current === 'ru'" x-cloak>
+                    {% if row.ru %}
+                      {{ row.ru.as_widget }}
+                      {% if row.ru.errors %}<div class="text-sm text-red-500">{{ row.ru.errors }}</div>{% endif %}
+                    {% endif %}
+                  </div>
+                  <div class="cms-lang-pane" x-show="$store.cmsLang.current === 'en'" x-cloak>
+                    {% if row.en %}
+                      {{ row.en.as_widget }}
+                      {% if row.en.errors %}<div class="text-sm text-red-500">{{ row.en.errors }}</div>{% endif %}
+                    {% endif %}
+                  </div>
                 </div>
               </div>
             {% endif %}
-          </div>
-          {% endif %}
-        {% endfor %}
+          {% endfor %}
+        </div>
+      </section>
       {% endfor %}
+
+      {% if gallery_formset %}
+      {% include "admin/gallery_photos_fieldset.html" with formset=gallery_formset %}
+      {% endif %}
     </div>
 
-    {% if gallery_formset %}
-    <div class="border border-base-200 dark:border-base-700 rounded-default bg-white dark:bg-base-900 p-4">
-      <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <h2 class="text-base font-semibold">{% trans "Фото галереї" %}</h2>
-        <div class="cms-lang-tabs" role="tablist" aria-label="{% trans 'Мова підписів' %}">
-          <button type="button" class="cms-lang-tab" role="tab"
-                  :class="$store.cmsLang.current === 'ru' && 'is-active'"
-                  @click="$store.cmsLang.set('ru')">RU</button>
-          <button type="button" class="cms-lang-tab" role="tab"
-                  :class="$store.cmsLang.current === 'en' && 'is-active'"
-                  @click="$store.cmsLang.set('en')">EN</button>
-        </div>
-      </div>
-      {{ gallery_formset.management_form }}
-      {% for form in gallery_formset %}
-      <div class="mb-4 grid gap-3 border border-base-200 dark:border-base-700 rounded-default p-3">
-        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
-        <div class="grid gap-3 md:grid-cols-2">
-          <div class="site-content-editor__field">
-            <label for="{{ form.image.id_for_label }}" class="mb-1 block text-xs uppercase tracking-wide opacity-70">{{ form.image.label }}</label>
-            {{ form.image }}
-            {% if form.instance.image %}
-            <p class="mt-2">
-              <img src="{{ form.instance.image.url }}" alt="" width="120" height="90" class="rounded-default object-cover">
-            </p>
-            {% endif %}
-          </div>
-          <div class="site-content-editor__field">
-            <label for="{{ form.is_active.id_for_label }}" class="mb-1 block text-xs uppercase tracking-wide opacity-70">{{ form.is_active.label }}</label>
-            {{ form.is_active }}
-            {% if gallery_formset.can_delete %}
-            <label class="mt-2 inline-flex items-center gap-2 text-sm" for="{{ form.DELETE.id_for_label }}">{{ form.DELETE }} {% trans "Видалити" %}</label>
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="cms-lang-panes">
-          <div class="grid gap-3 md:grid-cols-2 cms-lang-pane" x-show="$store.cmsLang.current === 'ru'" x-cloak>
-            <div class="site-content-editor__field"><label class="mb-1 block text-xs opacity-70" for="{{ form.alt_ru.id_for_label }}">alt RU</label>{{ form.alt_ru }}</div>
-            <div class="site-content-editor__field"><label class="mb-1 block text-xs opacity-70" for="{{ form.caption_ru.id_for_label }}">caption RU</label>{{ form.caption_ru }}</div>
-          </div>
-          <div class="grid gap-3 md:grid-cols-2 cms-lang-pane" x-show="$store.cmsLang.current === 'en'" x-cloak>
-            <div class="site-content-editor__field"><label class="mb-1 block text-xs opacity-70" for="{{ form.alt_en.id_for_label }}">alt EN</label>{{ form.alt_en }}</div>
-            <div class="site-content-editor__field"><label class="mb-1 block text-xs opacity-70" for="{{ form.caption_en.id_for_label }}">caption EN</label>{{ form.caption_en }}</div>
-          </div>
-        </div>
-
-        <div class="grid gap-3 md:grid-cols-3">
-          <div class="site-content-editor__field"><label class="mb-1 block text-xs opacity-70" for="{{ form.col_span.id_for_label }}">col span</label>{{ form.col_span }}</div>
-          <div class="site-content-editor__field"><label class="mb-1 block text-xs opacity-70" for="{{ form.row_span.id_for_label }}">row span</label>{{ form.row_span }}</div>
-          <div class="site-content-editor__field"><label class="mb-1 block text-xs opacity-70" for="{{ form.order.id_for_label }}">order</label>{{ form.order }}</div>
-        </div>
-        {% if form.errors %}<div class="text-sm text-red-500">{{ form.errors }}</div>{% endif %}
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %}
-
-    <div class="pt-2">
+    <div class="site-content-editor__actions">
       <button type="submit"
               class="bg-primary-600 border border-transparent font-medium px-3 py-2 rounded-default text-white text-sm hover:bg-primary-700 focus:outline-hidden focus:ring-2 focus:ring-primary-500">
-        {% trans "Зберегти" %}
+        Сохранить
       </button>
     </div>
   </form>

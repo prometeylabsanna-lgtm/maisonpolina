@@ -48,7 +48,9 @@ def is_section_visible(
     block = get_block(page, visibility_key, blocks)
     if not block:
         return True
-    return block.is_visible
+    if hasattr(block, "visibility_on"):
+        return block.visibility_on()
+    return str(getattr(block, "text_ru", "") or "").strip() in {"1", "true", "True"}
 
 
 def get_site_settings() -> SiteSettings:

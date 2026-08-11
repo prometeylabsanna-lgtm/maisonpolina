@@ -2,13 +2,30 @@
 
 from src.core.block_defaults_chrome import CHROME_BLOCK_DEFAULTS
 
-# (page, key) -> dict with text_ru, text_en, label, is_visible
+IMAGE_KEYS: frozenset[str] = frozenset(
+    {
+        "hero.media",
+        "about.portrait",
+        "personality.portrait",
+        "contacts.bg",
+    }
+)
+
+
+def is_visibility_key(key: str) -> bool:
+    return key.endswith("_section_visible") or key.endswith("_visible")
+
+
+def block_content_type(key: str) -> str:
+    return "image" if key in IMAGE_KEYS else "text"
+
+
+# (page, key) -> dict with text_ru, text_en, label
 _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     ("home", "hero_section_visible"): {
         "label": "Hero — видимість",
         "text_ru": "1",
         "text_en": "1",
-        "is_visible": True,
     },
     ("home", "hero.title"): {
         "label": "Hero — ім'я",
@@ -57,7 +74,6 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "label": "Про мене — видимість",
         "text_ru": "1",
         "text_en": "1",
-        "is_visible": True,
     },
     ("home", "about.eyebrow"): {
         "label": "Про мене — надзаголовок",
@@ -161,7 +177,6 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "label": "Особистість — видимість",
         "text_ru": "1",
         "text_en": "1",
-        "is_visible": True,
     },
     ("home", "personality.eyebrow"): {
         "label": "Особистість — надзаголовок",
@@ -313,7 +328,6 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "label": "Галерея — видимість",
         "text_ru": "1",
         "text_en": "1",
-        "is_visible": True,
     },
     ("home", "gallery.eyebrow"): {
         "label": "Галерея — надзаголовок",
@@ -334,7 +348,6 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "label": "Формати — видимість",
         "text_ru": "1",
         "text_en": "1",
-        "is_visible": True,
     },
     ("home", "formats.eyebrow"): {
         "label": "Формати — надзаголовок",
@@ -366,7 +379,6 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "label": "Відгуки — видимість",
         "text_ru": "1",
         "text_en": "1",
-        "is_visible": True,
     },
     ("home", "testimonials.eyebrow"): {
         "label": "Відгуки — надзаголовок",
@@ -377,7 +389,6 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "label": "Питання — видимість",
         "text_ru": "1",
         "text_en": "1",
-        "is_visible": True,
     },
     ("home", "faq.eyebrow"): {
         "label": "Питання — надзаголовок",
@@ -403,7 +414,6 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "label": "Контакти — видимість",
         "text_ru": "1",
         "text_en": "1",
-        "is_visible": True,
     },
     ("home", "contacts.eyebrow"): {
         "label": "Контакти — надзаголовок",
@@ -469,6 +479,15 @@ BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     **CHROME_BLOCK_DEFAULTS,
 }
 
+BLOCK_CONTENT_TYPES: dict[tuple[str, str], str] = {
+    (page, key): block_content_type(key) for page, key in BLOCK_DEFAULTS
+}
+
 
 def all_block_keys() -> list[tuple[str, str]]:
     return list(BLOCK_DEFAULTS.keys())
+
+
+def get_block_field_label(page: str, key: str) -> str:
+    defaults = BLOCK_DEFAULTS.get((page, key), {})
+    return defaults.get("label") or key
