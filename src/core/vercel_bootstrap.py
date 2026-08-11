@@ -1,6 +1,7 @@
 """One-shot DB bootstrap for ephemeral Vercel SQLite (/tmp).
 
-When DATABASE_URL points to Postgres (Supabase), skip — migrate/seed separately.
+When DATABASE_URL points to Postgres (Supabase), migrate/seed separately;
+still ensures the admin superuser exists.
 """
 
 from __future__ import annotations
@@ -13,6 +14,39 @@ logger = logging.getLogger(__name__)
 _DONE = False
 
 
+def ensure_admin_superuser() -> None:
+    """Create/update admin from env (defaults: admin / admin)."""
+    from django.contrib.auth import get_user_model
+
+    username = (os.environ.get("DJANGO_SUPERUSER_USERNAME") or "admin").strip()
+    password = os.environ.get("DJANGO_SUPERUSER_PASSWORD") or "admin"
+    email = (os.environ.get("DJANGO_SUPERUSER_EMAIL") or "admin@example.com").strip()
+
+    User = get_user_model()
+    user, created = User.objects.get_or_create(
+        username=username,
+        defaults={
+            "email": email,
+            "is_staff": True,
+            "is_superuser": True,
+        },
+    )
+    changed = created
+    if user.email != email:
+        user.email = email
+        changed = True
+    if not user.is_staff or not user.is_superuser:
+        user.is_staff = True
+        user.is_superuser = True
+        changed = True
+    if created or not user.check_password(password):
+        user.set_password(password)
+        changed = True
+    if changed:
+        user.save()
+        logger.info("Vercel admin superuser %s", "created" if created else "updated")
+
+
 def bootstrap_vercel_db() -> None:
     global _DONE
     if _DONE:
@@ -23,6 +57,10 @@ def bootstrap_vercel_db() -> None:
 
     db_url = os.environ.get("DATABASE_URL", "").strip()
     if db_url.startswith("postgres"):
+        try:
+            ensure_admin_superuser()
+        except Exception:
+            logger.exception("Vercel Postgres admin bootstrap failed")
         _DONE = True
         return
 
@@ -47,5 +85,6 @@ def bootstrap_vercel_db() -> None:
         marker.write_text("ok", encoding="utf-8")
 
     call_command("seed_content", verbosity=0)
+    ensure_admin_superuser()
     _DONE = True
     logger.info("Vercel SQLite bootstrap complete")

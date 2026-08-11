@@ -10,7 +10,8 @@ from src.reviews.models import Testimonial
 class TestimonialAdmin(TinyMCEAdminMixin, ModelAdmin):
     list_display = (
         "get_photo_preview",
-        "author_name",
+        "author_name_ru",
+        "author_name_en",
         "rating",
         "is_active",
         "is_public_submission",
@@ -19,7 +20,7 @@ class TestimonialAdmin(TinyMCEAdminMixin, ModelAdmin):
     )
     list_editable = ("is_active", "order", "rating")
     list_filter = ("is_active", "is_public_submission", "rating")
-    search_fields = ("author_name", "text_ru", "text_en")
+    search_fields = ("author_name_ru", "author_name_en", "text_ru", "text_en")
     ordering_field = "order"
     readonly_fields = ("created_at", "is_public_submission", "get_photo_preview")
     tinymce_fields = ("text_ru", "text_en")
@@ -28,7 +29,6 @@ class TestimonialAdmin(TinyMCEAdminMixin, ModelAdmin):
             "Загальне",
             {
                 "fields": (
-                    "author_name",
                     "photo",
                     "get_photo_preview",
                     "rating",
@@ -41,14 +41,14 @@ class TestimonialAdmin(TinyMCEAdminMixin, ModelAdmin):
             "Русский",
             {
                 "classes": ["tab"],
-                "fields": ("role_ru", "text_ru"),
+                "fields": ("author_name_ru", "role_ru", "text_ru"),
             },
         ),
         (
             "English",
             {
                 "classes": ["tab"],
-                "fields": ("role_en", "text_en"),
+                "fields": ("author_name_en", "role_en", "text_en"),
             },
         ),
         (

@@ -44,9 +44,11 @@ def review_submit(request: HttpRequest) -> HttpResponse:
             return render(request, template_form, {"form": form}, status=429)
 
         text = form.cleaned_data["text"]
+        name = form.cleaned_data["name"]
         # Одна мова відвідувача — дублюємо, щоб показувати в RU/EN після схвалення
         Testimonial.objects.create(
-            author_name=form.cleaned_data["name"],
+            author_name_ru=name,
+            author_name_en=name,
             text_ru=text,
             text_en=text,
             rating=form.cleaned_data["rating"],

@@ -5,7 +5,8 @@ from src.core.mixins import BilingualTextMixin
 
 
 class Testimonial(BilingualTextMixin, models.Model):
-    author_name = models.CharField(max_length=128)
+    author_name_ru = models.CharField(max_length=128)
+    author_name_en = models.CharField(max_length=128, blank=True)
     role_ru = models.CharField(max_length=255, blank=True)
     role_en = models.CharField(max_length=255, blank=True)
     photo = models.ImageField(upload_to="reviews/", blank=True)
@@ -29,7 +30,14 @@ class Testimonial(BilingualTextMixin, models.Model):
         verbose_name_plural = "Відгуки"
 
     def __str__(self) -> str:
-        return self.author_name
+        return self.author_name_ru or self.author_name_en or f"#{self.pk}"
+
+    @property
+    def author_name(self) -> str:
+        value = self.get_text("author_name")
+        if value:
+            return value
+        return self.author_name_en or self.author_name_ru or ""
 
     @property
     def role(self) -> str:

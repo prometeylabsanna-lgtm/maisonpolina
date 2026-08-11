@@ -21,7 +21,8 @@ def test_review_submit_pending(client):
     assert response.status_code == 200
     assert Testimonial.objects.count() == 1
     item = Testimonial.objects.get()
-    assert item.author_name == "Мария"
+    assert item.author_name_ru == "Мария"
+    assert item.author_name_en == "Мария"
     assert item.rating == 5
     assert item.is_active is False
     assert item.is_public_submission is True
@@ -59,14 +60,16 @@ def test_review_honeypot(client):
 @pytest.mark.django_db
 def test_active_testimonials_only_on_home(client):
     Testimonial.objects.create(
-        author_name="Visible",
+        author_name_ru="Visible",
+        author_name_en="Visible",
         text_ru="Активный отзыв достаточно длинный",
         text_en="Active review text here",
         rating=5,
         is_active=True,
     )
     Testimonial.objects.create(
-        author_name="Hidden",
+        author_name_ru="Hidden",
+        author_name_en="Hidden",
         text_ru="Скрытый отзыв достаточно длинный",
         text_en="Hidden review text here",
         rating=4,
@@ -77,3 +80,26 @@ def test_active_testimonials_only_on_home(client):
     assert response.status_code == 200
     assert b"Visible" in response.content
     assert b"Hidden" not in response.content
+
+
+@pytest.mark.django_db
+def test_testimonial_author_name_by_locale(client):
+    Testimonial.objects.create(
+        author_name_ru="Александр Г.",
+        author_name_en="Alexander G.",
+        role_ru="Дирижёр",
+        role_en="Conductor",
+        text_ru="Тихая работа.",
+        text_en="Quiet work.",
+        rating=5,
+        is_active=True,
+    )
+    ru = client.get("/ru/")
+    assert ru.status_code == 200
+    assert "Александр Г.".encode() in ru.content
+    assert b"Alexander G." not in ru.content
+
+    en = client.get("/en/")
+    assert en.status_code == 200
+    assert b"Alexander G." in en.content
+    assert "Александр Г.".encode() not in en.content

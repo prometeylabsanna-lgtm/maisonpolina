@@ -215,7 +215,8 @@ class Command(BaseCommand):
             return
         items = [
             {
-                "author_name": "Дмитрий К.",
+                "author_name_ru": "Дмитрий К.",
+                "author_name_en": "Dmitry K.",
                 "role_ru": "Основатель инвестиционного фонда",
                 "role_en": "Founder of an investment fund",
                 "text_ru": (
@@ -230,7 +231,8 @@ class Command(BaseCommand):
                 "order": 1,
             },
             {
-                "author_name": "Александр Г.",
+                "author_name_ru": "Александр Г.",
+                "author_name_en": "Alexander G.",
                 "role_ru": "Дирижёр",
                 "role_en": "Conductor",
                 "text_ru": (
@@ -244,7 +246,8 @@ class Command(BaseCommand):
                 "order": 2,
             },
             {
-                "author_name": "Ольга Р.",
+                "author_name_ru": "Андрей М.",
+                "author_name_en": "Andrey M.",
                 "role_ru": "Дипломатическая служба",
                 "role_en": "Diplomatic service",
                 "text_ru": (
