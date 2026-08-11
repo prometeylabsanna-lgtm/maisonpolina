@@ -325,7 +325,8 @@
   }
 
   .hero__content {
-    width: min(var(--container-max), calc(100% - 48px));
+    width: 100%;
+    max-width: var(--container-max);
     margin-inline: auto;
     flex: 1 1 auto;
     align-self: stretch;
@@ -334,7 +335,7 @@
     justify-content: flex-start;
     min-height: 0;
     height: auto;
-    padding: calc(var(--header-h) + var(--safe-top) + 8px) 0 clamp(72px, 8vw, 96px);
+    padding: calc(var(--header-h) + var(--safe-top) + 8px) clamp(24px, 4.5vw, 56px) clamp(72px, 8vw, 96px);
     box-sizing: border-box;
   }
 
