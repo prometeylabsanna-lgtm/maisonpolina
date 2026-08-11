@@ -37,8 +37,8 @@ class TelegramChatSession(models.Model):
 
     class Meta:
         ordering = ["-updated_at"]
-        verbose_name = "Telegram chat session"
-        verbose_name_plural = "Telegram chat sessions"
+        verbose_name = "Чат Telegram"
+        verbose_name_plural = "Чаты Telegram"
 
     def __str__(self) -> str:
         return f"{self.session_id} ({self.status})"
@@ -57,8 +57,8 @@ class ChatMessage(models.Model):
 
     class Meta:
         ordering = ["created_at"]
-        verbose_name = "Chat message"
-        verbose_name_plural = "Chat messages"
+        verbose_name = "Сообщение чата"
+        verbose_name_plural = "Сообщения чата"
 
     def __str__(self) -> str:
         return f"{self.sender_type}: {self.text[:40]}"

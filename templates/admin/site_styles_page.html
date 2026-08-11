@@ -10,124 +10,178 @@
 {% endblock %}
 
 {% block content %}
-<div class="site-content-editor site-styles-editor max-w-5xl">
+<div class="site-content-editor site-styles-editor">
   <header class="mb-6">
-    <h1 class="text-xl font-semibold text-font-important-light dark:text-font-important-dark">{{ title }}</h1>
-    <p class="mt-1 text-sm text-font-subtle-light dark:text-font-subtle-dark">
-      {% trans "Порожні поля залишають значення з tokens.css. Header CTA — лише в блоці «Шапка»." %}
+    <p class="site-content-editor__eyebrow text-font-subtle-light dark:text-font-subtle-dark">
+      Содержимое страниц → Стили
     </p>
+    <h1 class="site-content-editor__title text-font-important-light dark:text-font-important-dark">{{ title }}</h1>
+    <p class="mt-2 text-sm text-font-subtle-light dark:text-font-subtle-dark">{{ page_hint }}</p>
   </header>
+
+  {% include "unfold/helpers/messages.html" %}
 
   <form method="post" novalidate class="flex flex-col gap-6">
     {% csrf_token %}
     {% for style, form in pairs %}
-    <section class="border border-base-200 dark:border-base-700 rounded-default bg-white dark:bg-base-900 p-4">
-      <h2 class="mb-4 text-base font-semibold">{{ style.get_section_display }}</h2>
+    <section class="border border-base-200 dark:border-base-700 rounded-default bg-white dark:bg-base-900 p-4 md:p-5">
+      <h2 class="mb-1 text-base font-semibold text-font-important-light dark:text-font-important-dark">
+        {{ style.get_section_display }}
+      </h2>
+      <p class="mb-4 text-xs text-font-subtle-light dark:text-font-subtle-dark">
+        Настройки внешнего вида блока «{{ style.get_section_display }}» на сайте.
+      </p>
       {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
       {{ form.label.as_hidden }}
 
       <fieldset class="site-styles-editor__fieldset">
-        <legend class="mb-2 text-sm font-medium">{% trans "Фон секції" %}</legend>
+        <legend class="mb-1 text-sm font-medium">{{ fill_groups.bg.title }}</legend>
+        <p class="site-styles-editor__group-hint">{{ fill_groups.bg.hint }}</p>
         <div class="site-styles-editor__grid">
-          <label>{{ form.bg_fill_type.label }}{{ form.bg_fill_type }}</label>
-          <label>{{ form.bg_solid_color.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.bg_fill_type.label }}</span>
+            {{ form.bg_fill_type }}
+            {% if form.bg_fill_type.help_text %}<span class="site-styles-editor__help">{{ form.bg_fill_type.help_text }}</span>{% endif %}
+          </label>
+          <label>
+            <span class="site-styles-editor__label">{{ form.bg_solid_color.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.bg_solid_color.id_for_label }}" value="{{ form.bg_solid_color.value|default:'#4c0d13' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.bg_solid_color.id_for_label }}" value="{{ form.bg_solid_color.value|default:'#4c0d13' }}" aria-label="Палитра">
               {{ form.bg_solid_color }}
             </span>
+            {% if form.bg_solid_color.help_text %}<span class="site-styles-editor__help">{{ form.bg_solid_color.help_text }}</span>{% endif %}
           </label>
-          <label>{{ form.bg_gradient_start.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.bg_gradient_start.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.bg_gradient_start.id_for_label }}" value="{{ form.bg_gradient_start.value|default:'#4c0d13' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.bg_gradient_start.id_for_label }}" value="{{ form.bg_gradient_start.value|default:'#4c0d13' }}" aria-label="Палитра">
               {{ form.bg_gradient_start }}
             </span>
           </label>
-          <label>{{ form.bg_gradient_end.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.bg_gradient_end.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.bg_gradient_end.id_for_label }}" value="{{ form.bg_gradient_end.value|default:'#3a0a0f' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.bg_gradient_end.id_for_label }}" value="{{ form.bg_gradient_end.value|default:'#3a0a0f' }}" aria-label="Палитра">
               {{ form.bg_gradient_end }}
             </span>
           </label>
-          <label>{{ form.bg_gradient_angle.label }}{{ form.bg_gradient_angle }}</label>
+          <label>
+            <span class="site-styles-editor__label">{{ form.bg_gradient_angle.label }}</span>
+            {{ form.bg_gradient_angle }}
+            {% if form.bg_gradient_angle.help_text %}<span class="site-styles-editor__help">{{ form.bg_gradient_angle.help_text }}</span>{% endif %}
+          </label>
         </div>
       </fieldset>
 
       {% if style.section != header_section %}
       <fieldset class="site-styles-editor__fieldset">
-        <legend class="mb-2 text-sm font-medium">{% trans "Кнопка primary" %}</legend>
+        <legend class="mb-1 text-sm font-medium">{{ fill_groups.btn_primary.title }}</legend>
+        <p class="site-styles-editor__group-hint">{{ fill_groups.btn_primary.hint }}</p>
         <div class="site-styles-editor__grid">
-          <label>{{ form.btn_primary_fill_type.label }}{{ form.btn_primary_fill_type }}</label>
-          <label>{{ form.btn_primary_solid_color.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_primary_fill_type.label }}</span>
+            {{ form.btn_primary_fill_type }}
+          </label>
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_primary_solid_color.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_primary_solid_color.id_for_label }}" value="{{ form.btn_primary_solid_color.value|default:'#cab695' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_primary_solid_color.id_for_label }}" value="{{ form.btn_primary_solid_color.value|default:'#cab695' }}" aria-label="Палитра">
               {{ form.btn_primary_solid_color }}
             </span>
           </label>
-          <label>{{ form.btn_primary_gradient_start.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_primary_gradient_start.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_primary_gradient_start.id_for_label }}" value="{{ form.btn_primary_gradient_start.value|default:'#dfccb7' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_primary_gradient_start.id_for_label }}" value="{{ form.btn_primary_gradient_start.value|default:'#dfccb7' }}" aria-label="Палитра">
               {{ form.btn_primary_gradient_start }}
             </span>
           </label>
-          <label>{{ form.btn_primary_gradient_end.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_primary_gradient_end.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_primary_gradient_end.id_for_label }}" value="{{ form.btn_primary_gradient_end.value|default:'#b09572' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_primary_gradient_end.id_for_label }}" value="{{ form.btn_primary_gradient_end.value|default:'#b09572' }}" aria-label="Палитра">
               {{ form.btn_primary_gradient_end }}
             </span>
           </label>
-          <label>{{ form.btn_primary_gradient_angle.label }}{{ form.btn_primary_gradient_angle }}</label>
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_primary_gradient_angle.label }}</span>
+            {{ form.btn_primary_gradient_angle }}
+            {% if form.btn_primary_gradient_angle.help_text %}<span class="site-styles-editor__help">{{ form.btn_primary_gradient_angle.help_text }}</span>{% endif %}
+          </label>
         </div>
       </fieldset>
 
       <fieldset class="site-styles-editor__fieldset">
-        <legend class="mb-2 text-sm font-medium">{% trans "Кнопка secondary" %}</legend>
+        <legend class="mb-1 text-sm font-medium">{{ fill_groups.btn_secondary.title }}</legend>
+        <p class="site-styles-editor__group-hint">{{ fill_groups.btn_secondary.hint }}</p>
         <div class="site-styles-editor__grid">
-          <label>{{ form.btn_secondary_fill_type.label }}{{ form.btn_secondary_fill_type }}</label>
-          <label>{{ form.btn_secondary_solid_color.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_secondary_fill_type.label }}</span>
+            {{ form.btn_secondary_fill_type }}
+          </label>
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_secondary_solid_color.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_secondary_solid_color.id_for_label }}" value="{{ form.btn_secondary_solid_color.value|default:'#cab695' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_secondary_solid_color.id_for_label }}" value="{{ form.btn_secondary_solid_color.value|default:'#cab695' }}" aria-label="Палитра">
               {{ form.btn_secondary_solid_color }}
             </span>
           </label>
-          <label>{{ form.btn_secondary_gradient_start.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_secondary_gradient_start.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_secondary_gradient_start.id_for_label }}" value="{{ form.btn_secondary_gradient_start.value|default:'#dfccb7' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_secondary_gradient_start.id_for_label }}" value="{{ form.btn_secondary_gradient_start.value|default:'#dfccb7' }}" aria-label="Палитра">
               {{ form.btn_secondary_gradient_start }}
             </span>
           </label>
-          <label>{{ form.btn_secondary_gradient_end.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_secondary_gradient_end.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_secondary_gradient_end.id_for_label }}" value="{{ form.btn_secondary_gradient_end.value|default:'#b09572' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_secondary_gradient_end.id_for_label }}" value="{{ form.btn_secondary_gradient_end.value|default:'#b09572' }}" aria-label="Палитра">
               {{ form.btn_secondary_gradient_end }}
             </span>
           </label>
-          <label>{{ form.btn_secondary_gradient_angle.label }}{{ form.btn_secondary_gradient_angle }}</label>
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_secondary_gradient_angle.label }}</span>
+            {{ form.btn_secondary_gradient_angle }}
+            {% if form.btn_secondary_gradient_angle.help_text %}<span class="site-styles-editor__help">{{ form.btn_secondary_gradient_angle.help_text }}</span>{% endif %}
+          </label>
         </div>
       </fieldset>
       {% else %}
       <fieldset class="site-styles-editor__fieldset">
-        <legend class="mb-2 text-sm font-medium">{% trans "Кнопка header CTA" %}</legend>
+        <legend class="mb-1 text-sm font-medium">{{ fill_groups.btn_header.title }}</legend>
+        <p class="site-styles-editor__group-hint">{{ fill_groups.btn_header.hint }}</p>
         <div class="site-styles-editor__grid">
-          <label>{{ form.btn_header_fill_type.label }}{{ form.btn_header_fill_type }}</label>
-          <label>{{ form.btn_header_solid_color.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_header_fill_type.label }}</span>
+            {{ form.btn_header_fill_type }}
+          </label>
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_header_solid_color.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_header_solid_color.id_for_label }}" value="{{ form.btn_header_solid_color.value|default:'#cab695' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_header_solid_color.id_for_label }}" value="{{ form.btn_header_solid_color.value|default:'#cab695' }}" aria-label="Палитра">
               {{ form.btn_header_solid_color }}
             </span>
           </label>
-          <label>{{ form.btn_header_gradient_start.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_header_gradient_start.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_header_gradient_start.id_for_label }}" value="{{ form.btn_header_gradient_start.value|default:'#dfccb7' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_header_gradient_start.id_for_label }}" value="{{ form.btn_header_gradient_start.value|default:'#dfccb7' }}" aria-label="Палитра">
               {{ form.btn_header_gradient_start }}
             </span>
           </label>
-          <label>{{ form.btn_header_gradient_end.label }}
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_header_gradient_end.label }}</span>
             <span class="cms-color-row">
-              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_header_gradient_end.id_for_label }}" value="{{ form.btn_header_gradient_end.value|default:'#b09572' }}" aria-label="{% trans 'Палітра' %}">
+              <input type="color" class="cms-color-picker" data-hex-target="{{ form.btn_header_gradient_end.id_for_label }}" value="{{ form.btn_header_gradient_end.value|default:'#b09572' }}" aria-label="Палитра">
               {{ form.btn_header_gradient_end }}
             </span>
           </label>
-          <label>{{ form.btn_header_gradient_angle.label }}{{ form.btn_header_gradient_angle }}</label>
+          <label>
+            <span class="site-styles-editor__label">{{ form.btn_header_gradient_angle.label }}</span>
+            {{ form.btn_header_gradient_angle }}
+            {% if form.btn_header_gradient_angle.help_text %}<span class="site-styles-editor__help">{{ form.btn_header_gradient_angle.help_text }}</span>{% endif %}
+          </label>
         </div>
       </fieldset>
       {% endif %}
@@ -137,7 +191,7 @@
     <div>
       <button type="submit"
               class="bg-primary-600 border border-transparent font-medium px-3 py-2 rounded-default text-white text-sm hover:bg-primary-700 focus:outline-hidden focus:ring-2 focus:ring-primary-500">
-        {% trans "Зберегти" %}
+        Сохранить
       </button>
     </div>
   </form>

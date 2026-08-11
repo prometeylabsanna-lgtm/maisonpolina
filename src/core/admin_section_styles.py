@@ -1,4 +1,4 @@
-"""Admin screen for per-section styles (Unfold sidebar «Стилі»)."""
+"""Admin screen for per-section styles (sidebar «Стили»)."""
 
 from __future__ import annotations
 
@@ -23,7 +23,27 @@ HEX_WIDGET = forms.TextInput(
         "autocomplete": "off",
     }
 )
-FILL_TYPE_CHOICES = [("", "— з CSS —"), *FillType.choices]
+FILL_TYPE_CHOICES = [("", "— как на сайте сейчас —"), *FillType.choices]
+
+# Group titles on the styles page (non-technical Russian)
+FILL_GROUP_META = {
+    "bg": {
+        "title": "Фон блока",
+        "hint": "Цвет или градиент фона этой секции на сайте.",
+    },
+    "btn_primary": {
+        "title": "Главная кнопка",
+        "hint": "Основная кнопка действия в секции (яркая).",
+    },
+    "btn_secondary": {
+        "title": "Вторая кнопка",
+        "hint": "Дополнительная кнопка рядом с главной.",
+    },
+    "btn_header": {
+        "title": "Кнопка в шапке",
+        "hint": "Кнопка заявки в верхнем меню. Только для блока «Шапка».",
+    },
+}
 
 
 class SectionStyleForm(forms.ModelForm):
@@ -69,14 +89,6 @@ class SectionStyleForm(forms.ModelForm):
                 self.fields.pop(name, None)
 
 
-FILL_LABELS = {
-    "bg": "Фон секції",
-    "btn_primary": "Кнопка primary",
-    "btn_secondary": "Кнопка secondary",
-    "btn_header": "Кнопка header CTA",
-}
-
-
 def _section_forms(request: HttpRequest) -> list[tuple[SectionStyle, SectionStyleForm]]:
     ensure_section_styles()
     order = list(SECTION_STYLE_DEFAULTS.keys())
@@ -106,15 +118,19 @@ def site_styles_view(
             for _, form in pairs:
                 form.save()
             invalidate_section_styles_cache()
-            messages.success(request, "Стилі збережено")
+            messages.success(request, "Стили сохранены")
             return HttpResponseRedirect(request.path)
-        messages.error(request, "Перевірте поля стилів")
+        messages.error(request, "Проверьте поля — есть ошибки")
 
     context = {
         **(model_admin.admin_site.each_context(request) if model_admin else {}),
-        "title": "Стилі секцій",
+        "title": "Цвета и кнопки на сайте",
+        "page_hint": (
+            "Пустые поля оставляют обычный вид сайта. "
+            "Кнопку в верхнем меню настраивайте только в блоке «Шапка»."
+        ),
         "pairs": pairs,
-        "fill_labels": FILL_LABELS,
+        "fill_groups": FILL_GROUP_META,
         "header_section": SectionStyle.Section.HEADER,
         "opts": model_admin.model._meta if model_admin else None,
     }

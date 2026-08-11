@@ -26,7 +26,7 @@ class TestimonialAdmin(TinyMCEAdminMixin, ModelAdmin):
     tinymce_fields = ("text_ru", "text_en")
     fieldsets = (
         (
-            "Загальне",
+            "Общее",
             {
                 "fields": (
                     "photo",
@@ -34,7 +34,8 @@ class TestimonialAdmin(TinyMCEAdminMixin, ModelAdmin):
                     "rating",
                     "order",
                     "is_active",
-                )
+                ),
+                "description": "Фото, оценка и показ отзыва на сайте.",
             },
         ),
         (
@@ -52,10 +53,11 @@ class TestimonialAdmin(TinyMCEAdminMixin, ModelAdmin):
             },
         ),
         (
-            "Службове",
+            "Служебное",
             {
                 "classes": ("collapse",),
                 "fields": ("is_public_submission", "created_at"),
+                "description": "Технические данные — менять не нужно.",
             },
         ),
     )

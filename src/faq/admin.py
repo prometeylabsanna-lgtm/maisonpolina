@@ -15,8 +15,11 @@ class FaqItemAdmin(TinyMCEAdminMixin, ModelAdmin):
     tinymce_fields = ("answer_ru", "answer_en")
     fieldsets = (
         (
-            "Загальне",
-            {"fields": ("is_active", "order")},
+            "Общее",
+            {
+                "fields": ("is_active", "order"),
+                "description": "Показ вопроса на сайте и порядок в списке.",
+            },
         ),
         (
             "Русский",

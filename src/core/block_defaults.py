@@ -23,17 +23,17 @@ def block_content_type(key: str) -> str:
 # (page, key) -> dict with text_ru, text_en, label
 _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     ("home", "hero_section_visible"): {
-        "label": "Hero — видимість",
+        "label": "Hero — видимость",
         "text_ru": "1",
         "text_en": "1",
     },
     ("home", "hero.title"): {
-        "label": "Hero — ім'я",
+        "label": "Hero — имя",
         "text_ru": "MAISON POLINA",
         "text_en": "MAISON POLINA",
     },
     ("home", "hero.subtitle"): {
-        "label": "Hero — підзаголовок",
+        "label": "Hero — подзаголовок",
         "text_ru": "",
         "text_en": "",
     },
@@ -51,47 +51,47 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         ),
     },
     ("home", "hero.cta_primary"): {
-        "label": "Hero — основна кнопка",
+        "label": "Hero — главная кнопка",
         "text_ru": "Оставить заявку",
         "text_en": "Send a request",
     },
     ("home", "hero.cta_secondary"): {
-        "label": "Hero — друга кнопка",
+        "label": "Hero — вторая кнопка",
         "text_ru": "Услуги и цены",
         "text_en": "Services and rates",
     },
     ("home", "hero.tagline"): {
-        "label": "Hero — теглайн",
+        "label": "Hero — слоган",
         "text_ru": "Independent · Private · Confidence",
         "text_en": "Independent · Private · Confidence",
     },
     ("home", "hero.media"): {
-        "label": "Hero — фото/відео",
+        "label": "Hero — фото",
         "text_ru": "",
         "text_en": "",
     },
     ("home", "about_section_visible"): {
-        "label": "Про мене — видимість",
+        "label": "Обо мне — видимость",
         "text_ru": "1",
         "text_en": "1",
     },
     ("home", "about.eyebrow"): {
-        "label": "Про мене — надзаголовок",
+        "label": "Обо мне — надзаголовок",
         "text_ru": "Обо мне",
         "text_en": "About",
     },
     ("home", "about.title"): {
-        "label": "Про мене — заголовок",
+        "label": "Обо мне — заголовок",
         "text_ru": "Восемь лет",
         "text_en": "Eight years",
     },
     ("home", "about.title_accent"): {
-        "label": "Про мене — акцент у заголовку",
+        "label": "Обо мне — акцент в заголовке",
         "text_ru": "ярких впечатлений",
         "text_en": "of vivid impressions",
     },
     ("home", "about.body_1"): {
-        "label": "Про мене — абзац 1",
+        "label": "Обо мне — абзац 1",
         "text_ru": (
             "За восемь лет я сопровождала дипломатов, промышленников "
             "и людей творческих профессий — на переговорах, приёмах и в долгих "
@@ -105,7 +105,7 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         ),
     },
     ("home", "about.body_2"): {
-        "label": "Про мене — абзац 2",
+        "label": "Обо мне — абзац 2",
         "text_ru": (
             "Я легко подстраиваюсь под шаблон встречи. Слушаю, что нужно именно "
             "в этот вечер: лёгкий разговор, тишина рядом или уверенное присутствие "
@@ -118,7 +118,7 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         ),
     },
     ("home", "about.body_3"): {
-        "label": "Про мене — абзац 3",
+        "label": "Обо мне — абзац 3",
         "text_ru": (
             "Приглашений в месяц немного — ровно столько, чтобы каждой встрече "
             "хватало внимания. Имена гостей остаются между нами."
@@ -129,172 +129,172 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         ),
     },
     ("home", "about.quote"): {
-        "label": "Про мене — цитата",
+        "label": "Обо мне — цитата",
         "text_ru": "Хорошее общество не нуждается в объяснениях.",
         "text_en": "Good company needs no explanation.",
     },
     ("home", "about.stat_1_value"): {
-        "label": "Про мене — цифра 1",
+        "label": "Обо мне — цифра 1",
         "text_ru": "8",
         "text_en": "8",
     },
     ("home", "about.stat_1_label"): {
-        "label": "Про мене — підпис 1",
+        "label": "Обо мне — подпись 1",
         "text_ru": "лет практики",
         "text_en": "years of practice",
     },
     ("home", "about.stat_2_value"): {
-        "label": "Про мене — цифра 2",
+        "label": "Обо мне — цифра 2",
         "text_ru": "200+",
         "text_en": "200+",
     },
     ("home", "about.stat_2_label"): {
-        "label": "Про мене — підпис 2",
+        "label": "Обо мне — подпись 2",
         "text_ru": "встреч и приёмов",
         "text_en": "meetings and receptions",
     },
     ("home", "about.stat_3_value"): {
-        "label": "Про мене — цифра 3",
+        "label": "Обо мне — цифра 3",
         "text_ru": "6",
         "text_en": "6",
     },
     ("home", "about.stat_3_label"): {
-        "label": "Про мене — підпис 3",
+        "label": "Обо мне — подпись 3",
         "text_ru": "приглашений в месяц",
         "text_en": "invitations per month",
     },
     ("home", "about.cta"): {
-        "label": "Про мене — кнопка",
+        "label": "Обо мне — кнопка",
         "text_ru": "Написать мне",
         "text_en": "Write to me",
     },
     ("home", "about.portrait"): {
-        "label": "Про мене — портрет",
+        "label": "Обо мне — портрет",
         "text_ru": "Полина — выступление на мероприятии",
         "text_en": "Polina — speaking at an event",
     },
     ("home", "personality_section_visible"): {
-        "label": "Особистість — видимість",
+        "label": "Личность — видимость",
         "text_ru": "1",
         "text_en": "1",
     },
     ("home", "personality.eyebrow"): {
-        "label": "Особистість — надзаголовок",
+        "label": "Личность — надзаголовок",
         "text_ru": "Обо мне",
         "text_en": "About me",
     },
     ("home", "personality.title"): {
-        "label": "Особистість — заголовок (світле слово)",
+        "label": "Личность — заголовок (светлое слово)",
         "text_ru": "Дополнительная",
         "text_en": "Additional",
     },
     ("home", "personality.title_accent"): {
-        "label": "Особистість — акцент у заголовку",
+        "label": "Личность — акцент в заголовке",
         "text_ru": "информация",
         "text_en": "information",
     },
     ("home", "personality.facts_title"): {
-        "label": "Особистість — підзаголовок параметрів",
+        "label": "Личность — подзаголовок параметров",
         "text_ru": "Внешность",
         "text_en": "Appearance",
     },
     ("home", "personality.age"): {
-        "label": "Особистість — вік",
+        "label": "Личность — возраст",
         "text_ru": "32",
         "text_en": "32",
     },
     ("home", "personality.eyes"): {
-        "label": "Особистість — очі",
+        "label": "Личность — глаза",
         "text_ru": "серые",
         "text_en": "gray",
     },
     ("home", "personality.hair"): {
-        "label": "Особистість — волосся",
+        "label": "Личность — волосы",
         "text_ru": "русые",
         "text_en": "light brown",
     },
     ("home", "personality.height"): {
-        "label": "Особистість — зріст",
+        "label": "Личность — рост",
         "text_ru": "174",
         "text_en": "174",
     },
     ("home", "personality.weight"): {
-        "label": "Особистість — вага",
+        "label": "Личность — вес",
         "text_ru": "59",
         "text_en": "59",
     },
     ("home", "personality.measurements"): {
-        "label": "Особистість — параметри",
+        "label": "Личность — параметры",
         "text_ru": "90-60-94",
         "text_en": "90-60-94",
     },
     ("home", "personality.shoes"): {
-        "label": "Особистість — взуття",
+        "label": "Личность — обувь",
         "text_ru": "39",
         "text_en": "39",
     },
     ("home", "personality.clothing"): {
-        "label": "Особистість — одяг",
+        "label": "Личность — одежда",
         "text_ru": "38",
         "text_en": "38",
     },
     ("home", "personality.zodiac"): {
-        "label": "Особистість — зодіак",
+        "label": "Личность — зодиак",
         "text_ru": "Водолей",
         "text_en": "Aquarius",
     },
     ("home", "personality.tattoo"): {
-        "label": "Особистість — тату",
+        "label": "Личность — тату",
         "text_ru": "нет",
         "text_en": "none",
     },
     ("home", "personality.piercing"): {
-        "label": "Особистість — пірсинг",
+        "label": "Личность — пирсинг",
         "text_ru": "нет",
         "text_en": "none",
     },
     ("home", "personality.flowers"): {
-        "label": "Особистість — квіти",
+        "label": "Личность — цветы",
         "text_ru": "Орхидеи, Лилии",
         "text_en": "Orchids, lilies",
     },
     ("home", "personality.cuisine"): {
-        "label": "Особистість — кухня",
+        "label": "Личность — кухня",
         "text_ru": "Итальянская",
         "text_en": "Italian",
     },
     ("home", "personality.alcohol"): {
-        "label": "Особистість — алкоголь",
+        "label": "Личность — алкоголь",
         "text_ru": "уточнять",
         "text_en": "upon request",
     },
     ("home", "personality.smoking"): {
-        "label": "Особистість — куріння",
+        "label": "Личность — курение",
         "text_ru": "Не курю",
         "text_en": "Non-smoker",
     },
     ("home", "personality.extra_title"): {
-        "label": "Особистість — підзаголовок додаткового (не використовується)",
+        "label": "Личность — подзаголовок дополнительного (не используется)",
         "text_ru": "",
         "text_en": "",
     },
     ("home", "personality.extra_1"): {
-        "label": "Особистість — пункт 1",
+        "label": "Личность — пункт 1",
         "text_ru": "мастер спорта",
         "text_en": "Master of Sport",
     },
     ("home", "personality.extra_2"): {
-        "label": "Особистість — пункт 2",
+        "label": "Личность — пункт 2",
         "text_ru": "профессиональная модель",
         "text_en": "professional model",
     },
     ("home", "personality.extra_3"): {
-        "label": "Особистість — пункт 3",
+        "label": "Личность — пункт 3",
         "text_ru": "фешн-журналист",
         "text_en": "fashion journalist",
     },
     ("home", "personality.languages"): {
-        "label": "Особистість — мови",
+        "label": "Личность — мови",
         "text_ru": (
             "Языки: английский, русский, украинский. Знание делового этикета, "
             "культурные различия стран."
@@ -305,27 +305,27 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         ),
     },
     ("home", "personality.respect"): {
-        "label": "Особистість — повага до культур",
+        "label": "Личность — повес до культур",
         "text_ru": "Уважаю любую культуру, религию, традиции.",
         "text_en": "I respect every culture, religion, and tradition.",
     },
     ("home", "personality.education"): {
-        "label": "Особистість — освіта",
+        "label": "Личность — образование",
         "text_ru": "Два высших образования.",
         "text_en": "Two higher-education degrees.",
     },
     ("home", "personality.travel"): {
-        "label": "Особистість — подорожі",
+        "label": "Личность — путешествия",
         "text_ru": "Посетила 20+ стран.",
         "text_en": "Visited 20+ countries.",
     },
     ("home", "personality.portrait"): {
-        "label": "Особистість — фото",
+        "label": "Личность — фото",
         "text_ru": "",
         "text_en": "",
     },
     ("home", "gallery_section_visible"): {
-        "label": "Галерея — видимість",
+        "label": "Галерея — видимость",
         "text_ru": "1",
         "text_en": "1",
     },
@@ -345,27 +345,27 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "text_en": "evenings",
     },
     ("home", "formats_section_visible"): {
-        "label": "Формати — видимість",
+        "label": "Форматы — видимость",
         "text_ru": "1",
         "text_en": "1",
     },
     ("home", "formats.eyebrow"): {
-        "label": "Формати — надзаголовок",
+        "label": "Форматы — надзаголовок",
         "text_ru": "Услуги и цены",
         "text_en": "Services and rates",
     },
     ("home", "formats.title"): {
-        "label": "Формати — заголовок",
+        "label": "Форматы — заголовок",
         "text_ru": "Три формата",
         "text_en": "Three formats",
     },
     ("home", "formats.title_accent"): {
-        "label": "Формати — акцент",
+        "label": "Форматы — акцент",
         "text_ru": "сопровождения",
         "text_en": "of companionship",
     },
     ("home", "formats.note"): {
-        "label": "Формати — примітка",
+        "label": "Форматы — примечание",
         "text_ru": (
             "Стоимость поездок за пределы города и особых форматов обсуждается отдельно. "
             "Половина суммы вносится при подтверждении даты, остаток — по завершении встречи."
@@ -376,62 +376,62 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         ),
     },
     ("home", "testimonials_section_visible"): {
-        "label": "Відгуки — видимість",
+        "label": "Отзывы — видимость",
         "text_ru": "1",
         "text_en": "1",
     },
     ("home", "testimonials.eyebrow"): {
-        "label": "Відгуки — надзаголовок",
+        "label": "Отзывы — надзаголовок",
         "text_ru": "Отзывы",
         "text_en": "Testimonials",
     },
     ("home", "faq_section_visible"): {
-        "label": "Питання — видимість",
+        "label": "Вопросы — видимость",
         "text_ru": "1",
         "text_en": "1",
     },
     ("home", "faq.eyebrow"): {
-        "label": "Питання — надзаголовок",
+        "label": "Вопросы — надзаголовок",
         "text_ru": "Вопросы",
         "text_en": "Questions",
     },
     ("home", "faq.title"): {
-        "label": "Питання — заголовок",
+        "label": "Вопросы — заголовок",
         "text_ru": "Ответы",
         "text_en": "Answers",
     },
     ("home", "faq.title_accent"): {
-        "label": "Питання — акцент",
+        "label": "Вопросы — акцент",
         "text_ru": "до разговора",
         "text_en": "before we speak",
     },
     ("home", "faq.cta"): {
-        "label": "Питання — кнопка",
+        "label": "Вопросы — кнопка",
         "text_ru": "Задать вопрос",
         "text_en": "Ask a question",
     },
     ("home", "contacts_section_visible"): {
-        "label": "Контакти — видимість",
+        "label": "Контакты — видимость",
         "text_ru": "1",
         "text_en": "1",
     },
     ("home", "contacts.eyebrow"): {
-        "label": "Контакти — надзаголовок",
+        "label": "Контакты — надзаголовок",
         "text_ru": "Контакты",
         "text_en": "Contacts",
     },
     ("home", "contacts.title"): {
-        "label": "Контакти — заголовок",
+        "label": "Контакты — заголовок",
         "text_ru": "Начнём с разговора",
         "text_en": "Let's start with a conversation",
     },
     ("home", "contacts.title_accent"): {
-        "label": "Контакти — акцент",
+        "label": "Контакты — акцент",
         "text_ru": "без обязательств",
         "text_en": "without obligation",
     },
     ("home", "contacts.lead"): {
-        "label": "Контакти — текст",
+        "label": "Контакты — текст",
         "text_ru": (
             "Оставьте заявку — я отвечу лично в течение суток "
             "и предложу время для встречи."
@@ -442,17 +442,17 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         ),
     },
     ("home", "contacts.privacy_note"): {
-        "label": "Контакти — примітка про конфіденційність",
+        "label": "Контакты — примечание про конфиденциальность",
         "text_ru": "Все обращения остаются конфиденциальными.",
         "text_en": "All inquiries remain private.",
     },
     ("privacy", "title"): {
-        "label": "Політика — заголовок",
+        "label": "Политика — заголовок",
         "text_ru": "Политика конфиденциальности",
         "text_en": "Privacy policy",
     },
     ("privacy", "body"): {
-        "label": "Політика — текст",
+        "label": "Политика — текст",
         "text_ru": (
             "Настоящая политика описывает порядок обработки персональных данных, "
             "которые вы добровольно оставляете через форму заявки на сайте: имя, "
@@ -490,4 +490,10 @@ def all_block_keys() -> list[tuple[str, str]]:
 
 def get_block_field_label(page: str, key: str) -> str:
     defaults = BLOCK_DEFAULTS.get((page, key), {})
-    return defaults.get("label") or key
+    label = defaults.get("label") or key
+    # Admin UI: short name without section prefix ("Личность — возраст" → "Возраст")
+    if " — " in label:
+        short = label.split(" — ", 1)[1].strip()
+        if short:
+            return short[:1].upper() + short[1:]
+    return label

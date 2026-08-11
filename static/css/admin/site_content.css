@@ -1,9 +1,10 @@
-/* CMS section editors — layout + dark-readable inputs (Unfold-compatible) */
+/* CMS section editors — light admin + emerald accent */
 
 .site-content-editor {
   display: grid;
   gap: 1.5rem;
-  max-width: 52rem;
+  width: 100%;
+  max-width: none;
 }
 
 .site-content-editor__head {
@@ -39,7 +40,7 @@
 .site-content-editor__section-desc {
   margin: 0.5rem 0 0;
   font-size: 0.875rem;
-  max-width: 42ch;
+  max-width: 60ch;
 }
 
 .site-content-editor__preview {
@@ -58,6 +59,7 @@
 .site-content-editor__fieldsets {
   display: grid;
   gap: 1rem;
+  width: 100%;
 }
 
 .site-content-fieldset__title {
@@ -99,30 +101,28 @@
 .cms-admin-input,
 .site-content-editor__field input[type="text"],
 .site-content-editor__field input[type="number"],
-.site-content-editor__field textarea {
+.site-content-editor__field input[type="file"],
+.site-content-editor__field textarea,
+.site-content-editor__field select {
+  display: block;
   width: 100%;
+  min-height: 2.5rem;
   box-sizing: border-box;
-  border: 1px solid rgb(55 65 81);
+  border: 1px solid rgb(209 213 219);
   border-radius: 0.375rem;
-  background: rgb(17 24 39);
-  color: rgb(243 244 246);
+  background: rgb(255 255 255);
+  color: rgb(17 24 39);
   padding: 0.55rem 0.75rem;
+  opacity: 1;
+  visibility: visible;
 }
 
 .cms-admin-input:focus,
 .site-content-editor__field input:focus,
-.site-content-editor__field textarea:focus {
-  outline: 2px solid rgb(59 130 246 / 0.45);
+.site-content-editor__field textarea:focus,
+.site-content-editor__field select:focus {
+  outline: 2px solid rgb(5 150 105 / 0.45);
   outline-offset: 1px;
-}
-
-html:not(.dark) .cms-admin-input,
-html:not(.dark) .site-content-editor__field input[type="text"],
-html:not(.dark) .site-content-editor__field input[type="number"],
-html:not(.dark) .site-content-editor__field textarea {
-  background: rgb(255 255 255);
-  color: rgb(17 24 39);
-  border-color: rgb(209 213 219);
 }
 
 .site-content-editor__field textarea,
@@ -145,10 +145,6 @@ textarea.cms-admin-input {
   background: rgb(243 244 246);
 }
 
-html.dark .cms-lang-tabs {
-  background: rgb(255 255 255 / 0.06);
-}
-
 .cms-lang-tab {
   min-width: 2.5rem;
   padding: 0.3rem 0.7rem;
@@ -165,10 +161,7 @@ html.dark .cms-lang-tabs {
 .cms-lang-tab.is-active {
   background: rgb(255 255 255);
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
-}
-
-html.dark .cms-lang-tab.is-active {
-  background: rgb(55 65 81);
+  color: rgb(5 150 105);
 }
 
 .cms-lang-tabs--page .cms-lang-tab {
@@ -177,18 +170,59 @@ html.dark .cms-lang-tab.is-active {
   font-size: 0.8rem;
 }
 
-.cms-lang-pane[x-cloak],
-[x-cloak] {
+.cms-lang-panes {
+  min-height: 2.5rem;
+}
+
+.cms-lang-pane--en {
   display: none;
 }
 
-.cms-lang-panes {
-  min-height: 2.5rem;
+.cms-lang-pane--ru {
+  display: block;
+}
+
+html[data-cms-lang="en"] .cms-lang-pane--ru {
+  display: none;
+}
+
+html[data-cms-lang="en"] .cms-lang-pane--en {
+  display: block;
 }
 
 .gallery-photos-admin {
   display: grid;
   gap: 0.875rem;
+}
+
+.gallery-photos-admin__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.gallery-photos-admin__add {
+  white-space: nowrap;
+  cursor: pointer;
+  background: rgb(255 255 255);
+  color: rgb(5 150 105);
+  border-color: rgb(167 243 208);
+}
+
+.gallery-photos-admin__add:hover {
+  background: rgb(236 253 245);
+}
+
+.gallery-photos-admin__slot-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.gallery-photos-admin__item.is-empty-slot {
+  border-style: dashed;
 }
 
 .gallery-photos-admin__grid {
@@ -216,8 +250,15 @@ html.dark .cms-lang-tab.is-active {
   .site-content-editor__title {
     font-size: 1.25rem;
   }
+}
 
-  .site-content-editor {
-    max-width: 100%;
-  }
+#content-main:has(.site-content-editor),
+#content-main:has(.site-styles-editor) {
+  max-width: none;
+  width: 100%;
+}
+
+.site-styles-editor.max-w-5xl {
+  max-width: none;
+  width: 100%;
 }

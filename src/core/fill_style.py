@@ -11,15 +11,15 @@ HEX_RE = re.compile(r"^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
 
 
 class FillType(models.TextChoices):
-    SOLID = "solid", "Однотонний"
-    GRADIENT = "gradient", "Градієнт"
+    SOLID = "solid", "Один цвет"
+    GRADIENT = "gradient", "Градиент"
 
 
 def validate_hex_color(value: str) -> None:
     if not value:
         return
     if not HEX_RE.match(value.strip()):
-        raise ValidationError("Очікується hex-колір, напр. #4c0d13")
+        raise ValidationError("Нужен цвет в формате #4c0d13")
 
 
 def normalize_hex(value: str) -> str:

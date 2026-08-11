@@ -13,8 +13,8 @@ class FaqItem(BilingualTextMixin, models.Model):
 
     class Meta:
         ordering = ["order", "pk"]
-        verbose_name = "Питання"
-        verbose_name_plural = "Питання й відповіді"
+        verbose_name = "Вопрос"
+        verbose_name_plural = "Вопросы и ответы"
 
     def __str__(self) -> str:
         return self.question_ru

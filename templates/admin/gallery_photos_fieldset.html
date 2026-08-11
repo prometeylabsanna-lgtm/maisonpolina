@@ -1,15 +1,30 @@
+{% load static %}
 <section class="site-content-fieldset border border-base-200 dark:border-base-700 rounded-default shadow-sm dark:bg-base-900 p-4 md:p-5">
-  <div class="site-content-fieldset__head">
-    <h2 class="site-content-fieldset__title text-font-important-light dark:text-font-important-dark">Фото галереи</h2>
-    <p class="site-content-fieldset__hint text-font-subtle-light dark:text-font-subtle-dark">
-      Подписи переключаются кнопками RU / EN сверху страницы.
-    </p>
+  <div class="site-content-fieldset__head gallery-photos-admin__toolbar">
+    <div>
+      <h2 class="site-content-fieldset__title text-font-important-light dark:text-font-important-dark">Фото галереи</h2>
+      <p class="site-content-fieldset__hint text-font-subtle-light dark:text-font-subtle-dark">
+        Загрузите новое фото ниже. Чтобы удалить — отметьте «Удалить» и нажмите «Сохранить».
+        Подписи переключаются кнопками RU / EN сверху.
+      </p>
+    </div>
+    <button type="button"
+            class="gallery-photos-admin__add border border-base-200 dark:border-base-700 rounded-default px-3 py-2 text-sm"
+            data-gallery-add>
+      Добавить фото
+    </button>
   </div>
 
   {{ formset.management_form }}
-  <div class="gallery-photos-admin">
+  <div class="gallery-photos-admin" data-gallery-list>
     {% for form in formset %}
-    <article class="gallery-photos-admin__item border border-base-200 dark:border-base-700 rounded-default p-3 md:p-4">
+    <article class="gallery-photos-admin__item border border-base-200 dark:border-base-700 rounded-default p-3 md:p-4{% if not form.instance.pk %} is-empty-slot{% endif %}"
+             data-gallery-item>
+      {% if not form.instance.pk %}
+      <p class="gallery-photos-admin__slot-title">Новое фото</p>
+      {% else %}
+      <p class="gallery-photos-admin__slot-title">Фото {% if form.instance.order %}{{ form.instance.order }}{% else %}{{ forloop.counter }}{% endif %}</p>
+      {% endif %}
       {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
 
       <div class="gallery-photos-admin__grid">
@@ -30,14 +45,14 @@
           {% if formset.can_delete %}
           <label class="mt-3 inline-flex items-center gap-2 text-sm" for="{{ form.DELETE.id_for_label }}">
             {{ form.DELETE }}
-            <span>Удалить</span>
+            <span>Удалить это фото</span>
           </label>
           {% endif %}
         </div>
       </div>
 
       <div class="cms-lang-panes mt-3">
-        <div class="gallery-photos-admin__grid cms-lang-pane" x-show="$store.cmsLang.current === 'ru'" x-cloak>
+        <div class="gallery-photos-admin__grid cms-lang-pane cms-lang-pane--ru">
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label" for="{{ form.alt_ru.id_for_label }}">{{ form.alt_ru.label }}</label>
             {{ form.alt_ru }}
@@ -47,7 +62,7 @@
             {{ form.caption_ru }}
           </div>
         </div>
-        <div class="gallery-photos-admin__grid cms-lang-pane" x-show="$store.cmsLang.current === 'en'" x-cloak>
+        <div class="gallery-photos-admin__grid cms-lang-pane cms-lang-pane--en">
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label" for="{{ form.alt_en.id_for_label }}">{{ form.alt_en.label }}</label>
             {{ form.alt_en }}
@@ -80,4 +95,67 @@
     </article>
     {% endfor %}
   </div>
+
+  <template id="gallery-empty-form-template">
+    {% with form=formset.empty_form %}
+    <article class="gallery-photos-admin__item border border-base-200 dark:border-base-700 rounded-default p-3 md:p-4 is-empty-slot"
+             data-gallery-item>
+      <p class="gallery-photos-admin__slot-title">Новое фото</p>
+      {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+      <div class="gallery-photos-admin__grid">
+        <div class="site-content-editor__field">
+          <label class="site-content-editor__field-label">{{ form.image.label }}</label>
+          {{ form.image }}
+        </div>
+        <div class="site-content-editor__field">
+          <label class="site-content-editor__field-label">{{ form.is_active.label }}</label>
+          {{ form.is_active }}
+          {% if formset.can_delete %}
+          <label class="mt-3 inline-flex items-center gap-2 text-sm">
+            {{ form.DELETE }}
+            <span>Удалить это фото</span>
+          </label>
+          {% endif %}
+        </div>
+      </div>
+      <div class="cms-lang-panes mt-3">
+        <div class="gallery-photos-admin__grid cms-lang-pane cms-lang-pane--ru">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.alt_ru.label }}</label>
+            {{ form.alt_ru }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.caption_ru.label }}</label>
+            {{ form.caption_ru }}
+          </div>
+        </div>
+        <div class="gallery-photos-admin__grid cms-lang-pane cms-lang-pane--en">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.alt_en.label }}</label>
+            {{ form.alt_en }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.caption_en.label }}</label>
+            {{ form.caption_en }}
+          </div>
+        </div>
+      </div>
+      <div class="gallery-photos-admin__meta">
+        <div class="site-content-editor__field">
+          <label class="site-content-editor__field-label">{{ form.col_span.label }}</label>
+          {{ form.col_span }}
+        </div>
+        <div class="site-content-editor__field">
+          <label class="site-content-editor__field-label">{{ form.row_span.label }}</label>
+          {{ form.row_span }}
+        </div>
+        <div class="site-content-editor__field">
+          <label class="site-content-editor__field-label">{{ form.order.label }}</label>
+          {{ form.order }}
+        </div>
+      </div>
+    </article>
+    {% endwith %}
+  </template>
 </section>
+<script src="{% static 'js/admin/gallery_formset.js' %}" defer></script>

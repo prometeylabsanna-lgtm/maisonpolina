@@ -53,13 +53,36 @@ def test_admin_section_get_post(client, admin_user):
 
 
 @pytest.mark.django_db
-def test_admin_gallery_fieldsets(client, admin_user):
+def test_admin_section_inputs_visible(client, admin_user):
     SiteSettings.get_solo()
     client.force_login(admin_user)
     url = reverse("admin:core_homegallerysettings_change", args=[1])
     response = client.get(url)
     assert response.status_code == 200
     html = response.content.decode()
+    assert 'name="block__home__gallery.title__ru"' in html
+    assert 'name="block__home__gallery.title__en"' in html
+    assert "cms-lang-pane--ru" in html
+    assert 'x-show="$store.cmsLang' not in html
     assert "Заголовок секции" in html
     assert "Фото галереи" in html
     assert "Видимость" in html
+    assert "Добавить фото" in html
+    assert "MaisonPolina" in html
+
+
+@pytest.mark.django_db
+def test_admin_styles_russian_labels(client, admin_user):
+    SiteSettings.get_solo()
+    client.force_login(admin_user)
+    url = reverse("admin:core_themestylessettings_change", args=[1])
+    response = client.get(url)
+    assert response.status_code == 200
+    html = response.content.decode()
+    assert "Цвета и кнопки на сайте" in html
+    assert "Главная кнопка" in html
+    assert "Вторая кнопка" in html
+    assert "угол градиента" in html
+    assert "Primary" not in html
+    assert "Secondary" not in html
+    assert "tokens.css" not in html

@@ -82,7 +82,7 @@ def build_admin_navigation(_request=None):
                     "link": reverse_lazy("admin:core_privacysettings_changelist"),
                 },
                 {
-                    "title": "Стили",
+                    "title": "Цвета и кнопки",
                     "icon": "palette",
                     "link": reverse_lazy("admin:core_themestylessettings_changelist"),
                 },

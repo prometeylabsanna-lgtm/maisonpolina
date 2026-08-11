@@ -98,7 +98,7 @@ class GalleryPhotoForm(forms.ModelForm):
 GalleryPhotoFormSet = modelformset_factory(
     GalleryPhoto,
     form=GalleryPhotoForm,
-    extra=1,
+    extra=2,
     can_delete=True,
 )
 
@@ -164,7 +164,7 @@ class SitePageContentForm(forms.Form):
 
     def _add_block_fields(self, block: SiteBlock) -> None:
         page, key = block.page, block.key
-        label = block.label or get_block_field_label(page, key)
+        label = get_block_field_label(page, key)
 
         if block.content_type == SiteBlock.ContentType.IMAGE or key in IMAGE_KEYS:
             self.fields[block_field_name(page, key, "image")] = forms.ImageField(
@@ -263,7 +263,7 @@ def _block_rows_for_keys(
             rows.append(
                 {
                     "key": key,
-                    "label": block.label or key,
+                    "label": get_block_field_label(page, key),
                     "is_image": True,
                     "image": form[image_name] if image_name in form.fields else None,
                     "clear_image": (
@@ -278,7 +278,7 @@ def _block_rows_for_keys(
         rows.append(
             {
                 "key": key,
-                "label": block.label or key,
+                "label": get_block_field_label(page, key),
                 "is_image": False,
                 "ru": form[ru_name] if ru_name in form.fields else None,
                 "en": form[en_name] if en_name in form.fields else None,

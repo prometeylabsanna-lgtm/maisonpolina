@@ -5,4 +5,4 @@ class FaqConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "src.faq"
     label = "faq"
-    verbose_name = "FAQ"
+    verbose_name = "Вопросы"

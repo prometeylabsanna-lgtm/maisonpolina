@@ -18,8 +18,8 @@ class ServiceFormat(BilingualTextMixin, models.Model):
 
     class Meta:
         ordering = ["order", "pk"]
-        verbose_name = "Формат послуги"
-        verbose_name_plural = "Формати послуг"
+        verbose_name = "Формат услуги"
+        verbose_name_plural = "Форматы услуг"
 
     def __str__(self) -> str:
         return self.title_ru

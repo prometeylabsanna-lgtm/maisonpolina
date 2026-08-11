@@ -15,23 +15,29 @@ def _hex_field(**kwargs):
     )
 
 
-def _fill_type_field(verbose_name: str):
+def _fill_type_field(verbose_name: str, **kwargs):
     return models.CharField(
         max_length=16,
         choices=FillType.choices,
         blank=True,
         default="",
         verbose_name=verbose_name,
+        **kwargs,
     )
 
 
-def _angle_field(verbose_name: str):
+def _angle_field(verbose_name: str, **kwargs):
     return models.PositiveSmallIntegerField(
         blank=True,
         null=True,
         default=180,
         validators=[MinValueValidator(0), MaxValueValidator(360)],
         verbose_name=verbose_name,
+        help_text=kwargs.pop(
+            "help_text",
+            "От 0 до 360. Например, 180 — сверху вниз.",
+        ),
+        **kwargs,
     )
 
 
@@ -235,8 +241,8 @@ class SiteErrorsSettings(SiteSettings):
 class ThemeStylesSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Стили"
-        verbose_name_plural = "Стили"
+        verbose_name = "Цвета и кнопки"
+        verbose_name_plural = "Цвета и кнопки"
 
 
 class SectionStyle(models.Model):
@@ -244,52 +250,67 @@ class SectionStyle(models.Model):
 
     class Section(models.TextChoices):
         HEADER = "header", "Шапка"
-        HERO = "hero", "Hero"
-        ABOUT = "about", "Про мене"
-        PERSONALITY = "personality", "Особистість"
+        HERO = "hero", "Первый экран (Hero)"
+        ABOUT = "about", "Обо мне"
+        PERSONALITY = "personality", "Личность"
         GALLERY = "gallery", "Галерея"
-        FORMATS = "formats", "Формати"
-        TESTIMONIALS = "testimonials", "Відгуки"
-        FAQ = "faq", "Питання"
-        CONTACTS = "contacts", "Контакти"
-        FOOTER = "footer", "Підвал"
+        FORMATS = "formats", "Форматы"
+        TESTIMONIALS = "testimonials", "Отзывы"
+        FAQ = "faq", "Вопросы"
+        CONTACTS = "contacts", "Контакты"
+        FOOTER = "footer", "Подвал"
 
     section = models.CharField(
         max_length=32,
         unique=True,
         choices=Section.choices,
+        verbose_name="Секция",
     )
-    label = models.CharField(max_length=128, blank=True)
+    label = models.CharField(
+        max_length=128,
+        blank=True,
+        verbose_name="Название",
+        help_text="Как секция называется в списке ниже.",
+    )
 
-    bg_fill_type = _fill_type_field("Фон — тип")
-    bg_solid_color = _hex_field(verbose_name="Фон — колір")
-    bg_gradient_start = _hex_field(verbose_name="Фон — градієнт від")
-    bg_gradient_end = _hex_field(verbose_name="Фон — градієнт до")
-    bg_gradient_angle = _angle_field("Фон — кут")
+    bg_fill_type = _fill_type_field("Фон: как залить")
+    bg_solid_color = _hex_field(
+        verbose_name="Фон: цвет",
+        help_text="Если выбран «Один цвет». Пример: #4c0d13",
+    )
+    bg_gradient_start = _hex_field(
+        verbose_name="Фон: градиент — начало",
+        help_text="Первый цвет градиента.",
+    )
+    bg_gradient_end = _hex_field(
+        verbose_name="Фон: градиент — конец",
+        help_text="Второй цвет градиента.",
+    )
+    bg_gradient_angle = _angle_field("Фон: угол градиента (°)")
 
-    btn_primary_fill_type = _fill_type_field("Primary — тип")
-    btn_primary_solid_color = _hex_field(verbose_name="Primary — колір")
-    btn_primary_gradient_start = _hex_field(verbose_name="Primary — градієнт від")
-    btn_primary_gradient_end = _hex_field(verbose_name="Primary — градієнт до")
-    btn_primary_gradient_angle = _angle_field("Primary — кут")
+    btn_primary_fill_type = _fill_type_field("Главная кнопка: как залить")
+    btn_primary_solid_color = _hex_field(verbose_name="Главная кнопка: цвет")
+    btn_primary_gradient_start = _hex_field(verbose_name="Главная кнопка: градиент — начало")
+    btn_primary_gradient_end = _hex_field(verbose_name="Главная кнопка: градиент — конец")
+    btn_primary_gradient_angle = _angle_field("Главная кнопка: угол градиента (°)")
 
-    btn_secondary_fill_type = _fill_type_field("Secondary — тип")
-    btn_secondary_solid_color = _hex_field(verbose_name="Secondary — колір")
-    btn_secondary_gradient_start = _hex_field(verbose_name="Secondary — градієнт від")
-    btn_secondary_gradient_end = _hex_field(verbose_name="Secondary — градієнт до")
-    btn_secondary_gradient_angle = _angle_field("Secondary — кут")
+    btn_secondary_fill_type = _fill_type_field("Вторая кнопка: как залить")
+    btn_secondary_solid_color = _hex_field(verbose_name="Вторая кнопка: цвет")
+    btn_secondary_gradient_start = _hex_field(verbose_name="Вторая кнопка: градиент — начало")
+    btn_secondary_gradient_end = _hex_field(verbose_name="Вторая кнопка: градиент — конец")
+    btn_secondary_gradient_angle = _angle_field("Вторая кнопка: угол градиента (°)")
 
-    btn_header_fill_type = _fill_type_field("Header CTA — тип")
-    btn_header_solid_color = _hex_field(verbose_name="Header CTA — колір")
-    btn_header_gradient_start = _hex_field(verbose_name="Header CTA — градієнт від")
-    btn_header_gradient_end = _hex_field(verbose_name="Header CTA — градієнт до")
-    btn_header_gradient_angle = _angle_field("Header CTA — кут")
+    btn_header_fill_type = _fill_type_field("Кнопка в шапке: как залить")
+    btn_header_solid_color = _hex_field(verbose_name="Кнопка в шапке: цвет")
+    btn_header_gradient_start = _hex_field(verbose_name="Кнопка в шапке: градиент — начало")
+    btn_header_gradient_end = _hex_field(verbose_name="Кнопка в шапке: градиент — конец")
+    btn_header_gradient_angle = _angle_field("Кнопка в шапке: угол градиента (°)")
 
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "Стиль секції"
-        verbose_name_plural = "Стилі секцій"
+        verbose_name = "Стиль секции"
+        verbose_name_plural = "Стили секций"
         ordering = ["section"]
 
     def __str__(self) -> str:

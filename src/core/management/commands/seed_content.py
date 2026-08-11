@@ -28,12 +28,14 @@ class Command(BaseCommand):
             settings.location_en = "Kyiv, by appointment"
         settings.save(update_fields=["location_ru", "location_en"])
         created_blocks = 0
+        labels_updated = 0
         for (page, key), defaults in BLOCK_DEFAULTS.items():
-            _, created = SiteBlock.objects.get_or_create(
+            label = defaults.get("label", key)
+            block, created = SiteBlock.objects.get_or_create(
                 page=page,
                 key=key,
                 defaults={
-                    "label": defaults.get("label", key),
+                    "label": label,
                     "text_ru": defaults.get("text_ru", ""),
                     "text_en": defaults.get("text_en", ""),
                     "content_type": block_content_type(key),
@@ -43,6 +45,10 @@ class Command(BaseCommand):
             )
             if created:
                 created_blocks += 1
+            elif label and block.label != label:
+                block.label = label
+                block.save(update_fields=["label", "updated_at"])
+                labels_updated += 1
 
         styles_created = ensure_section_styles()
 
@@ -75,7 +81,8 @@ class Command(BaseCommand):
         self._seed_gallery()
         self.stdout.write(
             self.style.SUCCESS(
-                f"Seed done. New blocks: {created_blocks}, styles: {styles_created}"
+                f"Seed done. New blocks: {created_blocks}, "
+                f"labels updated: {labels_updated}, styles: {styles_created}"
             )
         )
 

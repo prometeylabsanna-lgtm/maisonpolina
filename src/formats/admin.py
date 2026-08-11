@@ -25,9 +25,10 @@ class ServiceFormatAdmin(TinyMCEAdminMixin, ModelAdmin):
     tinymce_fields = ("description_ru", "description_en")
     fieldsets = (
         (
-            "Загальне",
+            "Общее",
             {
                 "fields": ("is_featured", "is_active", "order"),
+                "description": "Показ на сайте и порядок в списке форматов.",
             },
         ),
         (
@@ -40,6 +41,7 @@ class ServiceFormatAdmin(TinyMCEAdminMixin, ModelAdmin):
                     "description_ru",
                     "price_text_ru",
                 ),
+                "description": "Тексты формата на русском.",
             },
         ),
         (
@@ -52,6 +54,7 @@ class ServiceFormatAdmin(TinyMCEAdminMixin, ModelAdmin):
                     "description_en",
                     "price_text_en",
                 ),
+                "description": "Тексты формата на английском.",
             },
         ),
     )

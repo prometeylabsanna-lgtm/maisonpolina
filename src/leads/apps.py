@@ -5,4 +5,4 @@ class LeadsConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "src.leads"
     label = "leads"
-    verbose_name = "Leads"
+    verbose_name = "Заявки"

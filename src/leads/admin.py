@@ -16,25 +16,25 @@ _STATUS_TONE = {
 }
 
 
-@admin.action(description="Позначити «В роботі»")
+@admin.action(description="Отметить «В работе»")
 def mark_in_progress(modeladmin, request, queryset):
     updated = queryset.update(status=LeadStatus.IN_PROGRESS)
-    messages.success(request, f"Оновлено: {updated}")
+    messages.success(request, f"Обновлено: {updated}")
 
 
-@admin.action(description="Позначити «Успішна»")
+@admin.action(description="Отметить «Успешная»")
 def mark_won(modeladmin, request, queryset):
     updated = queryset.update(status=LeadStatus.WON)
-    messages.success(request, f"Оновлено: {updated}")
+    messages.success(request, f"Обновлено: {updated}")
 
 
-@admin.action(description="Позначити «Відхилена»")
+@admin.action(description="Отметить «Отклонена»")
 def mark_lost(modeladmin, request, queryset):
     updated = queryset.update(status=LeadStatus.LOST)
-    messages.success(request, f"Оновлено: {updated}")
+    messages.success(request, f"Обновлено: {updated}")
 
 
-@admin.action(description="Експорт у CSV")
+@admin.action(description="Экспорт в CSV")
 def export_csv(modeladmin, request, queryset):
     response = HttpResponse(content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = 'attachment; filename="leads.csv"'

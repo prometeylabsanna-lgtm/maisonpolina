@@ -16,7 +16,6 @@
 
 {% block content %}
 <div class="site-content-editor"
-     x-data
      x-on:cms-lang-changed.window="window.cmsResizeTinyMCE && window.cmsResizeTinyMCE()">
   <div class="site-content-editor__head">
     <div>
@@ -35,19 +34,15 @@
            role="tablist"
            aria-label="Язык редактирования">
         <button type="button"
-                class="cms-lang-tab"
+                class="cms-lang-tab is-active"
                 role="tab"
                 data-cms-lang="ru"
-                :class="$store.cmsLang.current === 'ru' && 'is-active'"
-                :aria-selected="($store.cmsLang.current === 'ru').toString()"
-                @click="$store.cmsLang.set('ru')">RU</button>
+                aria-selected="true">RU</button>
         <button type="button"
                 class="cms-lang-tab"
                 role="tab"
                 data-cms-lang="en"
-                :class="$store.cmsLang.current === 'en' && 'is-active'"
-                :aria-selected="($store.cmsLang.current === 'en').toString()"
-                @click="$store.cmsLang.set('en')">EN</button>
+                aria-selected="false">EN</button>
       </div>
       <a href="{{ preview_url }}"
          target="_blank"
@@ -105,13 +100,13 @@
               <div class="site-content-editor__field">
                 <p class="site-content-editor__field-label">{{ row.label }}</p>
                 <div class="cms-lang-panes">
-                  <div class="cms-lang-pane" x-show="$store.cmsLang.current === 'ru'" x-cloak>
+                  <div class="cms-lang-pane cms-lang-pane--ru">
                     {% if row.ru %}
                       {{ row.ru.as_widget }}
                       {% if row.ru.errors %}<div class="text-sm text-red-500">{{ row.ru.errors }}</div>{% endif %}
                     {% endif %}
                   </div>
-                  <div class="cms-lang-pane" x-show="$store.cmsLang.current === 'en'" x-cloak>
+                  <div class="cms-lang-pane cms-lang-pane--en">
                     {% if row.en %}
                       {{ row.en.as_widget }}
                       {% if row.en.errors %}<div class="text-sm text-red-500">{{ row.en.errors }}</div>{% endif %}

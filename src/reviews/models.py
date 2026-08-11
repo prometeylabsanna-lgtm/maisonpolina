@@ -26,8 +26,8 @@ class Testimonial(BilingualTextMixin, models.Model):
 
     class Meta:
         ordering = ["order", "-created_at", "pk"]
-        verbose_name = "Відгук"
-        verbose_name_plural = "Відгуки"
+        verbose_name = "Отзыв"
+        verbose_name_plural = "Отзывы"
 
     def __str__(self) -> str:
         return self.author_name_ru or self.author_name_en or f"#{self.pk}"

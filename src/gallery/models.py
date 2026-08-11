@@ -22,7 +22,7 @@ class GalleryPhoto(BilingualTextMixin, models.Model):
 
     class Meta:
         ordering = ["order", "pk"]
-        verbose_name = "Фото галереї"
+        verbose_name = "Фото галереи"
         verbose_name_plural = "Галерея"
 
     def __str__(self) -> str:

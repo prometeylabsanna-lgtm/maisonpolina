@@ -13,14 +13,15 @@ from src.core.models import SeoMeta, SiteSettings
 class SiteSettingsAdmin(ModelAdmin):
     fieldsets = (
         (
-            "Основне",
+            "Основное",
             {
                 "fields": (
                     "brand_name",
                     "logo",
                     "get_logo_preview",
                     "copyright_name",
-                )
+                ),
+                "description": "Название бренда и логотип, которые видят посетители.",
             },
         ),
         (
@@ -28,6 +29,7 @@ class SiteSettingsAdmin(ModelAdmin):
             {
                 "classes": ["tab"],
                 "fields": ("location_ru",),
+                "description": "Адрес / локация на русском.",
             },
         ),
         (
@@ -35,17 +37,27 @@ class SiteSettingsAdmin(ModelAdmin):
             {
                 "classes": ["tab"],
                 "fields": ("location_en",),
+                "description": "Адрес / локация на английском.",
             },
         ),
-        ("Контакти", {"fields": ("phone", "email")}),
         (
-            "Соцмережі",
-            {"fields": ("telegram_url", "instagram_url", "whatsapp_url")},
+            "Контакты",
+            {
+                "fields": ("phone", "email"),
+                "description": "Телефон и почта для связи.",
+            },
+        ),
+        (
+            "Соцсети",
+            {
+                "fields": ("telegram_url", "instagram_url", "whatsapp_url"),
+                "description": "Ссылки на мессенджеры и соцсети.",
+            },
         ),
     )
     readonly_fields = ("get_logo_preview",)
 
-    @admin.display(description="Превʼю логотипу")
+    @admin.display(description="Превью логотипа")
     def get_logo_preview(self, obj):
         return image_preview(getattr(obj, "logo", None), size=96)
 
