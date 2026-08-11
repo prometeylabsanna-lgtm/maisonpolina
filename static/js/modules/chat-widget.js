@@ -10,6 +10,19 @@ function csrfToken() {
   );
 }
 
+function pageLanguage() {
+  return (document.documentElement.lang || "ru").slice(0, 2);
+}
+
+function langHeaders(extra = {}) {
+  const lang = pageLanguage();
+  return {
+    "Accept-Language": lang,
+    "X-Requested-Language": lang,
+    ...extra,
+  };
+}
+
 function getStored(key) {
   try {
     return localStorage.getItem(key) || "";
@@ -44,6 +57,7 @@ export function initChatWidget() {
   const toggle = root.querySelector("[data-chat-toggle]");
   const panel = root.querySelector("[data-chat-panel]");
   const closeBtn = root.querySelector("[data-chat-close]");
+  const backdrop = document.querySelector("[data-chat-backdrop]");
   const form = root.querySelector("[data-chat-form]");
   const input = root.querySelector("[data-chat-input]");
   const messagesEl = root.querySelector("[data-chat-messages]");
@@ -65,6 +79,8 @@ export function initChatWidget() {
     if (!panel || !toggle) return;
     panel.hidden = !open;
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    if (backdrop) backdrop.hidden = !open;
+    document.body.classList.toggle("is-chat-open", open);
     if (open) {
       if (badge) badge.hidden = true;
       ensureSession()
@@ -74,7 +90,7 @@ export function initChatWidget() {
           input?.focus({ preventScroll: true });
           scrollMessages(messagesEl);
         })
-        .catch(() => {});
+        .catch(() => { });
     } else {
       stopPoll();
     }
@@ -83,7 +99,7 @@ export function initChatWidget() {
   function startPoll() {
     stopPoll();
     pollTimer = window.setInterval(() => {
-      if (open) loadMessages(true).catch(() => {});
+      if (open) loadMessages(true).catch(() => { });
     }, POLL_MS);
   }
 
@@ -105,10 +121,10 @@ export function initChatWidget() {
 
       const res = await fetch(sessionUrl, {
         method: "POST",
-        headers: {
+        headers: langHeaders({
           "Content-Type": "application/x-www-form-urlencoded",
           "X-CSRFToken": csrfToken(),
-        },
+        }),
         body,
         credentials: "same-origin",
       });
@@ -139,7 +155,7 @@ export function initChatWidget() {
     }
 
     const res = await fetch(url.toString(), {
-      headers: { "HX-Request": "true" },
+      headers: langHeaders({ "HX-Request": "true" }),
       credentials: "same-origin",
     });
     if (!res.ok) return;
@@ -173,11 +189,11 @@ export function initChatWidget() {
     try {
       const res = await fetch(sendUrl, {
         method: "POST",
-        headers: {
+        headers: langHeaders({
           "Content-Type": "application/x-www-form-urlencoded",
           "X-CSRFToken": csrfToken(),
           "HX-Request": "true",
-        },
+        }),
         body,
         credentials: "same-origin",
       });
@@ -196,6 +212,7 @@ export function initChatWidget() {
 
   toggle?.addEventListener("click", () => setOpen(!open));
   closeBtn?.addEventListener("click", () => setOpen(false));
+  backdrop?.addEventListener("click", () => setOpen(false));
 
   document.addEventListener("click", (e) => {
     const opener = e.target.closest("[data-open-chat]");
@@ -214,7 +231,7 @@ export function initChatWidget() {
     if (!text) return;
     if (input) input.value = "";
     autoGrow();
-    sendMessage(text).catch(() => {});
+    sendMessage(text).catch(() => { });
   });
 
   function autoGrow() {
@@ -231,9 +248,8 @@ export function initChatWidget() {
     }
   });
 
-  // Warm session quietly so history is ready on open
   if (sessionId && userIdentifier) {
-    ensureSession().catch(() => {});
+    ensureSession().catch(() => { });
   }
 
   document.addEventListener("visibilitychange", () => {

@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "python manage.py collectstatic --noinput",
+  "buildCommand": "python manage.py compilemessages -l en -l ru && python manage.py collectstatic --noinput",
   "functions": {
     "wsgi.py": {
       "maxDuration": 60,

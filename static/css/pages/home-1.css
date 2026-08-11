@@ -4,44 +4,23 @@
   color: var(--color-text);
 }
 
-
-/* Банер */
+/* Mobile: фото зверху, текст і кнопка під ним (без блюру) */
 .hero__banner {
   position: relative;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: stretch;
   overflow: hidden;
   width: 100%;
-  min-height: max(560px, 150vw);
+  min-height: 0;
   background-color: var(--color-floral);
 }
 
-/*
-  Темна смуга під стрічку (низ банера).
-  Раніше пік темряви був на 62–78% висоти оверлею = ВИЩЕ стрічки;
-  стрічка сиділа в зоні освітлення → виглядало навпаки + різкий стик.
-*/
 .hero__banner::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: clamp(160px, 22vw, 260px);
-  z-index: 4;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgb(var(--color-floral-rgb) / 0) 0%,
-    rgb(28 5 9 / 0.22) 22%,
-    rgb(18 3 6 / 0.55) 42%,
-    rgb(14 2 4 / 0.86) 68%,
-    #0e0204 88%,
-    #0e0204 100%
-  );
+  content: none;
+  display: none;
 }
 
-/* Full-bleed підкладка саме під рядок стрічки */
 .hero__strip::before {
   content: "";
   position: absolute;
@@ -56,29 +35,23 @@
   background: #0e0204;
 }
 
-/* Фон героя: velvet; низ лишає місце для темної смуги стрічки */
 .hero__bg {
   position: absolute;
   inset: 0;
+  z-index: 0;
   background-color: var(--color-floral);
   background-image:
-    radial-gradient(
-      ellipse 75% 70% at 72% 40%,
+    radial-gradient(ellipse 75% 70% at 72% 40%,
       rgb(96 22 30 / 0.35) 0%,
-      transparent 68%
-    ),
-    radial-gradient(
-      ellipse 60% 75% at 16% 42%,
+      transparent 68%),
+    radial-gradient(ellipse 60% 75% at 16% 42%,
       rgb(22 3 6 / 0.45) 0%,
-      transparent 65%
-    ),
-    linear-gradient(
-      180deg,
+      transparent 65%),
+    linear-gradient(180deg,
       rgb(22 3 6 / 0.5) 0%,
       transparent 24%,
       transparent 70%,
-      rgb(var(--color-floral-rgb) / 0.35) 100%
-    ),
+      rgb(var(--color-floral-rgb) / 0.35) 100%),
     var(--bg-depth);
   background-size:
     100% 100%,
@@ -102,71 +75,27 @@
     var(--bg-depth-blend);
 }
 
-.hero__bg::before {
-  content: none;
-  display: none;
-}
-
+.hero__bg::before,
 .hero__bg::after {
   content: none;
   display: none;
 }
 
-/* Портрет — еліптичний злив (не прямокутна «рамка») */
 .hero__media {
-  position: absolute;
-  top: calc(var(--header-h) + var(--safe-top) - 8px);
-  right: max(-4%, env(safe-area-inset-right, 0px) - 2vw);
-  bottom: clamp(0px, 1vw, 12px);
-  left: auto;
-  width: clamp(320px, 82vw, 560px);
+  position: relative;
   z-index: 1;
-  pointer-events: none;
-  overflow: visible;
+  flex: 0 0 auto;
+  width: 100%;
+  height: min(68svh, 520px);
+  min-height: 280px;
+  margin: 0;
+  overflow: hidden;
   background: transparent;
-  -webkit-mask-image: radial-gradient(
-    ellipse 78% 82% at 55% 38%,
-    #000 28%,
-    rgb(0 0 0 / 0.85) 48%,
-    rgb(0 0 0 / 0.35) 68%,
-    transparent 82%
-  );
-  mask-image: radial-gradient(
-    ellipse 78% 82% at 55% 38%,
-    #000 28%,
-    rgb(0 0 0 / 0.85) 48%,
-    rgb(0 0 0 / 0.35) 68%,
-    transparent 82%
-  );
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
-/* Радіальний злив у колір фону — без прямокутних градієнтів */
-.hero__media::before {
-  content: "";
-  position: absolute;
-  inset: -8%;
-  z-index: 2;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      ellipse 70% 75% at 55% 36%,
-      transparent 32%,
-      rgb(var(--color-floral-rgb) / 0.25) 58%,
-      rgb(var(--color-floral-rgb) / 0.75) 78%,
-      rgb(var(--color-floral-rgb) / 0.95) 100%
-    ),
-    linear-gradient(
-      0deg,
-      rgb(26 4 8 / 0.85) 0%,
-      rgb(var(--color-floral-rgb) / 0.35) 28%,
-      transparent 55%
-    );
-}
-
+.hero__media::before,
 .hero__media::after {
   content: none;
   display: none;
@@ -177,55 +106,20 @@
 .hero__cutout,
 .hero__portrait {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  left: 0;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   max-width: none;
   margin: 0;
   background: transparent;
-  object-fit: contain;
-  object-position: center top;
-  -webkit-transform: scale(1.06);
-  transform: scale(1.06);
-  -webkit-transform-origin: center top;
-  transform-origin: center top;
+  object-fit: cover;
+  object-position: center 12%;
+  -webkit-transform: none;
+  transform: none;
 }
 
-/* Злив банера зліва під текст — гасне до низу, щоб не світив стик */
-.hero__shade-x {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    var(--color-hero-mid) 0%,
-    var(--color-hero-mid) 34%,
-    rgb(var(--color-hero-mid-rgb) / 0.7) 44%,
-    rgb(var(--color-hero-mid-rgb) / 0.28) 52%,
-    rgb(var(--color-hero-mid-rgb) / 0) 62%
-  );
-  -webkit-mask-image: linear-gradient(
-    180deg,
-    #000 0%,
-    #000 58%,
-    rgb(0 0 0 / 0.45) 78%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    180deg,
-    #000 0%,
-    #000 58%,
-    rgb(0 0 0 / 0.45) 78%,
-    transparent 100%
-  );
-}
-
-/* Верхній shade вимкнено — не затемнює голову на фото */
+.hero__shade-x,
 .hero__shade-y {
   content: none;
   display: none;
@@ -235,35 +129,32 @@
 .hero__content {
   position: relative;
   z-index: 3;
+  flex: 0 0 auto;
   width: min(var(--container-max), calc(100% - 40px));
   margin: 0 auto;
-  /* верхній відступ звільняє зону хедера, нижній тримає текст вище смуги */
-  padding: calc(var(--header-h) + var(--safe-top) + 10px) 0
-    clamp(76px, 16vw, 96px);
+  padding: 28px 0 20px;
   display: flex;
   justify-content: flex-start;
 }
 
 .hero__copy {
-  max-width: min(58%, 280px);
+  max-width: 100%;
   text-align: left;
 }
 
 .hero__title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(28px, 7.2vw, 84px);
+  font-size: clamp(28px, 8.2vw, 40px);
   line-height: 0.98;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-champagne-soft);
-  background-image: linear-gradient(
-    165deg,
-    #f0e2cc 0%,
-    var(--color-champagne-soft) 28%,
-    var(--color-champagne) 58%,
-    var(--color-champagne-deep) 100%
-  );
+  background-image: linear-gradient(165deg,
+      #f0e2cc 0%,
+      var(--color-champagne-soft) 28%,
+      var(--color-champagne) 58%,
+      var(--color-champagne-deep) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -283,13 +174,13 @@
 }
 
 .hero__lead {
-  margin-top: 24px;
-  font-size: clamp(16px, 1.9vw, 20px);
-  line-height: 1.85;
+  margin-top: 20px;
+  font-size: clamp(16px, 4.2vw, 18px);
+  line-height: 1.75;
   letter-spacing: 0.02em;
   font-weight: 400;
   color: var(--color-text-muted);
-  max-width: 34ch;
+  max-width: 36ch;
   text-shadow: none;
 }
 
@@ -298,7 +189,7 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 14px;
-  margin-top: 28px;
+  margin-top: 24px;
 }
 
 .hero__actions .btn {
@@ -317,17 +208,13 @@
   text-align: center;
 }
 
-/* Смуга лежить на фото, над нижнім краєм банера: теглайн, тонка риска,
-   посилання на послуги. На телефоні — рядок під рядком, від планшета — один
-   рядок із рискою між ними. */
 .hero__strip {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: clamp(16px, 4vw, 22px);
+  position: relative;
   z-index: 5;
+  flex: 0 0 auto;
   width: min(var(--container-max), calc(100% - 40px));
-  margin-inline: auto;
+  margin: 0 auto;
+  padding: 18px 0 calc(22px + var(--safe-bottom));
   display: grid;
   justify-items: start;
   gap: 10px;
@@ -365,128 +252,159 @@
   color: var(--color-interactive-hover);
 }
 
+/* Tablet+: оверлей як на десктопі; фото впритул до низу з блюром */
 @media (min-width: 768px) {
   .hero__banner {
+    flex-direction: row;
+    align-items: flex-end;
     aspect-ratio: 4 / 3;
     min-height: 680px;
     max-height: 96svh;
-    align-items: center;
   }
+
+  .hero__banner::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: clamp(160px, 22vw, 260px);
+    z-index: 4;
+    pointer-events: none;
+    background: linear-gradient(180deg,
+        rgb(var(--color-floral-rgb) / 0) 0%,
+        rgb(28 5 9 / 0.22) 22%,
+        rgb(18 3 6 / 0.55) 42%,
+        rgb(14 2 4 / 0.86) 68%,
+        #0e0204 88%,
+        #0e0204 100%);
+  }
+
   .hero__media {
-    top: calc(var(--header-h) + var(--safe-top) - 4px);
-    left: auto;
+    position: absolute;
+    top: auto;
     right: max(-2%, env(safe-area-inset-right, 0px) - 1vw);
-    bottom: clamp(0px, 1vw, 12px);
-    width: min(48%, 620px);
+    bottom: 0;
+    left: auto;
+    width: min(52%, 640px);
+    height: min(94%, calc(96svh - var(--header-h)));
+    min-height: 0;
+    max-height: none;
     padding-top: 0;
     overflow: visible;
-    background: transparent;
-    -webkit-mask-image: radial-gradient(
-      ellipse 72% 80% at 58% 36%,
-      #000 30%,
-      rgb(0 0 0 / 0.88) 50%,
-      rgb(0 0 0 / 0.4) 70%,
-      transparent 84%
-    );
-    mask-image: radial-gradient(
-      ellipse 72% 80% at 58% 36%,
-      #000 30%,
-      rgb(0 0 0 / 0.88) 50%,
-      rgb(0 0 0 / 0.4) 70%,
-      transparent 84%
-    );
-    -webkit-mask-composite: source-over;
-    mask-composite: add;
+    -webkit-mask-image: radial-gradient(ellipse 72% 80% at 58% 42%,
+        #000 30%,
+        rgb(0 0 0 / 0.88) 50%,
+        rgb(0 0 0 / 0.4) 70%,
+        transparent 84%);
+    mask-image: radial-gradient(ellipse 72% 80% at 58% 42%,
+        #000 30%,
+        rgb(0 0 0 / 0.88) 50%,
+        rgb(0 0 0 / 0.4) 70%,
+        transparent 84%);
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
   }
+
   .hero__media::before {
+    content: "";
+    display: block;
+    position: absolute;
     inset: -6%;
+    z-index: 2;
+    pointer-events: none;
     background:
-      radial-gradient(
-        ellipse 68% 74% at 58% 34%,
+      radial-gradient(ellipse 68% 74% at 58% 40%,
         transparent 34%,
         rgb(var(--color-floral-rgb) / 0.22) 58%,
         rgb(var(--color-floral-rgb) / 0.72) 78%,
-        rgb(var(--color-floral-rgb) / 0.95) 100%
-      ),
-      linear-gradient(
-        0deg,
+        rgb(var(--color-floral-rgb) / 0.95) 100%),
+      linear-gradient(0deg,
         rgb(26 4 8 / 0.8) 0%,
         rgb(var(--color-floral-rgb) / 0.3) 26%,
-        transparent 52%
-      );
+        transparent 52%);
   }
-  .hero__media::after {
-    content: none;
-    display: none;
-  }
-  .hero__media img,.hero__media video,.hero__cutout,.hero__portrait {
-    right: 0;
-    bottom: 0;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    margin: 0;
+
+  .hero__media img,
+  .hero__media video,
+  .hero__cutout,
+  .hero__portrait {
     object-fit: contain;
-    object-position: center top;
+    object-position: center bottom;
     -webkit-transform: scale(1.05);
     transform: scale(1.05);
-    -webkit-transform-origin: center top;
-    transform-origin: center top;
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
   }
+
   .hero__shade-x {
-    background: linear-gradient(
-      90deg,
-      var(--color-hero-mid) 0%,
-      var(--color-hero-mid) 42%,
-      rgb(var(--color-hero-mid-rgb) / 0.55) 52%,
-      rgb(var(--color-hero-mid-rgb) / 0.18) 58%,
-      rgb(var(--color-hero-mid-rgb) / 0) 66%
-    );
-    -webkit-mask-image: linear-gradient(
-      180deg,
-      #000 0%,
-      #000 58%,
-      rgb(0 0 0 / 0.45) 78%,
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      180deg,
-      #000 0%,
-      #000 58%,
-      rgb(0 0 0 / 0.45) 78%,
-      transparent 100%
-    );
-  }
-  .hero__strip {
-    width: min(var(--container-max), calc(100% - 48px));
-    grid-template-columns: auto minmax(24px, 1fr) auto;
-    align-items: center;
-    gap: 20px;
-  }
-  .hero__strip-line {
+    content: "";
     display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(90deg,
+        var(--color-hero-mid) 0%,
+        var(--color-hero-mid) 42%,
+        rgb(var(--color-hero-mid-rgb) / 0.55) 52%,
+        rgb(var(--color-hero-mid-rgb) / 0.18) 58%,
+        rgb(var(--color-hero-mid-rgb) / 0) 66%);
+    -webkit-mask-image: linear-gradient(180deg,
+        #000 0%,
+        #000 58%,
+        rgb(0 0 0 / 0.45) 78%,
+        transparent 100%);
+    mask-image: linear-gradient(180deg,
+        #000 0%,
+        #000 58%,
+        rgb(0 0 0 / 0.45) 78%,
+        transparent 100%);
   }
-  .hero__strip-text,.hero__strip-link {
-    font-size: 15px;
-  }
+
   .hero__content {
     width: min(var(--container-max), calc(100% - 48px));
     padding: calc(var(--header-h) + 8px) 0 clamp(58px, 6vw, 76px);
+    margin-inline: auto;
   }
+
   .hero__copy {
     max-width: min(48%, 560px);
   }
+
+  .hero__title {
+    font-size: clamp(28px, 7.2vw, 84px);
+  }
+
   .hero__lead {
     max-width: 44ch;
     font-size: clamp(17px, 1.65vw, 21px);
     line-height: 1.85;
     letter-spacing: 0.02em;
   }
-}
 
+  .hero__strip {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(16px, 4vw, 22px);
+    width: min(var(--container-max), calc(100% - 48px));
+    margin-inline: auto;
+    padding: 0;
+    grid-template-columns: auto minmax(24px, 1fr) auto;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .hero__strip-line {
+    display: block;
+  }
+
+  .hero__strip-text,
+  .hero__strip-link {
+    font-size: 15px;
+  }
+}

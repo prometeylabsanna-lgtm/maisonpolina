@@ -309,7 +309,7 @@ msgstr "Privacy"
 
 #: templates/partials/footer.html:51
 msgid "конфиденциальности"
-msgstr "policy"
+msgstr "privacy"
 
 #: templates/partials/header.html:4
 msgid "Основная навигация"
@@ -327,6 +327,14 @@ msgstr "Language"
 #: templates/partials/lead-form.html:12
 msgid "Выбранная услуга:"
 msgstr "Selected service:"
+
+#: templates/partials/lead-form.html:37
+msgid "Согласен на обработку персональных данных и принимаю"
+msgstr "I agree to the processing of personal data and accept the"
+
+#: templates/partials/lead-form.html:38
+msgid "политику конфиденциальности"
+msgstr "privacy policy"
 
 #: templates/partials/lead-form.html:35
 #, python-format
@@ -367,10 +375,8 @@ msgstr ""
 
 #: templates/partials/review-modal.html:5
 #: templates/sections/testimonials.html:48
-#, fuzzy
-#| msgid "Оставить заявку"
 msgid "Оставить отзыв"
-msgstr "Send a request"
+msgstr "Leave a review"
 
 #: templates/partials/review-success.html:5
 msgid "Отзыв отправлен на модерацию и появится после проверки."

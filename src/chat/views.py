@@ -3,9 +3,11 @@ import logging
 import secrets
 import uuid
 
+from django.conf import settings
 from django.core.cache import cache
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.utils import translation
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
@@ -23,6 +25,25 @@ RATE_LIMIT = 30
 RATE_WINDOW = 3600
 MAX_TEXT = 2000
 SESSION_COOKIE = "chat_uid"
+_ALLOWED_LANGS = {code for code, _name in settings.LANGUAGES}
+
+
+def _activate_request_language(request: HttpRequest) -> str:
+    """API chat поза i18n_patterns — мову беремо з хедера сторінки."""
+    raw = (
+        request.headers.get("X-Requested-Language")
+        or request.COOKIES.get(settings.LANGUAGE_COOKIE_NAME)
+        or ""
+    ).strip().lower()
+    lang = raw[:2] if raw[:2] in _ALLOWED_LANGS else ""
+    if not lang:
+        lang = translation.get_language_from_request(request, check_path=False) or settings.LANGUAGE_CODE
+        lang = lang[:2]
+    if lang not in _ALLOWED_LANGS:
+        lang = settings.LANGUAGE_CODE
+    translation.activate(lang)
+    request.LANGUAGE_CODE = lang
+    return lang
 
 
 def _client_ip(request: HttpRequest) -> str:
@@ -78,8 +99,6 @@ def _get_active_session(
 @csrf_exempt
 @require_http_methods(["POST"])
 def telegram_webhook(request: HttpRequest) -> HttpResponse:
-    from django.conf import settings
-
     expected = (getattr(settings, "TELEGRAM_WEBHOOK_SECRET", "") or "").strip()
     provided = request.headers.get("X-Telegram-Bot-Api-Secret-Token", "")
     if not expected or not secrets.compare_digest(provided, expected):
@@ -106,6 +125,7 @@ def telegram_webhook(request: HttpRequest) -> HttpResponse:
 
 @require_http_methods(["POST"])
 def chat_session(request: HttpRequest) -> JsonResponse:
+    _activate_request_language(request)
     ip = _client_ip(request)
     if _rate_limited(ip, action="session"):
         return JsonResponse({"error": "rate_limited"}, status=429)
@@ -145,6 +165,7 @@ def chat_session(request: HttpRequest) -> JsonResponse:
 
 @require_http_methods(["POST"])
 def chat_send(request: HttpRequest) -> HttpResponse:
+    _activate_request_language(request)
     ip = _client_ip(request)
     if _rate_limited(ip, action="send"):
         return render(
@@ -200,6 +221,7 @@ def chat_send(request: HttpRequest) -> HttpResponse:
 
 @require_http_methods(["GET"])
 def chat_messages(request: HttpRequest) -> HttpResponse:
+    _activate_request_language(request)
     user_identifier = _user_identifier(request)
     session_id = _parse_uuid(request.GET.get("session_id"))
     after_id = request.GET.get("after_id", "")

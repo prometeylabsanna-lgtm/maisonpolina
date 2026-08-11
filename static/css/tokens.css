@@ -81,18 +81,14 @@
   --color-bg-edge-rgb: 58 10 15;
 
   /* Subtle depth — same hue family as velvet ref (no muddy brown) */
-  --bg-atmosphere: radial-gradient(
-    ellipse 90% 80% at 58% 42%,
-    #5a1218 0%,
-    var(--color-floral) 48%,
-    #3f0b10 100%
-  );
-  --bg-atmosphere-alt: radial-gradient(
-    ellipse 90% 80% at 50% 40%,
-    #551018 0%,
-    var(--color-floral) 52%,
-    #3a0a0f 100%
-  );
+  --bg-atmosphere: radial-gradient(ellipse 90% 80% at 58% 42%,
+      #5a1218 0%,
+      var(--color-floral) 48%,
+      #3f0b10 100%);
+  --bg-atmosphere-alt: radial-gradient(ellipse 90% 80% at 50% 40%,
+      #551018 0%,
+      var(--color-floral) 52%,
+      #3a0a0f 100%);
 
   /* --------------------------------------------------------------------------
      Accents
@@ -116,51 +112,41 @@
   --color-metal-bright: #ead9c0;
   --color-metal-deep: #b09572;
   --color-metal-rgb: 202 182 149;
-  --metal-tip: linear-gradient(
-    90deg,
-    rgb(var(--color-metal-rgb) / 0.08) 0%,
-    var(--color-metal-deep) 16%,
-    var(--color-metal-bright) 38%,
-    var(--color-metal-soft) 52%,
-    var(--color-metal) 68%,
-    var(--color-metal-deep) 88%,
-    rgb(var(--color-metal-rgb) / 0.1) 100%
-  );
-  --metal-tip-end: linear-gradient(
-    90deg,
-    rgb(var(--color-metal-rgb) / 0.06) 0%,
-    var(--color-metal-deep) 20%,
-    var(--color-metal) 48%,
-    var(--color-metal-bright) 78%,
-    var(--color-metal-soft) 92%,
-    rgb(var(--color-metal-rgb) / 0.15) 100%
-  );
-  --metal-tip-start: linear-gradient(
-    90deg,
-    rgb(var(--color-metal-rgb) / 0.15) 0%,
-    var(--color-metal-soft) 8%,
-    var(--color-metal-bright) 22%,
-    var(--color-metal) 55%,
-    var(--color-metal-deep) 84%,
-    rgb(var(--color-metal-rgb) / 0.06) 100%
-  );
+  --metal-tip: linear-gradient(90deg,
+      rgb(var(--color-metal-rgb) / 0.08) 0%,
+      var(--color-metal-deep) 16%,
+      var(--color-metal-bright) 38%,
+      var(--color-metal-soft) 52%,
+      var(--color-metal) 68%,
+      var(--color-metal-deep) 88%,
+      rgb(var(--color-metal-rgb) / 0.1) 100%);
+  --metal-tip-end: linear-gradient(90deg,
+      rgb(var(--color-metal-rgb) / 0.06) 0%,
+      var(--color-metal-deep) 20%,
+      var(--color-metal) 48%,
+      var(--color-metal-bright) 78%,
+      var(--color-metal-soft) 92%,
+      rgb(var(--color-metal-rgb) / 0.15) 100%);
+  --metal-tip-start: linear-gradient(90deg,
+      rgb(var(--color-metal-rgb) / 0.15) 0%,
+      var(--color-metal-soft) 8%,
+      var(--color-metal-bright) 22%,
+      var(--color-metal) 55%,
+      var(--color-metal-deep) 84%,
+      rgb(var(--color-metal-rgb) / 0.06) 100%);
 
   --color-btn: var(--color-champagne);
   --color-btn-hover: var(--color-champagne-hover);
   --color-btn-text: var(--text-on-gold);
   --color-btn-rgb: var(--color-champagne-rgb);
-  --btn-fill: linear-gradient(
-    180deg,
-    var(--color-champagne-soft) 0%,
-    var(--color-champagne) 48%,
-    var(--color-champagne-deep) 100%
-  );
-  --btn-fill-hover: linear-gradient(
-    180deg,
-    #e8d7c0 0%,
-    var(--color-champagne-soft) 45%,
-    var(--color-champagne) 100%
-  );
+  --btn-fill: linear-gradient(180deg,
+      var(--color-champagne-soft) 0%,
+      var(--color-champagne) 48%,
+      var(--color-champagne-deep) 100%);
+  --btn-fill-hover: linear-gradient(180deg,
+      #e8d7c0 0%,
+      var(--color-champagne-soft) 45%,
+      var(--color-champagne) 100%);
 
   --btn-border-width: 1px;
 
@@ -195,7 +181,8 @@
 
   --z-header: 100;
   --z-dock: 95;
-  --z-mobile-nav: 110;
+  --z-chat: 120;
+  --z-mobile-nav: 130;
   --z-modal: 400;
   --z-lightbox: 450;
 
@@ -209,21 +196,15 @@
   --texture-velvet: url("/static/images/bg-velvet.png");
   /* CSS micro-nap (styles only) — fine, crisp, low contrast */
   --texture-velvet-css:
-    repeating-linear-gradient(
-      0deg,
+    repeating-linear-gradient(0deg,
       rgb(255 220 220 / 0.025) 0 1px,
-      transparent 1px 2px
-    ),
-    repeating-linear-gradient(
-      90deg,
+      transparent 1px 2px),
+    repeating-linear-gradient(90deg,
       rgb(0 0 0 / 0.045) 0 1px,
-      transparent 1px 2px
-    ),
-    repeating-linear-gradient(
-      45deg,
+      transparent 1px 2px),
+    repeating-linear-gradient(45deg,
       transparent 0 3px,
-      rgb(255 200 200 / 0.02) 3px 4px
-    );
+      rgb(255 200 200 / 0.02) 3px 4px);
 
   /* Tile small = finer perceived grain; atmosphere under for soft depth */
   --bg-depth:
