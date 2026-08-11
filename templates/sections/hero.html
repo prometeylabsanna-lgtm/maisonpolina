@@ -33,7 +33,14 @@
       </div>
     </div>
     <div class="hero__strip" data-enter="6">
-      <span class="hero__strip-text">{% block_plain "home" "hero.tagline" %}</span>
+      <div class="hero__strip-marquee">
+        <div class="hero__strip-track">
+          <span class="hero__strip-text">{% block_plain "home" "hero.tagline" %}</span>
+          <span class="hero__strip-sep" aria-hidden="true">·</span>
+          <span class="hero__strip-text" aria-hidden="true">{% block_plain "home" "hero.tagline" %}</span>
+          <span class="hero__strip-sep" aria-hidden="true">·</span>
+        </div>
+      </div>
       <span class="hero__strip-line" aria-hidden="true"></span>
       <a class="hero__strip-link" href="#services">{% block_plain "home" "hero.cta_secondary" %}</a>
     </div>

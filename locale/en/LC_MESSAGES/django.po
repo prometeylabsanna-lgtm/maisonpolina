@@ -123,31 +123,25 @@ msgid "Укажите телефон или e-mail"
 msgstr "Please provide a phone or e-mail"
 
 #: src/reviews/forms.py:16 templates/partials/review-form.html:43
-#, fuzzy
-#| msgid "Отзывы"
 msgid "Отзыв"
-msgstr "Reviews"
+msgstr "Review"
 
 #: src/reviews/forms.py:19
-#, fuzzy
-#| msgid "Напишите сообщение — ответим в ближайшее время."
 msgid "Напишите чуть подробнее — минимум 10 символов"
-msgstr "Send a message — we will reply shortly."
+msgstr "Please write a bit more — at least 10 characters"
 
 #: src/reviews/forms.py:25 templates/partials/review-form.html:21
 #: templates/partials/review-form.html:22
 msgid "Оценка"
-msgstr ""
+msgstr "Rating"
 
 #: src/reviews/forms.py:27 src/reviews/forms.py:28
 msgid "Выберите оценку от 1 до 5"
-msgstr ""
+msgstr "Choose a rating from 1 to 5"
 
 #: src/reviews/forms.py:29
-#, fuzzy
-#| msgid "Введите сообщение…"
 msgid "Выберите оценку"
-msgstr "Type a message…"
+msgstr "Choose a rating"
 
 #: templates/404.html:19
 msgid "Страница не найдена. Вернитесь на главную."
@@ -371,7 +365,7 @@ msgstr "Mobile navigation"
 #: templates/partials/review-form.html:29
 #, python-format
 msgid "%(n)s из 5"
-msgstr ""
+msgstr "%(n)s of 5"
 
 #: templates/partials/review-modal.html:5
 #: templates/sections/testimonials.html:48
@@ -380,7 +374,7 @@ msgstr "Leave a review"
 
 #: templates/partials/review-success.html:5
 msgid "Отзыв отправлен на модерацию и появится после проверки."
-msgstr ""
+msgstr "Your review has been submitted for moderation and will appear after approval."
 
 #: templates/sections/formats.html:42
 msgid "Чаще всего"
@@ -483,7 +477,7 @@ msgstr "Previous testimonial"
 #: templates/sections/testimonials.html:17
 #, python-format
 msgid "Оценка %(n)s из 5"
-msgstr ""
+msgstr "Rating %(n)s of 5"
 
 #: templates/sections/testimonials.html:36
 msgid "Следующий отзыв"
