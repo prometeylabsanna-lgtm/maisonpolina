@@ -1,11 +1,57 @@
-/* Changelist filters above content (dropdown row). */
+/* Changelist filters + search on one control baseline. */
+
+.changelist-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.changelist-toolbar__search {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1 1 16rem;
+  min-width: 0;
+  max-width: 24rem;
+}
+
+/* Match filter label height so search lines up with selects */
+.changelist-toolbar__search-label {
+  display: block;
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: transparent;
+  user-select: none;
+  pointer-events: none;
+}
+
+.changelist-toolbar__search #toolbar {
+  width: 100%;
+}
+
+.changelist-toolbar__search #toolbar > form > div {
+  box-sizing: border-box;
+  height: 38px;
+  min-height: 38px;
+}
 
 .changelist-filter-top {
-  align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .changelist-filter-top__item {
   flex: 1 1 10rem;
+  min-width: 10rem;
+  max-width: 100%;
 }
 
 .changelist-filter-top__item > div {
@@ -24,17 +70,63 @@
   margin-bottom: 0.25rem;
 }
 
+.changelist-filter-top select,
+.changelist-filter-top .select2-container,
+.changelist-filter-top .select2-container .select2-selection--single {
+  box-sizing: border-box;
+  height: 38px;
+  min-height: 38px;
+}
+
+.changelist-filter-top .select2-container .select2-selection--single {
+  display: flex;
+  align-items: center;
+}
+
+.changelist-filter-top__submit {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  box-sizing: border-box;
+  height: 38px;
+  min-height: 38px;
+  margin: 0;
+  padding-inline: 0.85rem;
+  line-height: 1;
+}
+
 @media (max-width: 639px) {
+  .changelist-toolbar__search {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+
   .changelist-filter-top__item {
     flex: 1 1 100%;
     min-width: 0;
-    max-width: 100%;
+  }
+
+  .changelist-filter-top__submit {
+    width: 100%;
   }
 }
 
 @supports (-webkit-touch-callout: none) {
   .changelist-filter-top select,
-  .changelist-filter-top .select2-container {
+  .changelist-filter-top .select2-container,
+  .changelist-toolbar__search #toolbar > form > div {
     font-size: 16px;
+  }
+
+  .changelist-filter-top__submit {
+    min-height: 44px;
+    height: 44px;
+  }
+
+  .changelist-toolbar__search #toolbar > form > div,
+  .changelist-filter-top select,
+  .changelist-filter-top .select2-container,
+  .changelist-filter-top .select2-container .select2-selection--single {
+    height: 44px;
+    min-height: 44px;
   }
 }

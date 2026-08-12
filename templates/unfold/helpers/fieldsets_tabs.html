@@ -5,10 +5,10 @@
         {% with active_tab=tabs|tabs_active %}
             <div class="{% fieldset_rows_classes %}" x-data="{ activeFieldsetTab: '{{ active_tab }}'}" x-show="activeTab == 'general'">
                 <div class="admin-fieldset-tabs-wrap {% if adminform.model_admin.compressed_fields %}border-b border-base-200 border-dashed dark:border-base-800{% endif %}">
-                    <p class="admin-fieldset-tabs__label">Язык версии</p>
+                    <p class="admin-fieldset-tabs__label">Язык на сайте</p>
                     <nav class="admin-fieldset-tabs"
                          role="tablist"
-                         aria-label="Язык версии">
+                         aria-label="Язык на сайте">
                         {% for fieldset in tabs %}
                             <a role="tab"
                                href="#fieldset-{{ fieldset.name|unicoded_slugify }}"

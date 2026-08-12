@@ -55,16 +55,19 @@
 
                     {% spaceless %}
                         <div class="flex flex-col gap-3 mb-4 empty:hidden lg:border lg:border-base-200 lg:dark:border-base-800 lg:-mb-8 lg:p-3 lg:pb-11 lg:rounded-t-default">
-                            <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+                            <div class="changelist-toolbar">
                                 {% block search %}
-                                    {% search_form cl %}
+                                    <div class="changelist-toolbar__search">
+                                        <span class="changelist-toolbar__search-label" aria-hidden="true">Поиск</span>
+                                        {% search_form cl %}
+                                    </div>
                                 {% endblock %}
 
                                 {% if cl.has_filters %}
                                     <form
                                         id="changelist-filter-top"
                                         method="get"
-                                        class="changelist-filter-top flex flex-col gap-3 grow sm:flex-row sm:flex-wrap sm:items-end"
+                                        class="changelist-filter-top"
                                     >
                                         {% if cl.query %}
                                             <input type="hidden" name="q" value="{{ cl.query }}" />
@@ -73,11 +76,11 @@
                                             <input type="hidden" name="o" value="{{ cl.params.o }}" />
                                         {% endif %}
                                         {% for spec in cl.filter_specs %}
-                                            <div class="changelist-filter-top__item min-w-[10rem] max-w-full sm:min-w-[12rem]">
+                                            <div class="changelist-filter-top__item">
                                                 {% admin_list_filter cl spec %}
                                             </div>
                                         {% endfor %}
-                                        <button type="submit" class="changelist-filter-top__submit bg-primary-600 border border-primary-600 cursor-pointer font-medium h-[38px] px-3 rounded-default text-sm text-white hover:bg-primary-600/80">
+                                        <button type="submit" class="changelist-filter-top__submit bg-primary-600 border border-primary-600 cursor-pointer font-medium px-3 rounded-default text-sm text-white hover:bg-primary-600/80">
                                             Применить
                                         </button>
                                     </form>
