@@ -19,10 +19,10 @@ class PersonalityItemForm(forms.ModelForm):
             "is_active",
         )
         labels = {
-            "label_ru": "Название (RU)",
-            "label_en": "Название (EN)",
-            "value_ru": "Значение (RU)",
-            "value_en": "Значение (EN)",
+            "label_ru": "Название",
+            "label_en": "Название",
+            "value_ru": "Значение",
+            "value_en": "Значение",
             "order": "Порядок",
             "is_active": "Активно",
         }

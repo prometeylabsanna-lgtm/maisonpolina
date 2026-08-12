@@ -10,7 +10,7 @@ from src.gallery.models import GalleryPhoto
 
 class GalleryPhotoForm(forms.ModelForm):
     image = AdminWebPImageField(
-        label="Изображение",
+        label="Фото",
         required=False,
         widget=UnfoldAdminFileFieldWidget(),
         help_text=image_help("gallery.image"),
@@ -30,13 +30,13 @@ class GalleryPhotoForm(forms.ModelForm):
             "is_active",
         )
         labels = {
-            "image": "Изображение",
-            "alt_ru": "Alt (RU)",
-            "alt_en": "Alt (EN)",
-            "caption_ru": "Подпись (RU)",
-            "caption_en": "Подпись (EN)",
-            "col_span": "Ширина (col)",
-            "row_span": "Высота (row)",
+            "image": "Фото",
+            "alt_ru": "Описание фото",
+            "alt_en": "Описание фото",
+            "caption_ru": "Подпись",
+            "caption_en": "Подпись",
+            "col_span": "Ширина",
+            "row_span": "Высота",
             "order": "Порядок",
             "is_active": "Активно",
         }

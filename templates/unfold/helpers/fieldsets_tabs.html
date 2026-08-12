@@ -1,0 +1,43 @@
+{% load unfold %}
+
+{% with tabs=adminform|tabs %}
+    {% if tabs %}
+        {% with active_tab=tabs|tabs_active %}
+            <div class="{% fieldset_rows_classes %}" x-data="{ activeFieldsetTab: '{{ active_tab }}'}" x-show="activeTab == 'general'">
+                <div class="admin-fieldset-tabs-wrap {% if adminform.model_admin.compressed_fields %}border-b border-base-200 border-dashed dark:border-base-800{% endif %}">
+                    <p class="admin-fieldset-tabs__label">Язык версии</p>
+                    <nav class="admin-fieldset-tabs"
+                         role="tablist"
+                         aria-label="Язык версии">
+                        {% for fieldset in tabs %}
+                            <a role="tab"
+                               href="#fieldset-{{ fieldset.name|unicoded_slugify }}"
+                               class="admin-fieldset-tabs__tab"
+                               x-on:click.prevent="activeFieldsetTab = '{{ fieldset.name|unicoded_slugify }}'"
+                               x-bind:class="activeFieldsetTab == '{{ fieldset.name|unicoded_slugify }}' && 'is-active'"
+                               x-bind:aria-selected="activeFieldsetTab == '{{ fieldset.name|unicoded_slugify }}' ? 'true' : 'false'">
+                                {{ fieldset.name }}
+
+                                {% with error_count=fieldset|tabs_errors_count %}
+                                    {% if error_count > 0 %}
+                                        <span data-testid="error-count" class="bg-red-500 inline-flex font-semibold items-center justify-center leading-none rounded-full w-4 h-4 text-white relative text-center text-[11px] whitespace-nowrap uppercase">
+                                            {{ error_count }}
+                                        </span>
+                                    {% endif %}
+                                {% endwith %}
+                            </a>
+                        {% endfor %}
+                    </nav>
+                </div>
+
+                {% for fieldset in tabs %}
+                    <div class="tab-wrapper{% if fieldset.name %} fieldset-{{ fieldset.name|unicoded_slugify }}{% endif %}"
+                         id="fieldset-{{ fieldset.name|unicoded_slugify }}"
+                         x-show="activeFieldsetTab == '{{ fieldset.name|unicoded_slugify }}'">
+                        {% include 'admin/includes/fieldset.html' with stacked=1 %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endwith %}
+    {% endif %}
+{% endwith %}

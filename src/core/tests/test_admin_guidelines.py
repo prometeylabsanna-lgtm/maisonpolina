@@ -88,3 +88,8 @@ def test_admin_format_change_shows_image_hint(client, admin_user):
     assert "1200×900" in html
     assert "4:3" in html
     assert "Удобно до 36 символов" in html
+    assert "Title ru" not in html
+    assert ">Название<" in html or "Название" in html
+    assert "Метка" in html
+    assert "Описание" in html
+    assert "Цена" in html

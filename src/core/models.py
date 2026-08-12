@@ -43,20 +43,44 @@ def _angle_field(verbose_name: str, **kwargs):
 
 
 class SiteSettings(models.Model):
-    brand_name = models.CharField(max_length=128, default="MAISON POLINA")
-    logo = WebPImageField(upload_to="brand/", blank=True)
-    phone = models.CharField(max_length=64, blank=True, default="+380 95 472 7859")
-    email = models.EmailField(blank=True, default="hello@example.com")
-    telegram_url = models.URLField(blank=True, default="https://t.me/")
-    instagram_url = models.URLField(blank=True, default="https://instagram.com/")
-    whatsapp_url = models.URLField(blank=True, default="https://wa.me/")
-    copyright_name = models.CharField(max_length=128, default="MAISON POLINA")
-    location_ru = models.CharField(max_length=255, blank=True, default="ЖК «Нова Конча-Заспа»")
-    location_en = models.CharField(max_length=255, blank=True, default="Nova Koncha-Zaspa RC")
+    brand_name = models.CharField(
+        max_length=128, default="MAISON POLINA", verbose_name="Название бренда"
+    )
+    logo = WebPImageField(upload_to="brand/", blank=True, verbose_name="Логотип")
+    phone = models.CharField(
+        max_length=64, blank=True, default="+380 95 472 2029", verbose_name="Телефон"
+    )
+    email = models.EmailField(
+        blank=True, default="hello@example.com", verbose_name="Email"
+    )
+    telegram_url = models.URLField(
+        blank=True, default="https://t.me/", verbose_name="Telegram"
+    )
+    instagram_url = models.URLField(
+        blank=True, default="https://instagram.com/", verbose_name="Instagram"
+    )
+    whatsapp_url = models.URLField(
+        blank=True, default="https://wa.me/", verbose_name="WhatsApp"
+    )
+    copyright_name = models.CharField(
+        max_length=128, default="MAISON POLINA", verbose_name="Имя в копирайте"
+    )
+    location_ru = models.CharField(
+        max_length=255,
+        blank=True,
+        default="ЖК «Нова Конча-Заспа»",
+        verbose_name="Адрес / локация",
+    )
+    location_en = models.CharField(
+        max_length=255,
+        blank=True,
+        default="Nova Koncha-Zaspa RC",
+        verbose_name="Адрес / локация",
+    )
 
     class Meta:
-        verbose_name = "Налаштування сайту"
-        verbose_name_plural = "Налаштування сайту"
+        verbose_name = "Настройки сайта"
+        verbose_name_plural = "Настройки сайта"
 
     def __str__(self) -> str:
         return self.brand_name
@@ -151,10 +175,10 @@ class PersonalityItem(BilingualTextMixin, models.Model):
         db_index=True,
         verbose_name="Группа",
     )
-    label_ru = models.CharField(max_length=128, blank=True, verbose_name="Название RU")
-    label_en = models.CharField(max_length=128, blank=True, verbose_name="Название EN")
-    value_ru = models.CharField(max_length=255, blank=True, verbose_name="Значение RU")
-    value_en = models.CharField(max_length=255, blank=True, verbose_name="Значение EN")
+    label_ru = models.CharField(max_length=128, blank=True, verbose_name="Название")
+    label_en = models.CharField(max_length=128, blank=True, verbose_name="Название")
+    value_ru = models.CharField(max_length=255, blank=True, verbose_name="Значение")
+    value_en = models.CharField(max_length=255, blank=True, verbose_name="Значение")
     order = models.PositiveSmallIntegerField(default=0, verbose_name="Порядок")
     is_active = models.BooleanField(default=True, verbose_name="Активно")
 
@@ -176,12 +200,14 @@ class PersonalityItem(BilingualTextMixin, models.Model):
 
 
 class SeoMeta(BilingualTextMixin, models.Model):
-    page = models.CharField(max_length=64, unique=True)
-    title_ru = models.CharField(max_length=255, blank=True)
-    title_en = models.CharField(max_length=255, blank=True)
-    description_ru = models.TextField(blank=True)
-    description_en = models.TextField(blank=True)
-    og_image = WebPImageField(upload_to="seo/", blank=True)
+    page = models.CharField(max_length=64, unique=True, verbose_name="Страница")
+    title_ru = models.CharField(max_length=255, blank=True, verbose_name="Заголовок")
+    title_en = models.CharField(max_length=255, blank=True, verbose_name="Заголовок")
+    description_ru = models.TextField(blank=True, verbose_name="Описание")
+    description_en = models.TextField(blank=True, verbose_name="Описание")
+    og_image = WebPImageField(
+        upload_to="seo/", blank=True, verbose_name="Картинка для соцсетей"
+    )
 
     class Meta:
         verbose_name = "SEO"

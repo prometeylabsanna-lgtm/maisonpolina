@@ -24,8 +24,11 @@ class TelegramChatSession(models.Model):
         null=True,
         blank=True,
         unique=True,
+        verbose_name="ID чата Telegram",
     )
-    user_identifier = models.CharField(max_length=64, db_index=True)
+    user_identifier = models.CharField(
+        max_length=64, db_index=True, verbose_name="Пользователь"
+    )
     status = models.CharField(
         max_length=16,
         choices=SessionStatus.choices,
@@ -34,7 +37,7 @@ class TelegramChatSession(models.Model):
         verbose_name="Статус",
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата")
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлено")
 
     class Meta:
         ordering = ["-updated_at"]
@@ -50,14 +53,17 @@ class ChatMessage(models.Model):
         TelegramChatSession,
         on_delete=models.CASCADE,
         related_name="messages",
+        verbose_name="Чат",
     )
     sender_type = models.CharField(
         max_length=32,
         choices=SenderType.choices,
         verbose_name="Отправитель",
     )
-    text = models.TextField()
-    telegram_message_id = models.BigIntegerField(null=True, blank=True, db_index=True)
+    text = models.TextField(verbose_name="Текст")
+    telegram_message_id = models.BigIntegerField(
+        null=True, blank=True, db_index=True, verbose_name="ID сообщения"
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата")
 
     class Meta:

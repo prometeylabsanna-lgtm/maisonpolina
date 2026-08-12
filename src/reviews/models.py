@@ -7,13 +7,15 @@ from src.core.mixins import BilingualTextMixin
 
 
 class Testimonial(BilingualTextMixin, models.Model):
-    author_name_ru = models.CharField(max_length=128)
-    author_name_en = models.CharField(max_length=128, blank=True)
-    role_ru = models.CharField(max_length=255, blank=True)
-    role_en = models.CharField(max_length=255, blank=True)
-    photo = WebPImageField(upload_to="reviews/", blank=True)
-    text_ru = models.TextField(blank=True)
-    text_en = models.TextField(blank=True)
+    author_name_ru = models.CharField(max_length=128, verbose_name="Имя автора")
+    author_name_en = models.CharField(
+        max_length=128, blank=True, verbose_name="Имя автора"
+    )
+    role_ru = models.CharField(max_length=255, blank=True, verbose_name="Роль / подпись")
+    role_en = models.CharField(max_length=255, blank=True, verbose_name="Роль / подпись")
+    photo = WebPImageField(upload_to="reviews/", blank=True, verbose_name="Фото")
+    text_ru = models.TextField(blank=True, verbose_name="Текст отзыва")
+    text_en = models.TextField(blank=True, verbose_name="Текст отзыва")
     rating = models.PositiveSmallIntegerField(
         default=5,
         validators=[MinValueValidator(1), MaxValueValidator(5)],
