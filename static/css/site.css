@@ -1393,15 +1393,15 @@ body.is-locked {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 2px;
   width: 100%;
 }
 
 .footer__menu-link {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 10px 0;
+  min-height: 28px;
+  padding: 2px 0;
   font-family: var(--font-display);
   font-size: 13px;
   letter-spacing: 0.06em;
@@ -1485,8 +1485,8 @@ body.is-locked {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
-  padding-top: 8px;
+  gap: 2px;
+  padding-top: 4px;
 }
 
 @media (max-width: 767px) {
@@ -1622,6 +1622,8 @@ body.is-locked {
   }
 
   .footer__menu-link {
+    min-height: 26px;
+    padding: 1px 0;
     font-size: 11px;
     letter-spacing: 0.14em;
   }
@@ -2381,7 +2383,7 @@ body.is-locked {
 
 .gallery__track {
   display: flex;
-  align-items: stretch;
+  align-items: flex-start;
   gap: var(--gallery-gap);
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -2399,8 +2401,7 @@ body.is-locked {
 .gallery__item {
   margin: 0;
   flex: 0 0 var(--gallery-card);
-  /* портретні кадри (~3:4); object-position захищає голову */
-  aspect-ratio: 3 / 4;
+  height: auto;
   background: var(--color-surface);
   border: 1px solid var(--color-line-soft);
   overflow: hidden;
@@ -2452,24 +2453,27 @@ body.is-locked {
 .gallery__button {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
   color: inherit;
+  line-height: 0;
 }
 
 .gallery__img {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  max-width: none;
+  object-fit: contain;
   object-position: center top;
 }
 
 .gallery__placeholder {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 3 / 4;
   display: grid;
   place-items: center;
   padding: 14px;
