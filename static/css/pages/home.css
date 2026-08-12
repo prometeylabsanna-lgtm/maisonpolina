@@ -981,6 +981,7 @@
 
   .personality__media {
     width: min(100%, 380px);
+    margin-inline: 0;
   }
 }
 

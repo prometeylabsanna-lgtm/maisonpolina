@@ -27,9 +27,8 @@
             <img class="gallery__img"
                  src="{{ photo_url }}"
                  alt="{{ photo.alt|default:photo.caption }}"
-                 width="768"
-                 height="1024"
-                 loading="lazy">
+                 loading="lazy"
+                 decoding="async">
             {% else %}
             <span class="gallery__placeholder">{{ forloop.counter|stringformat:"02d" }}</span>
             {% endif %}

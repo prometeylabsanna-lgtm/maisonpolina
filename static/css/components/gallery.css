@@ -34,7 +34,7 @@
   margin: 0;
   flex: 0 0 var(--gallery-card);
   height: auto;
-  background: var(--color-surface);
+  background: transparent;
   border: 1px solid var(--color-line-soft);
   overflow: hidden;
   transition:
@@ -99,8 +99,10 @@
   width: 100%;
   height: auto;
   max-width: none;
-  object-fit: contain;
+  aspect-ratio: unset;
+  object-fit: unset;
   object-position: center top;
+  vertical-align: top;
 }
 
 .gallery__placeholder {
