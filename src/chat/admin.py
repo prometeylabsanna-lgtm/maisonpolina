@@ -2,6 +2,7 @@ from django.contrib import admin
 from unfold.admin import ModelAdmin, TabularInline
 
 from src.chat.models import ChatMessage, TelegramChatSession
+from src.core.admin_changelist import TopDropdownFilterMixin
 
 
 class ChatMessageInline(TabularInline):
@@ -20,7 +21,7 @@ class ChatMessageInline(TabularInline):
 
 
 @admin.register(TelegramChatSession)
-class TelegramChatSessionAdmin(ModelAdmin):
+class TelegramChatSessionAdmin(TopDropdownFilterMixin, ModelAdmin):
     list_display = (
         "session_id",
         "user_identifier",
@@ -36,7 +37,7 @@ class TelegramChatSessionAdmin(ModelAdmin):
 
 
 @admin.register(ChatMessage)
-class ChatMessageAdmin(ModelAdmin):
+class ChatMessageAdmin(TopDropdownFilterMixin, ModelAdmin):
     list_display = (
         "id",
         "session",

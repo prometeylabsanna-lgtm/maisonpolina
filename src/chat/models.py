@@ -4,14 +4,14 @@ from django.db import models
 
 
 class SessionStatus(models.TextChoices):
-    ACTIVE = "active", "Active"
-    CLOSED = "closed", "Closed"
+    ACTIVE = "active", "Активен"
+    CLOSED = "closed", "Закрыт"
 
 
 class SenderType(models.TextChoices):
-    SITE_USER = "site_user", "Site user"
-    TELEGRAM_ADMIN = "telegram_admin", "Telegram admin"
-    SYSTEM = "system", "System"
+    SITE_USER = "site_user", "Пользователь сайта"
+    TELEGRAM_ADMIN = "telegram_admin", "Админ Telegram"
+    SYSTEM = "system", "Система"
 
 
 class TelegramChatSession(models.Model):
@@ -31,8 +31,9 @@ class TelegramChatSession(models.Model):
         choices=SessionStatus.choices,
         default=SessionStatus.ACTIVE,
         db_index=True,
+        verbose_name="Статус",
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата")
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -50,10 +51,14 @@ class ChatMessage(models.Model):
         on_delete=models.CASCADE,
         related_name="messages",
     )
-    sender_type = models.CharField(max_length=32, choices=SenderType.choices)
+    sender_type = models.CharField(
+        max_length=32,
+        choices=SenderType.choices,
+        verbose_name="Отправитель",
+    )
     text = models.TextField()
     telegram_message_id = models.BigIntegerField(null=True, blank=True, db_index=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата")
 
     class Meta:
         ordering = ["created_at"]

@@ -10,9 +10,10 @@ from src.core.admin_site_content_widgets import (
     CmsAdminTextareaWidget,
 )
 from src.core.admin_tinymce import (
-    PLAIN_TEXTAREA_KEYS,
-    RICH_TEXT_KEYS,
+    cms_tinymce_height_for_key,
     cms_tinymce_widget,
+    is_plain_textarea_key,
+    is_rich_text_key,
 )
 from src.core.block_defaults import (
     BLOCK_CONTENT_TYPES,
@@ -151,10 +152,11 @@ class SitePageContentForm(forms.Form):
                 self._add_video_fields(block, page, key)
             return
 
-        if key in RICH_TEXT_KEYS:
-            widget_ru = cms_tinymce_widget(height=420 if key == "privacy.body" else 280)
-            widget_en = cms_tinymce_widget(height=420 if key == "privacy.body" else 280)
-        elif key in PLAIN_TEXTAREA_KEYS:
+        if is_rich_text_key(page, key):
+            height = cms_tinymce_height_for_key(key, page=page)
+            widget_ru = cms_tinymce_widget(height=height)
+            widget_en = cms_tinymce_widget(height=height)
+        elif is_plain_textarea_key(page, key):
             widget_ru = CmsAdminTextareaWidget(attrs={"rows": 4})
             widget_en = CmsAdminTextareaWidget(attrs={"rows": 4})
         else:

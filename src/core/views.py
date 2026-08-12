@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.utils.translation import get_language
 from django.views.generic import TemplateView
 
-from src.core.models import SeoMeta
+from src.core.models import PersonalityItem, SeoMeta
 from src.core.services import get_block_text, get_site_blocks, is_section_visible
 from src.faq.models import FaqItem
 from src.formats.models import ServiceFormat
@@ -27,6 +27,12 @@ class HomeView(TemplateView):
             blocks = get_site_blocks()
             seo = SeoMeta.objects.filter(page="home").first()
             gallery_photos = GalleryPhoto.objects.filter(is_active=True)
+            personality_facts = PersonalityItem.objects.filter(
+                group=PersonalityItem.Group.FACTS, is_active=True
+            )
+            personality_extras = PersonalityItem.objects.filter(
+                group=PersonalityItem.Group.EXTRAS, is_active=True
+            )
             formats = ServiceFormat.objects.filter(is_active=True).prefetch_related(
                 "features"
             )
@@ -36,6 +42,8 @@ class HomeView(TemplateView):
             blocks = {}
             seo = None
             gallery_photos = GalleryPhoto.objects.none()
+            personality_facts = PersonalityItem.objects.none()
+            personality_extras = PersonalityItem.objects.none()
             formats = ServiceFormat.objects.none()
             testimonials = Testimonial.objects.none()
             faq_items = FaqItem.objects.none()
@@ -63,6 +71,8 @@ class HomeView(TemplateView):
             ),
         }
         ctx["gallery_photos"] = gallery_photos
+        ctx["personality_facts"] = personality_facts
+        ctx["personality_extras"] = personality_extras
         ctx["formats"] = formats
         ctx["testimonials"] = testimonials
         ctx["faq_items"] = faq_items

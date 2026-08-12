@@ -137,6 +137,43 @@ class SiteBlock(BilingualTextMixin, models.Model):
         return url
 
 
+class PersonalityItem(BilingualTextMixin, models.Model):
+    """Dynamic label+value rows for personality facts / extras."""
+
+    class Group(models.TextChoices):
+        FACTS = "facts", "Внешность"
+        EXTRAS = "extras", "Дополнительно"
+
+    group = models.CharField(
+        max_length=16,
+        choices=Group.choices,
+        db_index=True,
+        verbose_name="Группа",
+    )
+    label_ru = models.CharField(max_length=128, blank=True, verbose_name="Название RU")
+    label_en = models.CharField(max_length=128, blank=True, verbose_name="Название EN")
+    value_ru = models.CharField(max_length=255, blank=True, verbose_name="Значение RU")
+    value_en = models.CharField(max_length=255, blank=True, verbose_name="Значение EN")
+    order = models.PositiveSmallIntegerField(default=0, verbose_name="Порядок")
+    is_active = models.BooleanField(default=True, verbose_name="Активно")
+
+    class Meta:
+        ordering = ["group", "order", "pk"]
+        verbose_name = "Пункт личности"
+        verbose_name_plural = "Пункты личности"
+
+    def __str__(self) -> str:
+        return self.label_ru or self.value_ru or f"Item {self.pk}"
+
+    @property
+    def label(self) -> str:
+        return self.get_text("label")
+
+    @property
+    def value(self) -> str:
+        return self.get_text("value")
+
+
 class SeoMeta(BilingualTextMixin, models.Model):
     page = models.CharField(max_length=64, unique=True)
     title_ru = models.CharField(max_length=255, blank=True)

@@ -25,12 +25,23 @@
     {% csrf_token %}
     {% for style, form in pairs %}
     <section class="border border-base-200 dark:border-base-700 rounded-default bg-white dark:bg-base-900 p-4 md:p-5">
-      <h2 class="mb-1 text-base font-semibold text-font-important-light dark:text-font-important-dark">
-        {{ style.get_section_display }}
-      </h2>
-      <p class="mb-4 text-xs text-font-subtle-light dark:text-font-subtle-dark">
-        Настройки внешнего вида блока «{{ style.get_section_display }}» на сайте.
-      </p>
+      <div class="site-styles-editor__section-head">
+        <div>
+          <h2 class="mb-1 text-base font-semibold text-font-important-light dark:text-font-important-dark">
+            {{ style.get_section_display }}
+          </h2>
+          <p class="mb-0 text-xs text-font-subtle-light dark:text-font-subtle-dark">
+            Настройки внешнего вида блока «{{ style.get_section_display }}» на сайте.
+          </p>
+        </div>
+        <button type="submit"
+                name="reset_section"
+                value="{{ style.section }}"
+                class="site-styles-editor__reset border border-base-200 dark:border-base-700 rounded-default px-3 py-2 text-sm"
+                data-confirm-reset="Вернуть фирменные цвета для «{{ style.get_section_display }}»? Текущие значения этой секции будут заменены.">
+          Вернуть дефолт
+        </button>
+      </div>
       {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
       {{ form.label.as_hidden }}
 

@@ -229,3 +229,95 @@ def test_admin_gallery_adds_photo_to_existing(client, admin_user):
     added = GalleryPhoto.objects.exclude(pk=existing.pk).get()
     assert added.alt_ru == "Новый кадр"
     assert added.image
+
+
+@pytest.mark.django_db
+def test_admin_personality_adds_and_deletes_items(client, admin_user):
+    from src.core.models import PersonalityItem
+
+    SiteSettings.get_solo()
+    fact = PersonalityItem.objects.create(
+        group=PersonalityItem.Group.FACTS,
+        label_ru="Возраст",
+        label_en="Age",
+        value_ru="32",
+        value_en="32",
+        order=1,
+        is_active=True,
+    )
+    extra = PersonalityItem.objects.create(
+        group=PersonalityItem.Group.EXTRAS,
+        label_ru="",
+        label_en="",
+        value_ru="мастер спорта",
+        value_en="Master of Sport",
+        order=1,
+        is_active=True,
+    )
+    client.force_login(admin_user)
+    url = reverse("admin:core_homepersonalitysettings_change", args=[1])
+    get_resp = client.get(url)
+    assert get_resp.status_code == 200
+    html = get_resp.content.decode()
+    assert "Добавить пункт" in html
+    assert 'name="personality_facts-TOTAL_FORMS"' in html
+    assert 'name="personality_extras-TOTAL_FORMS"' in html
+
+    response = client.post(
+        url,
+        {
+            "section_visible": "on",
+            "block__home__personality.eyebrow__ru": "Личность",
+            "block__home__personality.eyebrow__en": "Personality",
+            "block__home__personality.title__ru": "Дополнительная",
+            "block__home__personality.title__en": "Additional",
+            "block__home__personality.title_accent__ru": "информация",
+            "block__home__personality.title_accent__en": "information",
+            "block__home__personality.facts_title__ru": "Внешность",
+            "block__home__personality.facts_title__en": "Appearance",
+            "block__home__personality.languages__ru": "Языки",
+            "block__home__personality.languages__en": "Languages",
+            "block__home__personality.respect__ru": "Уважаю",
+            "block__home__personality.respect__en": "Respect",
+            "block__home__personality.education__ru": "Образование",
+            "block__home__personality.education__en": "Education",
+            "block__home__personality.travel__ru": "Путешествия",
+            "block__home__personality.travel__en": "Travel",
+            "personality_facts-TOTAL_FORMS": "2",
+            "personality_facts-INITIAL_FORMS": "1",
+            "personality_facts-MIN_NUM_FORMS": "0",
+            "personality_facts-MAX_NUM_FORMS": "1000",
+            "personality_facts-0-id": str(fact.pk),
+            "personality_facts-0-label_ru": "Возраст",
+            "personality_facts-0-label_en": "Age",
+            "personality_facts-0-value_ru": "33",
+            "personality_facts-0-value_en": "33",
+            "personality_facts-0-order": "1",
+            "personality_facts-0-is_active": "on",
+            "personality_facts-1-label_ru": "Хобби",
+            "personality_facts-1-label_en": "Hobby",
+            "personality_facts-1-value_ru": "йога",
+            "personality_facts-1-value_en": "yoga",
+            "personality_facts-1-order": "2",
+            "personality_facts-1-is_active": "on",
+            "personality_extras-TOTAL_FORMS": "1",
+            "personality_extras-INITIAL_FORMS": "1",
+            "personality_extras-MIN_NUM_FORMS": "0",
+            "personality_extras-MAX_NUM_FORMS": "1000",
+            "personality_extras-0-id": str(extra.pk),
+            "personality_extras-0-label_ru": "",
+            "personality_extras-0-label_en": "",
+            "personality_extras-0-value_ru": "мастер спорта",
+            "personality_extras-0-value_en": "Master of Sport",
+            "personality_extras-0-order": "1",
+            "personality_extras-0-is_active": "on",
+            "personality_extras-0-DELETE": "on",
+        },
+    )
+    assert response.status_code in (200, 302)
+    fact.refresh_from_db()
+    assert fact.value_ru == "33"
+    assert PersonalityItem.objects.filter(group=PersonalityItem.Group.FACTS).count() == 2
+    added = PersonalityItem.objects.filter(label_ru="Хобби").get()
+    assert added.value_en == "yoga"
+    assert not PersonalityItem.objects.filter(pk=extra.pk).exists()

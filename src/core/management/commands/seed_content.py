@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
 
 from src.core.block_defaults import BLOCK_DEFAULTS, block_content_type
-from src.core.models import SeoMeta, SiteBlock, SiteSettings
+from src.core.models import PersonalityItem, SeoMeta, SiteBlock, SiteSettings
+from src.core.personality_item_defaults import PERSONALITY_ITEM_DEFAULTS
 from src.core.style_defaults import ensure_section_styles
 from src.faq.models import FaqItem
 from src.formats.models import FormatFeature, ServiceFormat
@@ -79,12 +80,116 @@ class Command(BaseCommand):
         self._seed_testimonials()
         self._seed_faq()
         self._seed_gallery()
+        self._seed_personality_items()
         self.stdout.write(
             self.style.SUCCESS(
                 f"Seed done. New blocks: {created_blocks}, "
                 f"labels updated: {labels_updated}, styles: {styles_created}"
             )
         )
+
+    def _seed_personality_items(self) -> None:
+        """Idempotent seed of personality facts/extras (no overwrite)."""
+        if PersonalityItem.objects.exists():
+            return
+
+        fact_keys = (
+            ("age", "Возраст", "Age"),
+            ("eyes", "Глаза", "Eyes"),
+            ("hair", "Волосы", "Hair"),
+            ("height", "Рост", "Height"),
+            ("weight", "Вес", "Weight"),
+            ("measurements", "Параметры", "Measurements"),
+            ("shoes", "Обувь", "Shoes"),
+            ("clothing", "Одежда", "Clothing"),
+            ("zodiac", "Зодиак", "Zodiac"),
+            ("tattoo", "Тату", "Tattoo"),
+            ("piercing", "Пирсинг", "Piercing"),
+            ("flowers", "Цветы", "Flowers"),
+            ("cuisine", "Кухня", "Cuisine"),
+            ("alcohol", "Алкоголь", "Alcohol"),
+            ("smoking", "Курение", "Smoking"),
+        )
+        blocks = {
+            (b.page, b.key): b
+            for b in SiteBlock.objects.filter(
+                page__in=("home", "site"),
+                key__startswith="personality.",
+            )
+        }
+
+        def _text(page: str, key: str, fallback: str = "") -> str:
+            block = blocks.get((page, key))
+            if block is None:
+                return fallback
+            return (getattr(block, "text_ru", "") or fallback).strip()
+
+        def _text_en(page: str, key: str, fallback: str = "") -> str:
+            block = blocks.get((page, key))
+            if block is None:
+                return fallback
+            return (getattr(block, "text_en", "") or fallback).strip()
+
+        order = 0
+        for key, default_label_ru, default_label_en in fact_keys:
+            order += 1
+            value_ru = _text("home", f"personality.{key}")
+            value_en = _text_en("home", f"personality.{key}")
+            if not value_ru and not value_en:
+                continue
+            label_ru = _text("site", f"personality.label_{key}", default_label_ru)
+            label_en = _text_en("site", f"personality.label_{key}", default_label_en)
+            PersonalityItem.objects.create(
+                group=PersonalityItem.Group.FACTS,
+                order=order,
+                label_ru=label_ru,
+                label_en=label_en,
+                value_ru=value_ru,
+                value_en=value_en or value_ru,
+                is_active=True,
+            )
+
+        extras_created = 0
+        for idx, key in enumerate(("extra_1", "extra_2", "extra_3"), start=1):
+            value_ru = _text("home", f"personality.{key}")
+            value_en = _text_en("home", f"personality.{key}")
+            if not value_ru and not value_en:
+                continue
+            PersonalityItem.objects.create(
+                group=PersonalityItem.Group.EXTRAS,
+                order=idx,
+                label_ru="",
+                label_en="",
+                value_ru=value_ru,
+                value_en=value_en or value_ru,
+                is_active=True,
+            )
+            extras_created += 1
+
+        if not PersonalityItem.objects.exists():
+            for group, order, label_ru, label_en, value_ru, value_en in PERSONALITY_ITEM_DEFAULTS:
+                PersonalityItem.objects.create(
+                    group=group,
+                    order=order,
+                    label_ru=label_ru,
+                    label_en=label_en,
+                    value_ru=value_ru,
+                    value_en=value_en,
+                    is_active=True,
+                )
+        elif extras_created == 0:
+            for group, order, label_ru, label_en, value_ru, value_en in PERSONALITY_ITEM_DEFAULTS:
+                if group != PersonalityItem.Group.EXTRAS:
+                    continue
+                PersonalityItem.objects.create(
+                    group=group,
+                    order=order,
+                    label_ru=label_ru,
+                    label_en=label_en,
+                    value_ru=value_ru,
+                    value_en=value_en,
+                    is_active=True,
+                )
 
     def _seed_gallery(self) -> None:
         """Ship gallery from static/images/gallery (Vercel-safe, like AJERES)."""

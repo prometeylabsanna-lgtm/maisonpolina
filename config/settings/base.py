@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from decouple import config
+from django.templatetags.static import static
 
 
 def _resolve_base_dir() -> Path:
@@ -210,6 +211,9 @@ UNFOLD = {
     "SITE_SUBHEADER": "Панель сайта",
     "SITE_SYMBOL": "person",
     "THEME": "light",
+    "STYLES": [
+        lambda request: static("css/admin/changelist_filters.css"),
+    ],
     "COLORS": {
         "primary": {
             "50": "#ecfdf5",

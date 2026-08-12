@@ -75,6 +75,7 @@ def test_styles_admin_get_post(client, admin_user):
     url = reverse("admin:core_themestylessettings_change", args=[1])
     response = client.get(url)
     assert response.status_code == 200
+    assert "Вернуть дефолт" in response.content.decode()
 
     get_section_styles_css()
     assert cache.get(SECTION_STYLES_CACHE_KEY) is not None
@@ -122,3 +123,38 @@ def test_styles_admin_get_post(client, admin_user):
     header = SectionStyle.objects.get(section=SectionStyle.Section.HEADER)
     assert header.btn_header_solid_color == "#cab695"
     assert cache.get(SECTION_STYLES_CACHE_KEY) is None
+
+
+@pytest.mark.django_db
+def test_styles_admin_reset_section_to_brand_preset(client, admin_user):
+    SiteSettings.get_solo()
+    ensure_section_styles()
+    hero = SectionStyle.objects.get(section=SectionStyle.Section.HERO)
+    hero.bg_fill_type = FillType.GRADIENT
+    hero.bg_solid_color = "#111111"
+    hero.btn_primary_solid_color = "#222222"
+    hero.save()
+
+    client.force_login(admin_user)
+    url = reverse("admin:core_themestylessettings_change", args=[1])
+    response = client.post(url, {"reset_section": "hero"})
+    assert response.status_code in (200, 302)
+
+    hero.refresh_from_db()
+    assert hero.bg_fill_type == FillType.SOLID
+    assert hero.bg_solid_color == "#4c0d13"
+    assert hero.btn_primary_solid_color == "#cab695"
+    assert cache.get(SECTION_STYLES_CACHE_KEY) is None
+
+
+@pytest.mark.django_db
+def test_privacy_body_uses_tinymce(client, admin_user):
+    SiteSettings.get_solo()
+    client.force_login(admin_user)
+    url = reverse("admin:core_privacysettings_change", args=[1])
+    response = client.get(url)
+    assert response.status_code == 200
+    html = response.content.decode()
+    assert 'name="block__privacy__body__ru"' in html
+    assert "tinymce" in html.lower()
+    assert 'class="cms-admin-input tinymce"' in html or "TinyMCE" in html

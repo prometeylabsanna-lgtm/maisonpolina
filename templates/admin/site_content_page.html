@@ -12,6 +12,9 @@
 {{ block.super }}
 {% if tinymce_media %}{{ tinymce_media }}{% endif %}
 <script src="{% static 'js/admin/cms_lang_tabs.js' %}?v=2" defer></script>
+{% if personality_facts_formset or personality_extras_formset %}
+<script src="{% static 'js/admin/personality_formset.js' %}" defer></script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -165,6 +168,12 @@
               </div>
             {% endif %}
           {% endfor %}
+          {% if fieldset_title == "Внешность" and personality_facts_formset %}
+            {% include "admin/personality_items_fieldset.html" with formset=personality_facts_formset %}
+          {% endif %}
+          {% if fieldset_title == "Дополнительно" and personality_extras_formset %}
+            {% include "admin/personality_items_fieldset.html" with formset=personality_extras_formset %}
+          {% endif %}
         </div>
       </section>
       {% endfor %}

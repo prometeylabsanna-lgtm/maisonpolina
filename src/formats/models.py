@@ -13,9 +13,9 @@ class ServiceFormat(BilingualTextMixin, models.Model):
     label_ru = models.CharField(max_length=64, blank=True, help_text="Напр. Формат I")
     label_en = models.CharField(max_length=64, blank=True)
     image = models.ImageField(upload_to="formats/", blank=True)
-    is_featured = models.BooleanField(default=False)
-    order = models.PositiveSmallIntegerField(default=0)
-    is_active = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False, verbose_name="В избранном")
+    order = models.PositiveSmallIntegerField(default=0, verbose_name="Порядок")
+    is_active = models.BooleanField(default=True, verbose_name="Активно")
 
     class Meta:
         ordering = ["order", "pk"]

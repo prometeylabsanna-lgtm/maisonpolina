@@ -937,6 +937,18 @@
   color: var(--color-cream);
 }
 
+.personality__list-label {
+  display: inline;
+  margin-right: 0.35em;
+  color: var(--color-champagne);
+}
+
+.personality__list-label::after {
+  content: "·";
+  margin-left: 0.35em;
+  color: var(--color-champagne);
+}
+
 .personality__list li::before {
   content: "";
   position: absolute;

@@ -21,4 +21,13 @@
     input.addEventListener("change", syncPicker);
     syncPicker();
   });
+
+  document.querySelectorAll("[data-confirm-reset]").forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      const message = btn.getAttribute("data-confirm-reset") || "Вернуть дефолт?";
+      if (!window.confirm(message)) {
+        event.preventDefault();
+      }
+    });
+  });
 })();

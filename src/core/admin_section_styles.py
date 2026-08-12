@@ -12,7 +12,11 @@ from unfold.admin import ModelAdmin
 from src.core.fill_style import FillType, fill_field_names
 from src.core.models import SectionStyle, SiteSettings, ThemeStylesSettings
 from src.core.section_styles import invalidate_section_styles_cache
-from src.core.style_defaults import SECTION_STYLE_DEFAULTS, ensure_section_styles
+from src.core.style_defaults import (
+    SECTION_STYLE_DEFAULTS,
+    ensure_section_styles,
+    reset_section_style,
+)
 
 
 HEX_WIDGET = forms.TextInput(
@@ -112,6 +116,22 @@ def site_styles_view(
     request: HttpRequest,
     model_admin: ModelAdmin | None = None,
 ) -> HttpResponse:
+    ensure_section_styles()
+
+    if request.method == "POST":
+        reset_key = (request.POST.get("reset_section") or "").strip()
+        if reset_key:
+            obj = reset_section_style(reset_key)
+            if obj is None:
+                messages.error(request, "Секция не найдена")
+            else:
+                invalidate_section_styles_cache()
+                messages.success(
+                    request,
+                    f"«{obj.get_section_display()}» — возвращены цвета по умолчанию.",
+                )
+            return HttpResponseRedirect(request.path)
+
     pairs = _section_forms(request)
     if request.method == "POST":
         if all(form.is_valid() for _, form in pairs):
@@ -127,6 +147,7 @@ def site_styles_view(
         "title": "Цвета и кнопки на сайте",
         "page_hint": (
             "Пустые поля оставляют обычный вид сайта. "
+            "«Вернуть дефолт» в секции восстанавливает фирменные цвета. "
             "Кнопку в верхнем меню настраивайте только в блоке «Шапка»."
         ),
         "pairs": pairs,

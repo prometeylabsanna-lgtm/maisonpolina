@@ -14,66 +14,12 @@
       <div class="personality__col">
         <h3 class="personality__subtitle">{% block_plain "home" "personality.facts_title" %}</h3>
         <dl class="personality__facts">
+          {% for item in personality_facts %}
           <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_age" %}</dt>
-            <dd>{% block_plain "home" "personality.age" %}</dd>
+            <dt>{{ item.label }}</dt>
+            <dd>{{ item.value }}</dd>
           </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_eyes" %}</dt>
-            <dd>{% block_plain "home" "personality.eyes" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_hair" %}</dt>
-            <dd>{% block_plain "home" "personality.hair" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_height" %}</dt>
-            <dd>{% block_plain "home" "personality.height" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_weight" %}</dt>
-            <dd>{% block_plain "home" "personality.weight" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_measurements" %}</dt>
-            <dd>{% block_plain "home" "personality.measurements" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_shoes" %}</dt>
-            <dd>{% block_plain "home" "personality.shoes" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_clothing" %}</dt>
-            <dd>{% block_plain "home" "personality.clothing" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_zodiac" %}</dt>
-            <dd>{% block_plain "home" "personality.zodiac" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_tattoo" %}</dt>
-            <dd>{% block_plain "home" "personality.tattoo" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_piercing" %}</dt>
-            <dd>{% block_plain "home" "personality.piercing" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_flowers" %}</dt>
-            <dd>{% block_plain "home" "personality.flowers" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_cuisine" %}</dt>
-            <dd>{% block_plain "home" "personality.cuisine" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_alcohol" %}</dt>
-            <dd>{% block_plain "home" "personality.alcohol" %}</dd>
-          </div>
-          <div class="personality__row">
-            <dt>{% block_plain "site" "personality.label_smoking" %}</dt>
-            <dd>{% block_plain "home" "personality.smoking" %}</dd>
-          </div>
+          {% endfor %}
         </dl>
       </div>
 
@@ -94,11 +40,16 @@
           </picture>
           {% endif %}
         </div>
+        {% if personality_extras %}
         <ul class="personality__list">
-          <li>{% block_plain "home" "personality.extra_1" %}</li>
-          <li>{% block_plain "home" "personality.extra_2" %}</li>
-          <li>{% block_plain "home" "personality.extra_3" %}</li>
+          {% for item in personality_extras %}
+          <li>
+            {% if item.label %}<span class="personality__list-label">{{ item.label }}</span>{% endif %}
+            {{ item.value }}
+          </li>
+          {% endfor %}
         </ul>
+        {% endif %}
         <div class="personality__notes">
           <div>{% block_html "home" "personality.languages" %}</div>
           <div>{% block_html "home" "personality.respect" %}</div>

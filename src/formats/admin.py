@@ -1,6 +1,7 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin, TabularInline
 
+from src.core.admin_changelist import TopDropdownFilterMixin
 from src.core.admin_tinymce import TinyMCEAdminMixin
 from src.core.admin_utils import image_preview
 from src.formats.models import FormatFeature, ServiceFormat
@@ -16,7 +17,7 @@ class FormatFeatureInline(TabularInline):
 
 
 @admin.register(ServiceFormat)
-class ServiceFormatAdmin(TinyMCEAdminMixin, ModelAdmin):
+class ServiceFormatAdmin(TopDropdownFilterMixin, TinyMCEAdminMixin, ModelAdmin):
     list_display = (
         "get_photo_preview",
         "title_ru",

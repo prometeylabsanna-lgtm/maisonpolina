@@ -15,14 +15,24 @@ class Testimonial(BilingualTextMixin, models.Model):
     rating = models.PositiveSmallIntegerField(
         default=5,
         validators=[MinValueValidator(1), MaxValueValidator(5)],
+        verbose_name="Рейтинг",
     )
-    order = models.PositiveSmallIntegerField(default=0)
+    order = models.PositiveSmallIntegerField(default=0, verbose_name="Порядок")
     is_active = models.BooleanField(
         default=True,
-        help_text="На сайті показуються лише активні (схвалені) відгуки.",
+        verbose_name="Активно",
+        help_text="На сайте показываются только активные (одобренные) отзывы.",
     )
-    is_public_submission = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    is_public_submission = models.BooleanField(
+        default=False,
+        verbose_name="Публичная заявка",
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True,
+        verbose_name="Дата",
+    )
 
     class Meta:
         ordering = ["order", "-created_at", "pk"]

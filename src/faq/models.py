@@ -8,8 +8,8 @@ class FaqItem(BilingualTextMixin, models.Model):
     question_en = models.CharField(max_length=255, blank=True)
     answer_ru = models.TextField()
     answer_en = models.TextField(blank=True)
-    order = models.PositiveSmallIntegerField(default=0)
-    is_active = models.BooleanField(default=True)
+    order = models.PositiveSmallIntegerField(default=0, verbose_name="Порядок")
+    is_active = models.BooleanField(default=True, verbose_name="Активно")
 
     class Meta:
         ordering = ["order", "pk"]

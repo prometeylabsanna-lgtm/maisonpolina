@@ -22,6 +22,7 @@ from src.core.models import (
     HomeHeroSettings,
     HomePersonalitySettings,
     HomeTestimonialsSettings,
+    PersonalityItem,
     PrivacySettings,
     SiteChatSettings,
     SiteErrorsSettings,
@@ -30,9 +31,53 @@ from src.core.models import (
     SiteSettings,
     SiteUiSettings,
 )
+from src.core.personality_forms import (
+    PersonalityExtraFormSet,
+    PersonalityFactFormSet,
+    personality_item_queryset,
+    save_personality_formset,
+)
 from src.core.site_content_registry import CONTENT_SECTIONS, get_section
 from src.gallery.forms import GalleryPhotoFormSet
 from src.gallery.models import GalleryPhoto
+
+
+def _bind_gallery_formset(request: HttpRequest, *, post: bool):
+    qs = GalleryPhoto.objects.all().order_by("order", "pk")
+    if post:
+        return GalleryPhotoFormSet(
+            request.POST, request.FILES, queryset=qs, prefix="gallery"
+        )
+    return GalleryPhotoFormSet(queryset=qs, prefix="gallery")
+
+
+def _bind_personality_formsets(request: HttpRequest, *, post: bool):
+    facts_qs = personality_item_queryset(PersonalityItem.Group.FACTS)
+    extras_qs = personality_item_queryset(PersonalityItem.Group.EXTRAS)
+    if post:
+        facts = PersonalityFactFormSet(
+            request.POST, queryset=facts_qs, prefix="personality_facts"
+        )
+        extras = PersonalityExtraFormSet(
+            request.POST, queryset=extras_qs, prefix="personality_extras"
+        )
+    else:
+        facts = PersonalityFactFormSet(queryset=facts_qs, prefix="personality_facts")
+        extras = PersonalityExtraFormSet(queryset=extras_qs, prefix="personality_extras")
+    return facts, extras
+
+
+def _save_gallery_formset(gallery_formset) -> None:
+    instances = gallery_formset.save(commit=False)
+    for obj in gallery_formset.deleted_objects:
+        obj.delete()
+    for idx, obj in enumerate(instances):
+        if not obj.image and not obj.pk and not getattr(obj, "static_image", ""):
+            continue
+        if obj.order == 0:
+            obj.order = idx
+        obj.save()
+    gallery_formset.save_m2m()
 
 
 def site_content_section_view(
@@ -48,32 +93,37 @@ def site_content_section_view(
 
     blocks = load_section_blocks(section)
     gallery_formset = None
+    personality_facts_formset = None
+    personality_extras_formset = None
 
     if request.method == "POST":
         form = SitePageContentForm(section, blocks, request.POST, request.FILES)
         forms_ok = form.is_valid()
         if section.has_gallery:
-            gallery_formset = GalleryPhotoFormSet(
-                request.POST,
-                request.FILES,
-                queryset=GalleryPhoto.objects.all().order_by("order", "pk"),
-                prefix="gallery",
-            )
+            gallery_formset = _bind_gallery_formset(request, post=True)
             forms_ok = forms_ok and gallery_formset.is_valid()
+        if section.has_personality_items:
+            personality_facts_formset, personality_extras_formset = (
+                _bind_personality_formsets(request, post=True)
+            )
+            forms_ok = (
+                forms_ok
+                and personality_facts_formset.is_valid()
+                and personality_extras_formset.is_valid()
+            )
 
         if forms_ok:
             form.save()
             if gallery_formset is not None:
-                instances = gallery_formset.save(commit=False)
-                for obj in gallery_formset.deleted_objects:
-                    obj.delete()
-                for idx, obj in enumerate(instances):
-                    if not obj.image and not obj.pk and not getattr(obj, "static_image", ""):
-                        continue
-                    if obj.order == 0:
-                        obj.order = idx
-                    obj.save()
-                gallery_formset.save_m2m()
+                _save_gallery_formset(gallery_formset)
+            if personality_facts_formset is not None:
+                save_personality_formset(
+                    personality_facts_formset, PersonalityItem.Group.FACTS
+                )
+            if personality_extras_formset is not None:
+                save_personality_formset(
+                    personality_extras_formset, PersonalityItem.Group.EXTRAS
+                )
             title = section.sidebar_title or section.title
             messages.success(request, f"«{title}» сохранено.")
             return HttpResponseRedirect(request.path)
@@ -82,14 +132,19 @@ def site_content_section_view(
     else:
         form = SitePageContentForm(section, blocks)
         if section.has_gallery:
-            gallery_formset = GalleryPhotoFormSet(
-                queryset=GalleryPhoto.objects.all().order_by("order", "pk"),
-                prefix="gallery",
+            gallery_formset = _bind_gallery_formset(request, post=False)
+        if section.has_personality_items:
+            personality_facts_formset, personality_extras_formset = (
+                _bind_personality_formsets(request, post=False)
             )
 
     media = form.media
     if gallery_formset is not None:
         media = media + gallery_formset.media
+    if personality_facts_formset is not None:
+        media = media + personality_facts_formset.media
+    if personality_extras_formset is not None:
+        media = media + personality_extras_formset.media
 
     context = {
         **(model_admin.admin_site.each_context(request) if model_admin else {}),
@@ -98,6 +153,8 @@ def site_content_section_view(
         "form": form,
         "fieldsets": build_section_fieldsets(form, section),
         "gallery_formset": gallery_formset,
+        "personality_facts_formset": personality_facts_formset,
+        "personality_extras_formset": personality_extras_formset,
         "preview_url": section.preview_url,
         "tinymce_media": media,
         "opts": model_admin.model._meta if model_admin else None,

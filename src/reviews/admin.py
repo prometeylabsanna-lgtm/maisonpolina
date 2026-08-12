@@ -1,13 +1,14 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
+from src.core.admin_changelist import TopDropdownFilterMixin
 from src.core.admin_tinymce import TinyMCEAdminMixin
 from src.core.admin_utils import image_preview
 from src.reviews.models import Testimonial
 
 
 @admin.register(Testimonial)
-class TestimonialAdmin(TinyMCEAdminMixin, ModelAdmin):
+class TestimonialAdmin(TopDropdownFilterMixin, TinyMCEAdminMixin, ModelAdmin):
     list_display = (
         "get_photo_preview",
         "author_name_ru",

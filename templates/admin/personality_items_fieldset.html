@@ -1,0 +1,119 @@
+<div class="personality-items-admin"
+     data-personality-root
+     data-personality-prefix="{{ formset.prefix }}">
+  <div class="personality-items-admin__toolbar">
+    <p class="site-content-fieldset__hint text-font-subtle-light dark:text-font-subtle-dark">
+      Добавляйте или удаляйте пункты. Названия и значения переключаются кнопками RU / EN сверху.
+    </p>
+    <button type="button"
+            class="personality-items-admin__add border border-base-200 dark:border-base-700 rounded-default px-3 py-2 text-sm"
+            data-personality-add>
+      Добавить пункт
+    </button>
+  </div>
+
+  {{ formset.management_form }}
+  <div class="personality-items-admin__list" data-personality-list>
+    {% for form in formset %}
+    <article class="personality-items-admin__item border border-base-200 dark:border-base-700 rounded-default p-3 md:p-4{% if not form.instance.pk %} is-empty-slot{% endif %}"
+             data-personality-item>
+      <p class="personality-items-admin__slot-title">
+        {% if form.instance.pk %}Пункт {{ forloop.counter }}{% else %}Новый пункт{% endif %}
+      </p>
+      {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+      <div class="cms-lang-panes">
+        <div class="personality-items-admin__grid cms-lang-pane cms-lang-pane--ru">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.label_ru.id_for_label }}">{{ form.label_ru.label }}</label>
+            {{ form.label_ru }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.value_ru.id_for_label }}">{{ form.value_ru.label }}</label>
+            {{ form.value_ru }}
+          </div>
+        </div>
+        <div class="personality-items-admin__grid cms-lang-pane cms-lang-pane--en">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.label_en.id_for_label }}">{{ form.label_en.label }}</label>
+            {{ form.label_en }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.value_en.id_for_label }}">{{ form.value_en.label }}</label>
+            {{ form.value_en }}
+          </div>
+        </div>
+      </div>
+
+      <div class="personality-items-admin__meta">
+        <div class="site-content-editor__field">
+          <label class="site-content-editor__field-label" for="{{ form.order.id_for_label }}">{{ form.order.label }}</label>
+          {{ form.order }}
+        </div>
+        <div class="site-content-editor__field">
+          <label class="site-content-editor__field-label" for="{{ form.is_active.id_for_label }}">{{ form.is_active.label }}</label>
+          {{ form.is_active }}
+          {% if formset.can_delete %}
+          <label class="mt-3 inline-flex items-center gap-2 text-sm" for="{{ form.DELETE.id_for_label }}">
+            {{ form.DELETE }}
+            <span>Удалить</span>
+          </label>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if form.errors %}
+      <div class="mt-2 text-sm text-red-500">{{ form.errors }}</div>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+
+  <template id="{{ formset.prefix }}-empty-form-template">
+    {% with form=formset.empty_form %}
+    <article class="personality-items-admin__item border border-base-200 dark:border-base-700 rounded-default p-3 md:p-4 is-empty-slot"
+             data-personality-item>
+      <p class="personality-items-admin__slot-title">Новый пункт</p>
+      {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+      <div class="cms-lang-panes">
+        <div class="personality-items-admin__grid cms-lang-pane cms-lang-pane--ru">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.label_ru.label }}</label>
+            {{ form.label_ru }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.value_ru.label }}</label>
+            {{ form.value_ru }}
+          </div>
+        </div>
+        <div class="personality-items-admin__grid cms-lang-pane cms-lang-pane--en">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.label_en.label }}</label>
+            {{ form.label_en }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.value_en.label }}</label>
+            {{ form.value_en }}
+          </div>
+        </div>
+      </div>
+      <div class="personality-items-admin__meta">
+        <div class="site-content-editor__field">
+          <label class="site-content-editor__field-label">{{ form.order.label }}</label>
+          {{ form.order }}
+        </div>
+        <div class="site-content-editor__field">
+          <label class="site-content-editor__field-label">{{ form.is_active.label }}</label>
+          {{ form.is_active }}
+          {% if formset.can_delete %}
+          <label class="mt-3 inline-flex items-center gap-2 text-sm">
+            {{ form.DELETE }}
+            <span>Удалить</span>
+          </label>
+          {% endif %}
+        </div>
+      </div>
+    </article>
+    {% endwith %}
+  </template>
+</div>

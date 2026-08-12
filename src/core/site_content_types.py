@@ -23,3 +23,4 @@ class ContentSection:
     field_groups: tuple[FieldGroup, ...] = field(default_factory=tuple)
     admin_model_name: str = ""
     has_gallery: bool = False
+    has_personality_items: bool = False

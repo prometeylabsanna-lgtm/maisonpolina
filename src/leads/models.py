@@ -4,44 +4,48 @@ from django.utils import timezone
 
 class LeadSource(models.TextChoices):
     HEADER = "header", "Шапка"
-    HERO = "hero", "Перший екран"
-    ABOUT = "about", "Про мене"
-    FORMATS = "formats", "Формати"
-    FAQ = "faq", "Питання"
-    CONTACTS = "contacts", "Контакти"
+    HERO = "hero", "Первый экран"
+    ABOUT = "about", "Обо мне"
+    FORMATS = "formats", "Форматы"
+    FAQ = "faq", "Вопросы"
+    CONTACTS = "contacts", "Контакты"
 
 
 class LeadStatus(models.TextChoices):
-    NEW = "new", "Нова"
-    IN_PROGRESS = "in_progress", "В роботі"
-    WON = "won", "Успішна"
-    LOST = "lost", "Відхилена"
+    NEW = "new", "Новая"
+    IN_PROGRESS = "in_progress", "В работе"
+    WON = "won", "Успешная"
+    LOST = "lost", "Отклонена"
 
 
 class Lead(models.Model):
-    name = models.CharField(max_length=128)
-    contact = models.CharField(max_length=255)
-    message = models.TextField(blank=True)
-    service = models.CharField(max_length=255, blank=True)
+    name = models.CharField(max_length=128, verbose_name="Имя")
+    contact = models.CharField(max_length=255, verbose_name="Контакт")
+    message = models.TextField(blank=True, verbose_name="Сообщение")
+    service = models.CharField(max_length=255, blank=True, verbose_name="Услуга")
     source = models.CharField(
         max_length=32,
         choices=LeadSource.choices,
         default=LeadSource.CONTACTS,
+        verbose_name="Источник",
     )
-    language = models.CharField(max_length=8, default="ru")
+    language = models.CharField(max_length=8, default="ru", verbose_name="Язык")
     status = models.CharField(
         max_length=32,
         choices=LeadStatus.choices,
         default=LeadStatus.NEW,
+        verbose_name="Статус",
     )
-    admin_note = models.TextField(blank=True)
-    ip = models.GenericIPAddressField(null=True, blank=True)
-    user_agent = models.CharField(max_length=512, blank=True)
-    utm_source = models.CharField(max_length=128, blank=True)
-    utm_medium = models.CharField(max_length=128, blank=True)
-    utm_campaign = models.CharField(max_length=128, blank=True)
-    notified_at = models.DateTimeField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    admin_note = models.TextField(blank=True, verbose_name="Заметка")
+    ip = models.GenericIPAddressField(null=True, blank=True, verbose_name="IP")
+    user_agent = models.CharField(max_length=512, blank=True, verbose_name="User-Agent")
+    utm_source = models.CharField(max_length=128, blank=True, verbose_name="utm_source")
+    utm_medium = models.CharField(max_length=128, blank=True, verbose_name="utm_medium")
+    utm_campaign = models.CharField(
+        max_length=128, blank=True, verbose_name="utm_campaign"
+    )
+    notified_at = models.DateTimeField(null=True, blank=True, verbose_name="Уведомление")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата")
 
     class Meta:
         ordering = ["-created_at"]

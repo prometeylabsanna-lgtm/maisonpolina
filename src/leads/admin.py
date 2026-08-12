@@ -4,6 +4,7 @@ from django.contrib import admin, messages
 from django.http import HttpResponse
 from unfold.admin import ModelAdmin
 
+from src.core.admin_changelist import TopDropdownFilterMixin
 from src.core.admin_tinymce import TinyMCEAdminMixin
 from src.core.admin_utils import status_badge
 from src.leads.models import Lead, LeadStatus
@@ -77,7 +78,7 @@ def export_csv(modeladmin, request, queryset):
 
 
 @admin.register(Lead)
-class LeadAdmin(TinyMCEAdminMixin, ModelAdmin):
+class LeadAdmin(TopDropdownFilterMixin, TinyMCEAdminMixin, ModelAdmin):
     list_display = (
         "created_at",
         "name",
@@ -118,7 +119,7 @@ class LeadAdmin(TinyMCEAdminMixin, ModelAdmin):
         ),
         ("Статус", {"fields": ("status", "admin_note", "notified_at")}),
         (
-            "Технічне",
+            "Техническое",
             {
                 "classes": ("collapse",),
                 "fields": (
