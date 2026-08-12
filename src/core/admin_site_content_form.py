@@ -5,6 +5,7 @@ from __future__ import annotations
 from django import forms
 from unfold.widgets import UnfoldAdminFileFieldWidget, UnfoldBooleanWidget
 
+from src.core.admin_guidelines import guideline_help, image_help, text_help
 from src.core.admin_site_content_widgets import (
     CmsAdminTextInputWidget,
     CmsAdminTextareaWidget,
@@ -25,6 +26,7 @@ from src.core.block_defaults import (
     get_block_field_label,
     is_visibility_key,
 )
+from src.core.fields import AdminWebPImageField
 from src.core.models import SiteBlock
 from src.core.services import invalidate_site_blocks_cache
 from src.core.site_content_registry import (
@@ -34,8 +36,8 @@ from src.core.site_content_registry import (
 
 SECTION_VISIBLE_FIELD = "section_visible"
 VIDEO_HELP = (
-    "MP4 или WebM. На продакшене файл с админки не сохраняется (Vercel) — "
-    "укажите URL на CDN или положите ролик в static."
+    "MP4 или WebM, 1920×1080, до 8 МБ. На продакшене файл с админки не "
+    "сохраняется (Vercel) — укажите URL на CDN или положите ролик в static."
 )
 
 
@@ -133,15 +135,16 @@ class SitePageContentForm(forms.Form):
                 initial=current,
                 required=True,
                 widget=forms.Select(attrs={"class": "cms-admin-input"}),
+                help_text=text_help(key),
             )
             return
 
         if block.content_type == SiteBlock.ContentType.IMAGE or key in IMAGE_KEYS:
-            self.fields[block_field_name(page, key, "image")] = forms.ImageField(
+            self.fields[block_field_name(page, key, "image")] = AdminWebPImageField(
                 label=label,
                 required=False,
                 widget=UnfoldAdminFileFieldWidget(),
-                help_text=f"Текущее: {block.image.name}" if block.image else "",
+                help_text=image_help(key),
             )
             self.fields[block_field_name(page, key, "clear_image")] = forms.BooleanField(
                 label="Удалить изображение",
@@ -163,17 +166,20 @@ class SitePageContentForm(forms.Form):
             widget_ru = CmsAdminTextInputWidget()
             widget_en = CmsAdminTextInputWidget()
 
+        hint = text_help(key)
         self.fields[block_field_name(page, key, "ru")] = forms.CharField(
             label=f"{label} (RU)",
             initial=block.text_ru,
             required=False,
             widget=widget_ru,
+            help_text=hint,
         )
         self.fields[block_field_name(page, key, "en")] = forms.CharField(
             label=f"{label} (EN)",
             initial=block.text_en,
             required=False,
             widget=widget_en,
+            help_text=hint,
         )
 
     def _add_video_fields(self, block: SiteBlock, page: str, key: str) -> None:
@@ -278,6 +284,7 @@ def _block_rows_for_keys(
                     "label": get_block_field_label(page, key),
                     "kind": "choice",
                     "is_image": False,
+                    "help_text": guideline_help(key),
                     "choice": form[choice_name] if choice_name in form.fields else None,
                 }
             )
@@ -296,6 +303,7 @@ def _block_rows_for_keys(
                 "label": get_block_field_label(page, key),
                 "kind": "text",
                 "is_image": False,
+                "help_text": guideline_help(key),
                 "ru": form[ru_name] if ru_name in form.fields else None,
                 "en": form[en_name] if en_name in form.fields else None,
             }
@@ -316,6 +324,7 @@ def _image_row(form: SitePageContentForm, block: SiteBlock, page: str, key: str)
         "label": get_block_field_label(page, key),
         "kind": "image",
         "is_image": True,
+        "help_text": image_help(key),
         "image": form[image_name] if image_name in form.fields else None,
         "clear_image": form[clear_name] if clear_name in form.fields else None,
         "block": block,

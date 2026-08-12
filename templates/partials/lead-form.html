@@ -7,6 +7,7 @@
       hx-post="{% url 'leads:submit' %}"
       hx-target="{{ form_target }}"
       hx-swap="innerHTML"
+      novalidate
       data-lead-form>
   {% csrf_token %}
   <input type="hidden" name="form_target" value="{{ form_target }}">
@@ -16,19 +17,39 @@
   {% if form and form.non_field_errors %}
   <div class="form__errors">{{ form.non_field_errors }}</div>
   {% endif %}
-  <label class="form__field">
+  <label class="form__field{% if form and form.name.errors %} form__field--error{% endif %}">
     {% block_plain "site" "form.name" %}
-    <input class="form__input" type="text" name="name" required value="{% if form %}{{ form.name.value|default:'' }}{% endif %}" autocomplete="name">
-    {% if form and form.name.errors %}<span class="form__field-error">{{ form.name.errors.0 }}</span>{% endif %}
+    <input class="form__input{% if form and form.name.errors %} form__input--error{% endif %}"
+           type="text"
+           name="name"
+           required
+           value="{% if form %}{{ form.name.value|default:'' }}{% endif %}"
+           autocomplete="name"
+           data-validate="name"
+           aria-invalid="{% if form and form.name.errors %}true{% else %}false{% endif %}">
+    <span class="form__field-error" data-field-error role="alert" aria-live="polite"{% if not form or not form.name.errors %} hidden{% endif %}>{% if form %}{{ form.name.errors.0 }}{% endif %}</span>
   </label>
-  <label class="form__field">
+  <label class="form__field{% if form and form.contact.errors %} form__field--error{% endif %}">
     {% block_plain "site" "form.contact" %}
-    <input class="form__input" type="text" name="contact" required value="{% if form %}{{ form.contact.value|default:'' }}{% endif %}" autocomplete="tel">
-    {% if form and form.contact.errors %}<span class="form__field-error">{{ form.contact.errors.0 }}</span>{% endif %}
+    <input class="form__input{% if form and form.contact.errors %} form__input--error{% endif %}"
+           type="tel"
+           name="contact"
+           required
+           value="{% if form %}{{ form.contact.value|default:'' }}{% endif %}"
+           autocomplete="tel"
+           inputmode="tel"
+           data-validate="phone"
+           aria-invalid="{% if form and form.contact.errors %}true{% else %}false{% endif %}">
+    <span class="form__field-error" data-field-error role="alert" aria-live="polite"{% if not form or not form.contact.errors %} hidden{% endif %}>{% if form %}{{ form.contact.errors.0 }}{% endif %}</span>
   </label>
-  <label class="form__field">
+  <label class="form__field{% if form and form.message.errors %} form__field--error{% endif %}">
     {% block_plain "site" "form.message" %}
-    <textarea class="form__textarea" name="message" rows="3">{% if form %}{{ form.message.value|default:'' }}{% endif %}</textarea>
+    <textarea class="form__textarea{% if form and form.message.errors %} form__input--error{% endif %}"
+              name="message"
+              rows="3"
+              data-validate="message"
+              aria-invalid="{% if form and form.message.errors %}true{% else %}false{% endif %}">{% if form %}{{ form.message.value|default:'' }}{% endif %}</textarea>
+    <span class="form__field-error" data-field-error role="alert" aria-live="polite"{% if not form or not form.message.errors %} hidden{% endif %}>{% if form %}{{ form.message.errors.0 }}{% endif %}</span>
   </label>
   <div class="form__consent">
     {% if form_target == "#contacts-form" %}

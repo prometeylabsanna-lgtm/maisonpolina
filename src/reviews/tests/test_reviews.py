@@ -106,6 +106,62 @@ def test_testimonial_author_name_by_locale(client):
 
 
 @pytest.mark.django_db
+def test_review_name_rejects_digits(client):
+    url = reverse("reviews:submit")
+    response = client.post(
+        url,
+        {
+            "name": "Мария1",
+            "text": "Достаточно длинный текст отзыва",
+            "rating": "5",
+            "language": "ru",
+            "form_ts": "1",
+            "website": "",
+        },
+    )
+    assert response.status_code == 422
+    assert Testimonial.objects.count() == 0
+    assert "не повинно містити цифр" in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_review_text_rejects_one_character(client):
+    url = reverse("reviews:submit")
+    response = client.post(
+        url,
+        {
+            "name": "Мария",
+            "text": "а",
+            "rating": "5",
+            "language": "ru",
+            "form_ts": "1",
+            "website": "",
+        },
+    )
+    assert response.status_code == 422
+    assert Testimonial.objects.count() == 0
+    assert "Текст відгуку повинен містити мінімум 2 символи." in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_review_text_allows_two_characters(client):
+    url = reverse("reviews:submit")
+    response = client.post(
+        url,
+        {
+            "name": "Мария",
+            "text": "ок",
+            "rating": "5",
+            "language": "ru",
+            "form_ts": "1",
+            "website": "",
+        },
+    )
+    assert response.status_code == 200
+    assert Testimonial.objects.count() == 1
+
+
+@pytest.mark.django_db
 def test_testimonial_photo_on_home(client):
     from io import BytesIO
 

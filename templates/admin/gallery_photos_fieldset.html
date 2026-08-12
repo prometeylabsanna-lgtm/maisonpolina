@@ -4,6 +4,7 @@
     <div>
       <h2 class="site-content-fieldset__title text-font-important-light dark:text-font-important-dark">Фото галереи</h2>
       <p class="site-content-fieldset__hint text-font-subtle-light dark:text-font-subtle-dark">
+        Кадр 1200×1600 px, соотношение 3:4, JPEG или WebP до 400 КБ.
         Загрузите новое фото ниже. Чтобы удалить — отметьте «Удалить» и нажмите «Сохранить».
         Подписи переключаются кнопками RU / EN сверху.
       </p>
@@ -49,6 +50,9 @@
             {% if form.instance.pk %}Загрузить другое фото{% else %}Выберите файл{% endif %}
           </p>
           {{ form.image }}
+          {% if form.image.help_text %}
+          <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.image.help_text }}</p>
+          {% endif %}
         </div>
 
         <div class="site-content-editor__field">
@@ -68,20 +72,32 @@
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label" for="{{ form.alt_ru.id_for_label }}">{{ form.alt_ru.label }}</label>
             {{ form.alt_ru }}
+            {% if form.alt_ru.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.alt_ru.help_text }}</p>
+            {% endif %}
           </div>
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label" for="{{ form.caption_ru.id_for_label }}">{{ form.caption_ru.label }}</label>
             {{ form.caption_ru }}
+            {% if form.caption_ru.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.caption_ru.help_text }}</p>
+            {% endif %}
           </div>
         </div>
         <div class="gallery-photos-admin__grid cms-lang-pane cms-lang-pane--en">
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label" for="{{ form.alt_en.id_for_label }}">{{ form.alt_en.label }}</label>
             {{ form.alt_en }}
+            {% if form.alt_en.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.alt_en.help_text }}</p>
+            {% endif %}
           </div>
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label" for="{{ form.caption_en.id_for_label }}">{{ form.caption_en.label }}</label>
             {{ form.caption_en }}
+            {% if form.caption_en.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.caption_en.help_text }}</p>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -118,6 +134,9 @@
         <div class="site-content-editor__field">
           <label class="site-content-editor__field-label">{{ form.image.label }}</label>
           {{ form.image }}
+          {% if form.image.help_text %}
+          <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.image.help_text }}</p>
+          {% endif %}
         </div>
         <div class="site-content-editor__field">
           <label class="site-content-editor__field-label">{{ form.is_active.label }}</label>
@@ -135,20 +154,32 @@
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label">{{ form.alt_ru.label }}</label>
             {{ form.alt_ru }}
+            {% if form.alt_ru.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.alt_ru.help_text }}</p>
+            {% endif %}
           </div>
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label">{{ form.caption_ru.label }}</label>
             {{ form.caption_ru }}
+            {% if form.caption_ru.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.caption_ru.help_text }}</p>
+            {% endif %}
           </div>
         </div>
         <div class="gallery-photos-admin__grid cms-lang-pane cms-lang-pane--en">
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label">{{ form.alt_en.label }}</label>
             {{ form.alt_en }}
+            {% if form.alt_en.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.alt_en.help_text }}</p>
+            {% endif %}
           </div>
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label">{{ form.caption_en.label }}</label>
             {{ form.caption_en }}
+            {% if form.caption_en.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.caption_en.help_text }}</p>
+            {% endif %}
           </div>
         </div>
       </div>

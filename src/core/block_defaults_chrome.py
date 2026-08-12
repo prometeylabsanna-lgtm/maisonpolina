@@ -158,8 +158,8 @@ CHROME_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("site", "form.contact"): {
         "label": "Форма — контакт",
-        "text_ru": "Телефон или e-mail",
-        "text_en": "Phone or e-mail",
+        "text_ru": "Телефон",
+        "text_en": "Phone",
     },
     ("site", "form.message"): {
         "label": "Форма — коментар",

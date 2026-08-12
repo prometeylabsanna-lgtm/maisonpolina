@@ -6,6 +6,7 @@ import { initModal } from "./modules/modal.js";
 import { initReveal } from "./modules/reveal.js";
 import { initLeadForm } from "./modules/lead-form.js";
 import { initReviewForm } from "./modules/review-form.js";
+import { initFormValidation } from "./modules/form-validation.js";
 
 function whenIdle(fn, timeout = 2000) {
   if (typeof window.requestIdleCallback === "function") {
@@ -24,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initReveal();
   initLeadForm();
   initReviewForm();
+  initFormValidation();
 
   whenIdle(() => {
     import("./modules/lightbox.js").then((m) => m.initLightbox());

@@ -2,6 +2,7 @@ from django import forms
 from django.forms import modelformset_factory
 from unfold.widgets import UnfoldBooleanWidget
 
+from src.core.admin_guidelines import text_help
 from src.core.admin_site_content_widgets import CmsAdminTextInputWidget
 from src.core.models import PersonalityItem
 
@@ -24,6 +25,12 @@ class PersonalityItemForm(forms.ModelForm):
             "value_en": "Значение (EN)",
             "order": "Порядок",
             "is_active": "Активно",
+        }
+        help_texts = {
+            "label_ru": text_help("personality.label"),
+            "label_en": text_help("personality.label"),
+            "value_ru": text_help("personality.value"),
+            "value_en": text_help("personality.value"),
         }
         widgets = {
             "label_ru": CmsAdminTextInputWidget(),

@@ -1,11 +1,12 @@
 from django.db import models
 from django.templatetags.static import static
 
+from src.core.fields import WebPImageField
 from src.core.mixins import BilingualTextMixin
 
 
 class GalleryPhoto(BilingualTextMixin, models.Model):
-    image = models.ImageField(upload_to="gallery/", blank=True)
+    image = WebPImageField(upload_to="gallery/", blank=True)
     static_image = models.CharField(
         max_length=255,
         blank=True,

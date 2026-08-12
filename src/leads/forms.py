@@ -3,6 +3,12 @@ import time
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from src.core.form_validators import (
+    validate_message_text,
+    validate_person_name,
+    validate_phone,
+)
+
 
 class LeadForm(forms.Form):
     name = forms.CharField(
@@ -12,8 +18,13 @@ class LeadForm(forms.Form):
     )
     contact = forms.CharField(
         max_length=255,
-        label=_("Телефон или e-mail"),
-        widget=forms.TextInput(attrs={"autocomplete": "tel"}),
+        label=_("Телефон"),
+        widget=forms.TextInput(
+            attrs={
+                "autocomplete": "tel",
+                "inputmode": "tel",
+            }
+        ),
     )
     message = forms.CharField(
         required=False,
@@ -51,8 +62,11 @@ class LeadForm(forms.Form):
             raise forms.ValidationError("Too fast")
         return raw
 
+    def clean_name(self):
+        return validate_person_name(self.cleaned_data.get("name") or "")
+
     def clean_contact(self):
-        contact = (self.cleaned_data.get("contact") or "").strip()
-        if len(contact) < 3:
-            raise forms.ValidationError(_("Укажите телефон или e-mail"))
-        return contact
+        return validate_phone(self.cleaned_data.get("contact") or "")
+
+    def clean_message(self):
+        return validate_message_text(self.cleaned_data.get("message") or "")

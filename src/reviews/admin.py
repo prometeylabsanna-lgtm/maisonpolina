@@ -2,13 +2,18 @@ from django.contrib import admin
 from unfold.admin import ModelAdmin
 
 from src.core.admin_changelist import TopDropdownFilterMixin
+from src.core.admin_guidelines import AdminGuidelinesMixin
 from src.core.admin_tinymce import TinyMCEAdminMixin
 from src.core.admin_utils import image_preview
+from src.core.admin_webp import WebPAdminMixin
 from src.reviews.models import Testimonial
 
 
 @admin.register(Testimonial)
-class TestimonialAdmin(TopDropdownFilterMixin, TinyMCEAdminMixin, ModelAdmin):
+class TestimonialAdmin(
+    WebPAdminMixin, TopDropdownFilterMixin, AdminGuidelinesMixin, TinyMCEAdminMixin, ModelAdmin
+):
+    guidelines_prefix = "reviews"
     list_display = (
         "get_photo_preview",
         "author_name_ru",
@@ -36,7 +41,9 @@ class TestimonialAdmin(TopDropdownFilterMixin, TinyMCEAdminMixin, ModelAdmin):
                     "order",
                     "is_active",
                 ),
-                "description": "Фото, оценка и показ отзыва на сайте.",
+                "description": (
+                    "Квадратное фото 256×256 px (круглый аватар), оценка и показ отзыва на сайте."
+                ),
             },
         ),
         (

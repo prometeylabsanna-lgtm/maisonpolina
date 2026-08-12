@@ -5,17 +5,24 @@
       hx-post="{% url 'reviews:submit' %}"
       hx-target="#review-form-body"
       hx-swap="innerHTML"
+      novalidate
       data-review-form>
   {% csrf_token %}
   {% if form and form.non_field_errors %}
   <div class="form__errors">{{ form.non_field_errors }}</div>
   {% endif %}
-  <label class="form__field">
+  <label class="form__field{% if form and form.name.errors %} form__field--error{% endif %}">
     {% block_plain "site" "review.form_name" %}
-    <input class="form__input" type="text" name="name" required maxlength="128"
+    <input class="form__input{% if form and form.name.errors %} form__input--error{% endif %}"
+           type="text"
+           name="name"
+           required
+           maxlength="128"
            value="{% if form %}{{ form.name.value|default:'' }}{% endif %}"
-           autocomplete="name">
-    {% if form and form.name.errors %}<span class="form__field-error">{{ form.name.errors.0 }}</span>{% endif %}
+           autocomplete="name"
+           data-validate="name"
+           aria-invalid="{% if form and form.name.errors %}true{% else %}false{% endif %}">
+    <span class="form__field-error" data-field-error role="alert" aria-live="polite"{% if not form or not form.name.errors %} hidden{% endif %}>{% if form %}{{ form.name.errors.0 }}{% endif %}</span>
   </label>
   <fieldset class="form__field rating-field">
     <legend class="rating-field__legend">{% block_plain "site" "review.form_rating" %}</legend>
@@ -39,10 +46,16 @@
            data-rating-input>
     {% if form and form.rating.errors %}<span class="form__field-error">{{ form.rating.errors.0 }}</span>{% endif %}
   </fieldset>
-  <label class="form__field">
+  <label class="form__field{% if form and form.text.errors %} form__field--error{% endif %}">
     {% block_plain "site" "review.form_text" %}
-    <textarea class="form__textarea" name="text" rows="4" required maxlength="1200">{% if form %}{{ form.text.value|default:'' }}{% endif %}</textarea>
-    {% if form and form.text.errors %}<span class="form__field-error">{{ form.text.errors.0 }}</span>{% endif %}
+    <textarea class="form__textarea{% if form and form.text.errors %} form__input--error{% endif %}"
+              name="text"
+              rows="4"
+              required
+              maxlength="1200"
+              data-validate="review"
+              aria-invalid="{% if form and form.text.errors %}true{% else %}false{% endif %}">{% if form %}{{ form.text.value|default:'' }}{% endif %}</textarea>
+    <span class="form__field-error" data-field-error role="alert" aria-live="polite"{% if not form or not form.text.errors %} hidden{% endif %}>{% if form %}{{ form.text.errors.0 }}{% endif %}</span>
   </label>
   <input type="hidden" name="language" value="{% if form %}{{ form.language.value|default:current_language|default:'ru' }}{% else %}{{ current_language|default:'ru' }}{% endif %}">
   <input type="hidden" name="form_ts" value="{% if form %}{{ form.form_ts.value|default:'' }}{% endif %}" data-review-ts>

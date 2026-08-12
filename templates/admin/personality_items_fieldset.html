@@ -3,7 +3,8 @@
      data-personality-prefix="{{ formset.prefix }}">
   <div class="personality-items-admin__toolbar">
     <p class="site-content-fieldset__hint text-font-subtle-light dark:text-font-subtle-dark">
-      Добавляйте или удаляйте пункты. Названия и значения переключаются кнопками RU / EN сверху.
+      Добавляйте или удаляйте пункты. Название — до 18 символов, значение — до 40.
+      Названия и значения переключаются кнопками RU / EN сверху.
     </p>
     <button type="button"
             class="personality-items-admin__add border border-base-200 dark:border-base-700 rounded-default px-3 py-2 text-sm"
@@ -27,20 +28,32 @@
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label" for="{{ form.label_ru.id_for_label }}">{{ form.label_ru.label }}</label>
             {{ form.label_ru }}
+            {% if form.label_ru.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.label_ru.help_text }}</p>
+            {% endif %}
           </div>
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label" for="{{ form.value_ru.id_for_label }}">{{ form.value_ru.label }}</label>
             {{ form.value_ru }}
+            {% if form.value_ru.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.value_ru.help_text }}</p>
+            {% endif %}
           </div>
         </div>
         <div class="personality-items-admin__grid cms-lang-pane cms-lang-pane--en">
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label" for="{{ form.label_en.id_for_label }}">{{ form.label_en.label }}</label>
             {{ form.label_en }}
+            {% if form.label_en.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.label_en.help_text }}</p>
+            {% endif %}
           </div>
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label" for="{{ form.value_en.id_for_label }}">{{ form.value_en.label }}</label>
             {{ form.value_en }}
+            {% if form.value_en.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.value_en.help_text }}</p>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -80,20 +93,32 @@
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label">{{ form.label_ru.label }}</label>
             {{ form.label_ru }}
+            {% if form.label_ru.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.label_ru.help_text }}</p>
+            {% endif %}
           </div>
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label">{{ form.value_ru.label }}</label>
             {{ form.value_ru }}
+            {% if form.value_ru.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.value_ru.help_text }}</p>
+            {% endif %}
           </div>
         </div>
         <div class="personality-items-admin__grid cms-lang-pane cms-lang-pane--en">
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label">{{ form.label_en.label }}</label>
             {{ form.label_en }}
+            {% if form.label_en.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.label_en.help_text }}</p>
+            {% endif %}
           </div>
           <div class="site-content-editor__field">
             <label class="site-content-editor__field-label">{{ form.value_en.label }}</label>
             {{ form.value_en }}
+            {% if form.value_en.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.value_en.help_text }}</p>
+            {% endif %}
           </div>
         </div>
       </div>

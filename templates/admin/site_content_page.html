@@ -83,6 +83,9 @@
             {% elif row.kind == "choice" %}
               <div class="site-content-editor__field">
                 <label class="site-content-editor__field-label" for="{{ row.choice.id_for_label }}">{{ row.label }}</label>
+                {% if row.help_text %}
+                <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ row.help_text }}</p>
+                {% endif %}
                 {% if row.choice %}
                   {{ row.choice.as_widget }}
                   {% if row.choice.errors %}<div class="text-sm text-red-500">{{ row.choice.errors }}</div>{% endif %}
@@ -91,6 +94,9 @@
             {% elif row.is_image %}
               <div class="site-content-editor__field">
                 <p class="site-content-editor__field-label">{{ row.label }}</p>
+                {% if row.help_text %}
+                <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ row.help_text }}</p>
+                {% endif %}
                 {% if row.preview_url %}
                 <div class="cms-image-preview">
                   <img src="{{ row.preview_url }}"
@@ -108,7 +114,6 @@
                 <div class="mb-2">
                   <p class="site-content-editor__field-label">Загрузить другое фото</p>
                   {{ row.image.as_widget }}
-                  {% if row.image.help_text %}<p class="cms-image-preview__caption">{{ row.image.help_text }}</p>{% endif %}
                 </div>
                 {% endif %}
                 {% if row.clear_image and row.has_upload %}
@@ -151,6 +156,9 @@
             {% else %}
               <div class="site-content-editor__field">
                 <p class="site-content-editor__field-label">{{ row.label }}</p>
+                {% if row.help_text %}
+                <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ row.help_text }}</p>
+                {% endif %}
                 <div class="cms-lang-panes">
                   <div class="cms-lang-pane cms-lang-pane--ru">
                     {% if row.ru %}

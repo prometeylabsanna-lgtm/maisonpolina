@@ -3,6 +3,12 @@ import time
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from src.core.form_validators import (
+    MSG_MESSAGE_MIN,
+    validate_message_text,
+    validate_person_name,
+)
+
 
 class ReviewForm(forms.Form):
     name = forms.CharField(
@@ -11,12 +17,12 @@ class ReviewForm(forms.Form):
         widget=forms.TextInput(attrs={"autocomplete": "name"}),
     )
     text = forms.CharField(
-        min_length=10,
+        min_length=2,
         max_length=1200,
         label=_("Отзыв"),
         widget=forms.Textarea(attrs={"rows": 4}),
         error_messages={
-            "min_length": _("Напишите чуть подробнее — минимум 10 символов"),
+            "min_length": MSG_MESSAGE_MIN,
         },
     )
     rating = forms.IntegerField(
@@ -58,10 +64,10 @@ class ReviewForm(forms.Form):
         return raw
 
     def clean_name(self):
-        return (self.cleaned_data.get("name") or "").strip()
+        return validate_person_name(self.cleaned_data.get("name") or "")
 
     def clean_text(self):
-        return (self.cleaned_data.get("text") or "").strip()
+        return validate_message_text(self.cleaned_data.get("text") or "", required=True)
 
     def clean_language(self):
         lang = (self.cleaned_data.get("language") or "ru")[:2].lower()

@@ -48,7 +48,7 @@ def test_lead_honeypot(client):
         url,
         {
             "name": "Bot",
-            "contact": "bot@example.com",
+            "contact": "+79991234567",
             "consent": "on",
             "form_ts": "1",
             "website": "http://spam.test",
@@ -66,7 +66,7 @@ def test_lead_saved_when_notify_fails(client):
             url,
             {
                 "name": "Иван",
-                "contact": "ivan@example.com",
+                "contact": "+79991234567",
                 "consent": "on",
                 "service": "Test",
                 "source": LeadSource.CONTACTS,
@@ -78,3 +78,65 @@ def test_lead_saved_when_notify_fails(client):
     assert response.status_code == 200
     assert Lead.objects.count() == 1
     assert Lead.objects.get().notified_at is None
+
+
+def _lead_payload(**overrides):
+    data = {
+        "name": "Иван",
+        "contact": "+38 (099) 123-45-67",
+        "message": "Здравствуйте",
+        "consent": "on",
+        "service": "Знакомство",
+        "source": LeadSource.HERO,
+        "language": "ru",
+        "form_ts": "1",
+        "website": "",
+    }
+    data.update(overrides)
+    return data
+
+
+@pytest.mark.django_db
+def test_lead_name_rejects_digits(client):
+    url = reverse("leads:submit")
+    response = client.post(url, _lead_payload(name="Иван2"))
+    assert response.status_code == 422
+    assert Lead.objects.count() == 0
+    assert "не повинно містити цифр" in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_lead_phone_rejects_letters(client):
+    url = reverse("leads:submit")
+    response = client.post(url, _lead_payload(contact="abc123"))
+    assert response.status_code == 422
+    assert Lead.objects.count() == 0
+    assert (
+        "Номер телефону не може містити літер та має бути не довшим за 14 цифр."
+        in response.content.decode()
+    )
+
+
+@pytest.mark.django_db
+def test_lead_phone_rejects_too_many_digits(client):
+    url = reverse("leads:submit")
+    response = client.post(url, _lead_payload(contact="123456789012345"))
+    assert response.status_code == 422
+    assert Lead.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_lead_phone_allows_formatted_number(client):
+    url = reverse("leads:submit")
+    response = client.post(url, _lead_payload(contact="+38 (099) 123-45-67"))
+    assert response.status_code == 200
+    assert Lead.objects.count() == 1
+
+
+@pytest.mark.django_db
+def test_lead_message_rejects_one_character(client):
+    url = reverse("leads:submit")
+    response = client.post(url, _lead_payload(message="а"))
+    assert response.status_code == 422
+    assert Lead.objects.count() == 0
+    assert "Текст відгуку повинен містити мінімум 2 символи." in response.content.decode()

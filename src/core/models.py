@@ -1,6 +1,7 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
+from src.core.fields import WebPImageField
 from src.core.fill_style import FillType, validate_hex_color
 from src.core.mixins import BilingualTextMixin
 
@@ -43,7 +44,7 @@ def _angle_field(verbose_name: str, **kwargs):
 
 class SiteSettings(models.Model):
     brand_name = models.CharField(max_length=128, default="MAISON POLINA")
-    logo = models.ImageField(upload_to="brand/", blank=True)
+    logo = WebPImageField(upload_to="brand/", blank=True)
     phone = models.CharField(max_length=64, blank=True, default="+380 95 472 7859")
     email = models.EmailField(blank=True, default="hello@example.com")
     telegram_url = models.URLField(blank=True, default="https://t.me/")
@@ -94,7 +95,7 @@ class SiteBlock(BilingualTextMixin, models.Model):
     )
     text_ru = models.TextField(blank=True, verbose_name="Текст RU")
     text_en = models.TextField(blank=True, verbose_name="Текст EN")
-    image = models.ImageField(upload_to="blocks/", blank=True, verbose_name="Изображение")
+    image = WebPImageField(upload_to="blocks/", blank=True, verbose_name="Изображение")
     video_file = models.FileField(upload_to="blocks/video/", blank=True)
     video_url = models.URLField(blank=True)
     sort_order = models.PositiveSmallIntegerField(default=0, verbose_name="Порядок")
@@ -180,7 +181,7 @@ class SeoMeta(BilingualTextMixin, models.Model):
     title_en = models.CharField(max_length=255, blank=True)
     description_ru = models.TextField(blank=True)
     description_en = models.TextField(blank=True)
-    og_image = models.ImageField(upload_to="seo/", blank=True)
+    og_image = WebPImageField(upload_to="seo/", blank=True)
 
     class Meta:
         verbose_name = "SEO"

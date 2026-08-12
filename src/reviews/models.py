@@ -1,6 +1,7 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
+from src.core.fields import WebPImageField
 from src.core.mixins import BilingualTextMixin
 
 
@@ -9,7 +10,7 @@ class Testimonial(BilingualTextMixin, models.Model):
     author_name_en = models.CharField(max_length=128, blank=True)
     role_ru = models.CharField(max_length=255, blank=True)
     role_en = models.CharField(max_length=255, blank=True)
-    photo = models.ImageField(upload_to="reviews/", blank=True)
+    photo = WebPImageField(upload_to="reviews/", blank=True)
     text_ru = models.TextField(blank=True)
     text_en = models.TextField(blank=True)
     rating = models.PositiveSmallIntegerField(

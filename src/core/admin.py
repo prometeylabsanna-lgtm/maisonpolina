@@ -3,14 +3,17 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from unfold.admin import ModelAdmin
 
+from src.core.admin_guidelines import AdminGuidelinesMixin
 from src.core.admin_section_styles import register_theme_styles_admin
 from src.core.admin_site_content import register_site_content_section_admins
 from src.core.admin_utils import image_preview
+from src.core.admin_webp import WebPAdminMixin
 from src.core.models import SeoMeta, SiteSettings
 
 
 @admin.register(SiteSettings)
-class SiteSettingsAdmin(ModelAdmin):
+class SiteSettingsAdmin(WebPAdminMixin, AdminGuidelinesMixin, ModelAdmin):
+    guidelines_prefix = "settings"
     fieldsets = (
         (
             "Основное",
@@ -21,7 +24,9 @@ class SiteSettingsAdmin(ModelAdmin):
                     "get_logo_preview",
                     "copyright_name",
                 ),
-                "description": "Название бренда и логотип, которые видят посетители.",
+                "description": (
+                    "Название бренда и логотип 176×136 px (PNG, до 40 КБ) — в шапке до 44×34 px."
+                ),
             },
         ),
         (
@@ -75,8 +80,10 @@ class SiteSettingsAdmin(ModelAdmin):
 
 
 @admin.register(SeoMeta)
-class SeoMetaAdmin(ModelAdmin):
+class SeoMetaAdmin(WebPAdminMixin, AdminGuidelinesMixin, ModelAdmin):
     """SEO title/description stay plain text (no HTML in meta tags)."""
+
+    guidelines_prefix = "seo"
 
     list_display = ("page", "title_ru", "title_en", "get_og_preview")
     search_fields = ("page", "title_ru", "title_en")

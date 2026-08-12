@@ -1818,10 +1818,63 @@ body.is-locked {
 }
 
 .form__field-error {
-  font-size: 12px;
-  color: #d4a0a0;
-  letter-spacing: 0.04em;
+  display: block;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #e07070;
+  letter-spacing: 0.02em;
   text-transform: none;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.form__field-error[hidden] {
+  display: none;
+}
+
+.form__input--error,
+.form__textarea.form__input--error {
+  border-bottom-color: #e07070;
+}
+
+.form__input--error:focus,
+.form__textarea.form__input--error:focus {
+  border-bottom-color: #e88888;
+}
+
+@media (max-width: 767px) {
+  .form__field-error {
+    font-size: 13px;
+    line-height: 1.5;
+    padding-right: 4px;
+  }
+
+  .form__input,
+  .form__textarea {
+    font-size: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .form__field-error {
+    font-size: 13px;
+    max-width: 36em;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .form__input,
+  .form__textarea {
+    font-size: 16px;
+  }
+
+  .form__field-error {
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
 }
 
 /* --- components/modal.css --- */

@@ -227,10 +227,7 @@ UNFOLD = {
     "SITE_HEADER": "MaisonPolina",
     "SITE_SUBHEADER": "Панель сайта",
     "SITE_SYMBOL": "person",
-    "SITE_ICON": {
-        "light": lambda request: static("apple-touch-icon.png"),
-        "dark": lambda request: static("images/brand-monogram-transparent.png"),
-    },
+    "SITE_ICON": lambda request: static("apple-touch-icon.png"),
     "SITE_FAVICONS": [
         {
             "rel": "icon",
@@ -265,17 +262,17 @@ UNFOLD = {
     ],
     "COLORS": {
         "primary": {
-            "50": "#ecfdf5",
-            "100": "#d1fae5",
-            "200": "#a7f3d0",
-            "300": "#6ee7b7",
-            "400": "#34d399",
-            "500": "#10b981",
-            "600": "#059669",
-            "700": "#047857",
-            "800": "#065f46",
-            "900": "#064e3b",
-            "950": "#022c22",
+            "50": "#faf6f0",
+            "100": "#f3ebe0",
+            "200": "#e8d9c4",
+            "300": "#dfccb7",
+            "400": "#d4c0a4",
+            "500": "#cab695",
+            "600": "#b09572",
+            "700": "#4c0d13",
+            "800": "#3a0a0f",
+            "900": "#2a080c",
+            "950": "#1a0508",
         },
     },
     "SIDEBAR": {
