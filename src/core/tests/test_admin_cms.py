@@ -262,6 +262,11 @@ def test_admin_personality_adds_and_deletes_items(client, admin_user):
     assert "Добавить пункт" in html
     assert 'name="personality_facts-TOTAL_FORMS"' in html
     assert 'name="personality_extras-TOTAL_FORMS"' in html
+    assert 'data-cms-lang="ru"' in html
+    assert 'data-cms-lang="en"' in html
+    assert "cms-lang-pane--ru" in html
+    assert "cms-lang-pane--en" in html
+    assert "cms_lang_tabs.js" in html
 
     response = client.post(
         url,

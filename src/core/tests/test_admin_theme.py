@@ -30,5 +30,6 @@ def test_admin_theme_switcher_visible(client, admin_user):
     assert "Темная" in html
     assert "favicon-32x32.png" in html
     assert "apple-touch-icon.png" in html
+    assert "brand-monogram.png" in html
     assert "admin-brand__mark" in html
     assert "MaisonPolina" in html

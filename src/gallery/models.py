@@ -10,7 +10,7 @@ class GalleryPhoto(BilingualTextMixin, models.Model):
     static_image = models.CharField(
         max_length=255,
         blank=True,
-        help_text="Шлях у static/, напр. images/gallery/gallery-01.jpg (Vercel-safe)",
+        help_text="Внутренний путь к файлу. Обычно не меняется.",
     )
     alt_ru = models.CharField(max_length=255, blank=True)
     alt_en = models.CharField(max_length=255, blank=True)

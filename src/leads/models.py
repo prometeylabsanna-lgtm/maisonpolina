@@ -38,11 +38,15 @@ class Lead(models.Model):
     )
     admin_note = models.TextField(blank=True, verbose_name="Заметка")
     ip = models.GenericIPAddressField(null=True, blank=True, verbose_name="IP")
-    user_agent = models.CharField(max_length=512, blank=True, verbose_name="User-Agent")
-    utm_source = models.CharField(max_length=128, blank=True, verbose_name="utm_source")
-    utm_medium = models.CharField(max_length=128, blank=True, verbose_name="utm_medium")
+    user_agent = models.CharField(max_length=512, blank=True, verbose_name="Браузер")
+    utm_source = models.CharField(
+        max_length=128, blank=True, verbose_name="Источник перехода"
+    )
+    utm_medium = models.CharField(
+        max_length=128, blank=True, verbose_name="Тип перехода"
+    )
     utm_campaign = models.CharField(
-        max_length=128, blank=True, verbose_name="utm_campaign"
+        max_length=128, blank=True, verbose_name="Кампания"
     )
     notified_at = models.DateTimeField(null=True, blank=True, verbose_name="Уведомление")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата")

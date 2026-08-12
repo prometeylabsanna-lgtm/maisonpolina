@@ -34,7 +34,7 @@ def test_text_help_nav_nowrap():
 def test_text_help_privacy_unlimited():
     hint = text_help("privacy.body")
     assert "лимита" in hint
-    assert "Безопасно до" not in hint
+    assert "Удобно до" not in hint
 
 
 def test_guideline_help_prefers_image():
@@ -62,7 +62,7 @@ def test_admin_hero_shows_layout_hints(client, admin_user):
     response = client.get(reverse("admin:core_homeherosettings_change", args=[1]))
     html = response.content.decode()
     assert response.status_code == 200
-    assert "Безопасно до 24 символов" in html
+    assert "Удобно до 24 символов" in html
     assert "1200×1600" in html
     assert "Половина — вертикальный портрет" in html
 
@@ -87,4 +87,4 @@ def test_admin_format_change_shows_image_hint(client, admin_user):
     assert response.status_code == 200
     assert "1200×900" in html
     assert "4:3" in html
-    assert "Безопасно до 36 символов" in html
+    assert "Удобно до 36 символов" in html

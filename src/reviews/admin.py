@@ -71,7 +71,7 @@ class TestimonialAdmin(
             {
                 "classes": ("collapse",),
                 "fields": ("is_public_submission", "created_at"),
-                "description": "Технические данные — менять не нужно.",
+                "description": "Служебные сведения. Обычно менять не нужно.",
             },
         ),
     )

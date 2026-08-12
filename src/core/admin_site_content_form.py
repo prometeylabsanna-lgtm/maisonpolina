@@ -36,8 +36,8 @@ from src.core.site_content_registry import (
 
 SECTION_VISIBLE_FIELD = "section_visible"
 VIDEO_HELP = (
-    "MP4 или WebM, 1920×1080, до 8 МБ. На продакшене файл с админки не "
-    "сохраняется (Vercel) — укажите URL на CDN или положите ролик в static."
+    "Видеофайл до 8 МБ, лучше горизонтальный кадр в хорошем качестве "
+    "(примерно как Full HD)."
 )
 
 
@@ -194,7 +194,10 @@ class SitePageContentForm(forms.Form):
             required=False,
             initial=block.video_url or "",
             widget=CmsAdminTextInputWidget(),
-            help_text="Прямая ссылка на mp4/webm. YouTube и Vimeo не поддерживаются.",
+            help_text=(
+                "Прямая ссылка на видеофайл. Ссылки на страницы YouTube или "
+                "Vimeo здесь не подойдут."
+            ),
             assume_scheme="https",
         )
         self.fields[block_field_name(page, key, "clear_video")] = forms.BooleanField(

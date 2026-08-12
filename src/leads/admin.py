@@ -119,7 +119,7 @@ class LeadAdmin(TopDropdownFilterMixin, TinyMCEAdminMixin, ModelAdmin):
         ),
         ("Статус", {"fields": ("status", "admin_note", "notified_at")}),
         (
-            "Техническое",
+            "Служебное",
             {
                 "classes": ("collapse",),
                 "fields": (
@@ -130,6 +130,7 @@ class LeadAdmin(TopDropdownFilterMixin, TinyMCEAdminMixin, ModelAdmin):
                     "utm_medium",
                     "utm_campaign",
                 ),
+                "description": "Служебные сведения по заявке. Обычно менять не нужно.",
             },
         ),
     )

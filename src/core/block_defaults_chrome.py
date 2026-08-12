@@ -37,7 +37,7 @@ CHROME_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "text_en": "Main navigation",
     },
     ("site", "header.menu_aria"): {
-        "label": "Шапка — подпись меню (для скринридеров)",
+        "label": "Шапка — подпись меню (скрытая)",
         "text_ru": "Меню",
         "text_en": "Menu",
     },
@@ -57,7 +57,7 @@ CHROME_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "text_en": "POLINA",
     },
     ("site", "header.brand_aria"): {
-        "label": "Шапка — подпись бренда (для скринридеров)",
+        "label": "Шапка — подпись бренда (скрытая)",
         "text_ru": "Maison Polina",
         "text_en": "Maison Polina",
     },
@@ -82,7 +82,7 @@ CHROME_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "text_en": "Menu",
     },
     ("site", "footer.menu_aria"): {
-        "label": "Подвал — подпись меню (для скринридеров)",
+        "label": "Подвал — подпись меню (скрытая)",
         "text_ru": "Меню футера",
         "text_en": "Footer menu",
     },
@@ -432,7 +432,7 @@ CHROME_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "text_en": "Close chat",
     },
     ("site", "chat.panel_aria"): {
-        "label": "Чат — подпись панели (для скринридеров)",
+        "label": "Чат — подпись панели (скрытая)",
         "text_ru": "Чат",
         "text_en": "Chat",
     },

@@ -228,7 +228,7 @@ UNFOLD = {
     "SITE_HEADER": "MaisonPolina",
     "SITE_SUBHEADER": "Панель сайта",
     "SITE_SYMBOL": "person",
-    "SITE_ICON": lambda request: static("apple-touch-icon.png"),
+    "SITE_ICON": lambda request: static("images/brand-monogram.png"),
     "SITE_FAVICONS": [
         {
             "rel": "icon",

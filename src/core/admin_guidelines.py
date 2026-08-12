@@ -34,7 +34,10 @@ class TextLimit:
     note: str = ""
 
     def as_help(self) -> str:
-        base = f"Безопасно до {self.chars} символов — длиннее может сломать вёрстку."
+        base = (
+            f"Удобно до {self.chars} символов — длиннее может "
+            f"неаккуратно смотреться на сайте."
+        )
         if self.note:
             return f"{base} {self.note}"
         return base
@@ -138,7 +141,7 @@ TEXT_LIMITS: dict[str, TextLimit] = {
     "gallery.title": TextLimit(28, "Заголовок секции."),
     "gallery.title_accent": TextLimit(28, "Вторая часть заголовка."),
     "gallery.caption": TextLimit(40, "Подпись к кадру, не обязательна на сайте."),
-    "gallery.alt": TextLimit(80, "Для скринридеров, на экране не видно."),
+    "gallery.alt": TextLimit(80, "Короткое описание фото. На сайте не видно."),
     "formats.eyebrow": TextLimit(18, "Короткий надзаголовок."),
     "formats.title": TextLimit(36, "Название секции или карточки."),
     "formats.title_accent": TextLimit(28, "Вторая часть заголовка секции."),
@@ -182,13 +185,13 @@ TEXT_LIMITS: dict[str, TextLimit] = {
     "header.cta": TextLimit(18, "Кнопка в шапке, без переноса."),
     "header.brand_line_1": TextLimit(16, "Первая строка имени в шапке."),
     "header.brand_line_2": TextLimit(16, "Вторая строка имени в шапке."),
-    "header.brand_aria": TextLimit(40, "Скрытая подпись для скринридеров."),
-    "header.nav_aria": TextLimit(40, "Скрытая подпись для скринридеров."),
-    "header.menu_aria": TextLimit(40, "Скрытая подпись для скринридеров."),
-    "mobile.nav_aria": TextLimit(40, "Скрытая подпись для скринридеров."),
+    "header.brand_aria": TextLimit(40, "Скрытая подпись для доступности."),
+    "header.nav_aria": TextLimit(40, "Скрытая подпись для доступности."),
+    "header.menu_aria": TextLimit(40, "Скрытая подпись для доступности."),
+    "mobile.nav_aria": TextLimit(40, "Скрытая подпись для доступности."),
     "mobile.close": TextLimit(16, "Кнопка закрытия меню."),
-    "lang.aria": TextLimit(40, "Скрытая подпись для скринридеров."),
-    "dock.aria": TextLimit(40, "Скрытая подпись для скринридеров."),
+    "lang.aria": TextLimit(40, "Скрытая подпись для доступности."),
+    "dock.aria": TextLimit(40, "Скрытая подпись для доступности."),
     "dock.home": TextLimit(12, "Подпись в нижней панели телефона."),
     "dock.gallery": TextLimit(12, "Подпись в нижней панели телефона."),
     "dock.contacts": TextLimit(12, "Подпись в нижней панели телефона."),
@@ -196,7 +199,7 @@ TEXT_LIMITS: dict[str, TextLimit] = {
     "footer.location_label": TextLimit(18, "Подпись колонки."),
     "footer.contact_label": TextLimit(18, "Подпись колонки."),
     "footer.menu_label": TextLimit(18, "Подпись колонки."),
-    "footer.menu_aria": TextLimit(40, "Скрытая подпись для скринридеров."),
+    "footer.menu_aria": TextLimit(40, "Скрытая подпись для доступности."),
     "footer.telegram_title": TextLimit(24, "Заголовок канала."),
     "footer.telegram_sub": TextLimit(40, "Подпись под каналом."),
     "footer.menu_more": TextLimit(18, "Пункт меню."),
@@ -237,7 +240,7 @@ TEXT_LIMITS: dict[str, TextLimit] = {
     "chat.subtitle": TextLimit(40, "Подзаголовок панели."),
     "chat.open": TextLimit(16, "Кнопка открытия."),
     "chat.close": TextLimit(16, "Кнопка закрытия."),
-    "chat.panel_aria": TextLimit(40, "Скрытая подпись для скринридеров."),
+    "chat.panel_aria": TextLimit(40, "Скрытая подпись для доступности."),
     "chat.input_label": TextLimit(24, "Подпись поля ввода."),
     "chat.placeholder": TextLimit(36, "Подсказка внутри поля."),
     "chat.send": TextLimit(16, "Кнопка отправки."),
@@ -253,7 +256,10 @@ TEXT_LIMITS: dict[str, TextLimit] = {
     "settings.copyright_name": TextLimit(28, "Имя в копирайте подвала."),
     "settings.location": TextLimit(48, "Адрес / локация в подвале."),
     "seo.title": TextLimit(60, "Title вкладки и поиска. Лучше 50–60."),
-    "seo.description": TextLimit(160, "Meta description. Лучше 140–160."),
+    "seo.description": TextLimit(
+        160,
+        "Краткое описание для поисковиков и соцсетей. Лучше 140–160 символов.",
+    ),
 }
 
 _SUFFIX_LIMITS: tuple[tuple[str, TextLimit], ...] = (
