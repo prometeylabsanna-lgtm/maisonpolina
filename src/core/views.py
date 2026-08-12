@@ -1,5 +1,7 @@
+import logging
 import time
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.utils.translation import get_language
 from django.views.generic import TemplateView
@@ -13,6 +15,8 @@ from src.leads.forms import LeadForm
 from src.leads.models import LeadSource
 from src.reviews.forms import ReviewForm
 from src.reviews.models import Testimonial
+
+logger = logging.getLogger(__name__)
 
 
 class HomeView(TemplateView):
@@ -39,6 +43,9 @@ class HomeView(TemplateView):
             testimonials = Testimonial.objects.filter(is_active=True)
             faq_items = FaqItem.objects.filter(is_active=True)
         except Exception:
+            logger.exception("HomeView context bootstrap failed")
+            if not settings.DEBUG:
+                raise
             blocks = {}
             seo = None
             gallery_photos = GalleryPhoto.objects.none()
@@ -76,26 +83,35 @@ class HomeView(TemplateView):
         ctx["formats"] = formats
         ctx["testimonials"] = testimonials
         ctx["faq_items"] = faq_items
+        utm = {
+            "utm_source": (self.request.GET.get("utm_source") or "")[:128],
+            "utm_medium": (self.request.GET.get("utm_medium") or "")[:128],
+            "utm_campaign": (self.request.GET.get("utm_campaign") or "")[:128],
+        }
+        lang = get_language() or "ru"
+        ts = str(time.time())
         form = LeadForm(
             initial={
                 "source": LeadSource.CONTACTS,
-                "language": get_language() or "ru",
-                "form_ts": str(time.time()),
+                "language": lang,
+                "form_ts": ts,
+                **utm,
             }
         )
         ctx["contacts_form"] = form
         ctx["lead_form"] = LeadForm(
             initial={
                 "source": LeadSource.HERO,
-                "language": get_language() or "ru",
-                "form_ts": str(time.time()),
+                "language": lang,
+                "form_ts": ts,
+                **utm,
             }
         )
         ctx["review_form"] = ReviewForm(
             initial={
-                "language": get_language() or "ru",
+                "language": lang,
                 "rating": 5,
-                "form_ts": str(time.time()),
+                "form_ts": ts,
             }
         )
         return ctx
@@ -107,6 +123,22 @@ class PrivacyView(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         blocks = get_site_blocks()
+        lang = get_language() or "ru"
+        ts = str(time.time())
+        ctx["lead_form"] = LeadForm(
+            initial={
+                "source": LeadSource.CONTACTS,
+                "language": lang,
+                "form_ts": ts,
+            }
+        )
+        ctx["review_form"] = ReviewForm(
+            initial={
+                "language": lang,
+                "rating": 5,
+                "form_ts": ts,
+            }
+        )
         ctx["page_title"] = get_block_text(
             "privacy", "title", blocks=blocks, fallback="Политика конфиденциальности"
         )

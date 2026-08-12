@@ -16,6 +16,14 @@ function whenIdle(fn, timeout = 2000) {
   }
 }
 
+function loadModule(path, init) {
+  return import(path)
+    .then((m) => init(m))
+    .catch((err) => {
+      console.warn(`[main] failed to load ${path}`, err);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initStickyHeader();
   initMobileNav();
@@ -28,19 +36,23 @@ document.addEventListener("DOMContentLoaded", () => {
   initFormValidation();
 
   whenIdle(() => {
-    import("./modules/lightbox.js").then((m) => m.initLightbox());
+    loadModule("./modules/lightbox.js", (m) => m.initLightbox());
     Promise.all([
       import("./modules/review-clamp.js"),
       import("./modules/carousel.js"),
-    ]).then(([clamp, carousel]) => {
-      clamp.initReviewClamp();
-      carousel.initCarousel();
-    });
-    import("./modules/gallery-scroll.js").then((m) => m.initGalleryScroll());
-    import("./modules/contacts-parallax.js").then((m) => m.initContactsParallax());
+    ])
+      .then(([clamp, carousel]) => {
+        clamp.initReviewClamp();
+        carousel.initCarousel();
+      })
+      .catch((err) => {
+        console.warn("[main] failed to load carousel modules", err);
+      });
+    loadModule("./modules/gallery-scroll.js", (m) => m.initGalleryScroll());
+    loadModule("./modules/contacts-parallax.js", (m) => m.initContactsParallax());
   });
 
   whenIdle(() => {
-    import("./modules/chat-widget.js").then((m) => m.initChatWidget());
+    loadModule("./modules/chat-widget.js", (m) => m.initChatWidget());
   }, 3500);
 });

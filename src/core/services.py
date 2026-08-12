@@ -11,7 +11,7 @@ def get_site_blocks() -> dict:
     if blocks is None:
         blocks = {
             b.cache_key: b
-            for b in SiteBlock.objects.all()
+            for b in SiteBlock.objects.filter(is_active=True)
         }
         cache.set(SITE_BLOCKS_CACHE_KEY, blocks, SITE_BLOCKS_CACHE_TTL)
     return blocks

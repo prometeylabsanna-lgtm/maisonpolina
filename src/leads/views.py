@@ -1,12 +1,12 @@
 import logging
 import time
 
-from django.core.cache import cache
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import get_language
 from django.views.decorators.http import require_http_methods
 
+from src.core.rate_limit import client_ip, is_rate_limited
 from src.leads.forms import LeadForm
 from src.leads.models import Lead, LeadSource
 from src.leads.services import notify
@@ -19,27 +19,17 @@ RATE_WINDOW = 3600
 ALLOWED_FORM_TARGETS = {"#lead-form-body", "#contacts-form"}
 
 
-def _client_ip(request: HttpRequest) -> str:
-    forwarded = request.META.get("HTTP_X_FORWARDED_FOR", "")
-    if forwarded:
-        return forwarded.split(",")[0].strip()
-    return request.META.get("REMOTE_ADDR", "")
-
-
-def _rate_limited(ip: str) -> bool:
-    if not ip:
-        return False
-    key = f"lead_rate:{ip}"
-    count = cache.get(key, 0)
-    if count >= RATE_LIMIT:
-        return True
-    cache.set(key, count + 1, RATE_WINDOW)
-    return False
-
-
 def _form_target(request: HttpRequest) -> str:
     raw = request.POST.get("form_target") or request.GET.get("form_target") or "#lead-form-body"
     return raw if raw in ALLOWED_FORM_TARGETS else "#lead-form-body"
+
+
+def _utm_initial(request: HttpRequest) -> dict[str, str]:
+    return {
+        "utm_source": (request.GET.get("utm_source") or "")[:128],
+        "utm_medium": (request.GET.get("utm_medium") or "")[:128],
+        "utm_campaign": (request.GET.get("utm_campaign") or "")[:128],
+    }
 
 
 @require_http_methods(["GET"])
@@ -50,6 +40,7 @@ def lead_form(request: HttpRequest) -> HttpResponse:
             "source": request.GET.get("source", LeadSource.CONTACTS),
             "language": get_language() or "ru",
             "form_ts": str(time.time()),
+            **_utm_initial(request),
         }
     )
     return render(
@@ -79,8 +70,8 @@ def lead_submit(request: HttpRequest) -> HttpResponse:
                 {"form_target": form_target},
             )
 
-        ip = _client_ip(request)
-        if _rate_limited(ip):
+        ip = client_ip(request)
+        if is_rate_limited(f"lead_rate:{ip}", limit=RATE_LIMIT, window=RATE_WINDOW):
             form.add_error(None, "Слишком много обращений. Попробуйте позже.")
             return render(
                 request,
@@ -106,9 +97,9 @@ def lead_submit(request: HttpRequest) -> HttpResponse:
             language=form.cleaned_data.get("language") or (get_language() or "ru"),
             ip=ip or None,
             user_agent=(request.META.get("HTTP_USER_AGENT", "") or "")[:512],
-            utm_source=request.GET.get("utm_source", "")[:128],
-            utm_medium=request.GET.get("utm_medium", "")[:128],
-            utm_campaign=request.GET.get("utm_campaign", "")[:128],
+            utm_source=(form.cleaned_data.get("utm_source") or "")[:128],
+            utm_medium=(form.cleaned_data.get("utm_medium") or "")[:128],
+            utm_campaign=(form.cleaned_data.get("utm_campaign") or "")[:128],
         )
         try:
             notify(lead)

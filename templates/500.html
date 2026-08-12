@@ -1,27 +1,9 @@
-{% load static site_content %}
-<!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE|default:'ru' }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>500</title>
-  <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
-  <link rel="stylesheet" href="{% static 'css/reset.css' %}">
-  <link rel="stylesheet" href="{% static 'css/typography.css' %}">
-  <link rel="stylesheet" href="{% static 'css/base.css' %}">
-  <link rel="stylesheet" href="{% static 'css/components/button.css' %}">
-  <link rel="stylesheet" href="{% static 'css/pages/privacy.css' %}">
-  {% if section_styles_css %}
-  <style id="cms-section-styles">{{ section_styles_css|safe }}</style>
-  {% endif %}
-</head>
-<body>
-  <div class="error-page">
-    <div>
-      <p class="error-page__code">500</p>
-      <p class="error-page__text">{% block_plain "site" "error.500_text" %}</p>
-      <a class="btn" href="/">{% block_plain "site" "error.500_cta" %}</a>
-    </div>
-  </div>
-</body>
-</html>
+{% extends "errors/base.html" %}
+{% load site_content %}
+
+{% block error_title %}500{% endblock %}
+{% block error_code %}500{% endblock %}
+{% block error_text %}{% block_plain "site" "error.500_text" %}{% endblock %}
+{% block error_cta %}
+<a class="btn" href="/">{% block_plain "site" "error.500_cta" %}</a>
+{% endblock %}

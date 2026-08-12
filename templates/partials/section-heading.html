@@ -1,0 +1,6 @@
+{% load site_content %}
+{% with page_name=page|default:"home" %}
+<p class="section__eyebrow">{% block_plain page_name key_prefix|add:".eyebrow" %}</p>
+<div class="section__rule"></div>
+<h2 class="section__title{% if title_class %} {{ title_class }}{% endif %}">{% block_plain page_name key_prefix|add:".title" %}{% if with_accent != False and with_accent != "false" and with_accent != "0" %} <span class="section__title-accent">{% block_plain page_name key_prefix|add:".title_accent" %}</span>{% endif %}</h2>
+{% endwith %}

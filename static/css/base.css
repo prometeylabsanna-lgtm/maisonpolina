@@ -3,7 +3,7 @@ html {
 }
 
 body {
-  min-height: 100%;
+  min-height: 100svh;
   background-color: var(--color-floral);
   background-image: var(--bg-depth);
   background-size: var(--bg-depth-size);

@@ -6,7 +6,10 @@
       hx-target="#review-form-body"
       hx-swap="innerHTML"
       novalidate
-      data-review-form>
+      data-review-form
+      data-msg-name-digits="{% translate "Имя не должно содержать цифр." %}"
+      data-msg-phone="{% translate "Номер телефона не может содержать буквы и должен содержать от 7 до 14 цифр." %}"
+      data-msg-message-min="{% translate "Текст отзыва должен содержать минимум 2 символа." %}">
   {% csrf_token %}
   {% if form and form.non_field_errors %}
   <div class="form__errors">{{ form.non_field_errors }}</div>

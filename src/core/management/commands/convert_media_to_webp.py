@@ -29,6 +29,8 @@ class Command(BaseCommand):
         for model in apps.get_models():
             if model._meta.app_label not in OUR_APPS:
                 continue
+            if model._meta.proxy:
+                continue
             image_fields = [
                 field
                 for field in model._meta.get_fields()

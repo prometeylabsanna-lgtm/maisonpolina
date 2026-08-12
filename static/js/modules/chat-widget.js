@@ -1,6 +1,9 @@
+import { registerEscape, unregisterEscape } from "./escape-stack.js";
+
 const STORAGE_SESSION = "chat_session_id";
 const STORAGE_USER = "chat_user_identifier";
-const POLL_MS = 4000;
+const POLL_OPEN_MS = 4000;
+const POLL_CLOSED_MS = 9000;
 
 function csrfToken() {
   return (
@@ -73,6 +76,7 @@ export function initChatWidget() {
   let open = false;
   let pollTimer = null;
   let ensuring = null;
+  let messagesAbort = null;
 
   function setOpen(next) {
     open = next;
@@ -83,6 +87,7 @@ export function initChatWidget() {
     document.body.classList.toggle("is-chat-open", open);
     if (open) {
       if (badge) badge.hidden = true;
+      registerEscape("chat", () => setOpen(false));
       ensureSession()
         .then(() => loadMessages(false))
         .then(() => {
@@ -92,15 +97,19 @@ export function initChatWidget() {
         })
         .catch(() => { });
     } else {
-      stopPoll();
+      unregisterEscape("chat");
+      if (sessionId && userIdentifier) startPoll();
+      else stopPoll();
     }
   }
 
   function startPoll() {
     stopPoll();
+    if (document.hidden) return;
+    const ms = open ? POLL_OPEN_MS : POLL_CLOSED_MS;
     pollTimer = window.setInterval(() => {
-      if (open) loadMessages(true).catch(() => { });
-    }, POLL_MS);
+      loadMessages(true).catch(() => { });
+    }, ms);
   }
 
   function stopPoll() {
@@ -145,35 +154,47 @@ export function initChatWidget() {
   }
 
   async function loadMessages(appendOnly) {
-    await ensureSession();
-    const url = new URL(messagesUrl, window.location.origin);
-    url.searchParams.set("session_id", sessionId);
-    url.searchParams.set("user_identifier", userIdentifier);
-    if (appendOnly) {
-      const after = lastMessageId(messagesEl);
-      if (after) url.searchParams.set("after_id", after);
-    }
+    if (messagesAbort) messagesAbort.abort();
+    const controller = new AbortController();
+    messagesAbort = controller;
 
-    const res = await fetch(url.toString(), {
-      headers: langHeaders({ "HX-Request": "true" }),
-      credentials: "same-origin",
-    });
-    if (!res.ok) return;
-    const html = await res.text();
-    if (!html.trim()) return;
-
-    if (appendOnly && lastMessageId(messagesEl)) {
-      const had = messagesEl.querySelectorAll("[data-msg-id]").length;
-      messagesEl.querySelector(".chat-widget__empty")?.remove();
-      messagesEl.insertAdjacentHTML("beforeend", html);
-      const now = messagesEl.querySelectorAll("[data-msg-id]").length;
-      if (now > had) {
-        scrollMessages(messagesEl);
-        if (!open && badge) badge.hidden = false;
+    try {
+      await ensureSession();
+      const url = new URL(messagesUrl, window.location.origin);
+      url.searchParams.set("session_id", sessionId);
+      url.searchParams.set("user_identifier", userIdentifier);
+      if (appendOnly) {
+        const after = lastMessageId(messagesEl);
+        if (after) url.searchParams.set("after_id", after);
       }
-    } else {
-      messagesEl.innerHTML = html;
-      scrollMessages(messagesEl);
+
+      const res = await fetch(url.toString(), {
+        headers: langHeaders({ "HX-Request": "true" }),
+        credentials: "same-origin",
+        signal: controller.signal,
+      });
+      if (!res.ok) return;
+      const html = await res.text();
+      if (!html.trim()) return;
+
+      if (appendOnly && lastMessageId(messagesEl)) {
+        const had = messagesEl.querySelectorAll("[data-msg-id]").length;
+        messagesEl.querySelector(".chat-widget__empty")?.remove();
+        messagesEl.insertAdjacentHTML("beforeend", html);
+        const now = messagesEl.querySelectorAll("[data-msg-id]").length;
+        if (now > had) {
+          scrollMessages(messagesEl);
+          if (!open && badge) badge.hidden = false;
+        }
+      } else {
+        messagesEl.innerHTML = html;
+        scrollMessages(messagesEl);
+      }
+    } catch (err) {
+      if (err?.name === "AbortError") return;
+      throw err;
+    } finally {
+      if (messagesAbort === controller) messagesAbort = null;
     }
   }
 
@@ -201,10 +222,13 @@ export function initChatWidget() {
       if (res.ok) {
         messagesEl.innerHTML = html;
         scrollMessages(messagesEl);
-      } else if (html) {
+        return true;
+      }
+      if (html) {
         messagesEl.insertAdjacentHTML("beforeend", html);
         scrollMessages(messagesEl);
       }
+      return false;
     } finally {
       if (sendBtn) sendBtn.disabled = false;
     }
@@ -221,17 +245,18 @@ export function initChatWidget() {
     setOpen(true);
   });
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && open) setOpen(false);
-  });
-
   form?.addEventListener("submit", (e) => {
     e.preventDefault();
     const text = (input?.value || "").trim();
     if (!text) return;
-    if (input) input.value = "";
-    autoGrow();
-    sendMessage(text).catch(() => { });
+    sendMessage(text)
+      .then((ok) => {
+        if (ok && input) {
+          input.value = "";
+          autoGrow();
+        }
+      })
+      .catch(() => {});
   });
 
   function autoGrow() {
@@ -249,11 +274,16 @@ export function initChatWidget() {
   });
 
   if (sessionId && userIdentifier) {
-    ensureSession().catch(() => { });
+    ensureSession()
+      .then(() => startPoll())
+      .catch(() => { });
   }
 
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) stopPoll();
-    else if (open) startPoll();
+    if (document.hidden) {
+      stopPoll();
+      return;
+    }
+    if (open || (sessionId && userIdentifier)) startPoll();
   });
 }

@@ -107,9 +107,8 @@ def test_testimonial_author_name_by_locale(client):
 
 @pytest.mark.django_db
 def test_review_name_rejects_digits(client):
-    url = reverse("reviews:submit")
     response = client.post(
-        url,
+        "/ru/review/submit/",
         {
             "name": "Мария1",
             "text": "Достаточно длинный текст отзыва",
@@ -121,14 +120,13 @@ def test_review_name_rejects_digits(client):
     )
     assert response.status_code == 422
     assert Testimonial.objects.count() == 0
-    assert "не повинно містити цифр" in response.content.decode()
+    assert "не должно содержать цифр" in response.content.decode()
 
 
 @pytest.mark.django_db
 def test_review_text_rejects_one_character(client):
-    url = reverse("reviews:submit")
     response = client.post(
-        url,
+        "/ru/review/submit/",
         {
             "name": "Мария",
             "text": "а",
@@ -140,7 +138,24 @@ def test_review_text_rejects_one_character(client):
     )
     assert response.status_code == 422
     assert Testimonial.objects.count() == 0
-    assert "Текст відгуку повинен містити мінімум 2 символи." in response.content.decode()
+    assert "Текст отзыва должен содержать минимум 2 символа." in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_review_validation_messages_english(client):
+    response = client.post(
+        "/en/review/submit/",
+        {
+            "name": "Mary1",
+            "text": "ok",
+            "rating": "5",
+            "language": "en",
+            "form_ts": "1",
+            "website": "",
+        },
+    )
+    assert response.status_code == 422
+    assert "Name must not contain digits." in response.content.decode()
 
 
 @pytest.mark.django_db

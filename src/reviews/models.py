@@ -1,5 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 from src.core.fields import WebPImageField
 from src.core.mixins import BilingualTextMixin
@@ -29,9 +30,7 @@ class Testimonial(BilingualTextMixin, models.Model):
         verbose_name="Публичная заявка",
     )
     created_at = models.DateTimeField(
-        auto_now_add=True,
-        null=True,
-        blank=True,
+        default=timezone.now,
         verbose_name="Дата",
     )
 

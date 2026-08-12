@@ -4,7 +4,6 @@ import secrets
 import uuid
 
 from django.conf import settings
-from django.core.cache import cache
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.utils import translation
@@ -18,6 +17,7 @@ from src.chat.services.telegram_bot import (
     forward_site_message,
     handle_webhook_update,
 )
+from src.core.rate_limit import client_ip, is_rate_limited
 
 logger = logging.getLogger(__name__)
 
@@ -47,21 +47,15 @@ def _activate_request_language(request: HttpRequest) -> str:
 
 
 def _client_ip(request: HttpRequest) -> str:
-    forwarded = request.META.get("HTTP_X_FORWARDED_FOR", "")
-    if forwarded:
-        return forwarded.split(",")[0].strip()
-    return request.META.get("REMOTE_ADDR", "")
+    return client_ip(request)
 
 
 def _rate_limited(ip: str, *, action: str) -> bool:
-    if not ip:
-        return False
-    key = f"chat_rate:{action}:{ip}"
-    count = cache.get(key, 0)
-    if count >= RATE_LIMIT:
-        return True
-    cache.set(key, count + 1, RATE_WINDOW)
-    return False
+    return is_rate_limited(
+        f"chat_rate:{action}:{ip}",
+        limit=RATE_LIMIT,
+        window=RATE_WINDOW,
+    )
 
 
 def _parse_uuid(value: str | None) -> uuid.UUID | None:

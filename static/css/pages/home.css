@@ -106,7 +106,6 @@
 
 .hero__media img,
 .hero__media video,
-.hero__cutout,
 .hero__portrait {
   position: absolute;
   inset: 0;
@@ -124,8 +123,7 @@
   transform-origin: center top;
 }
 
-.hero__shade-x,
-.hero__shade-y {
+.hero__shade-x {
   content: none;
   display: none;
   background: none;
@@ -222,6 +220,7 @@
     aspect-ratio: 4 / 3;
     min-height: 680px;
     max-height: 96svh;
+    max-height: 96dvh;
   }
 
   .hero__banner::after {
@@ -251,6 +250,7 @@
     left: auto;
     width: min(52%, 640px);
     height: min(94%, calc(96svh - var(--header-h)));
+    height: min(94%, calc(96dvh - var(--header-h)));
     min-height: 0;
     max-height: none;
     padding-top: 0;
@@ -292,7 +292,6 @@
 
   .hero__media img,
   .hero__media video,
-  .hero__cutout,
   .hero__portrait {
     object-fit: contain;
     object-position: center bottom;
@@ -368,6 +367,7 @@
 .hero--full .hero__banner,
 .hero--video .hero__banner {
   min-height: 100svh;
+  min-height: 100dvh;
   display: grid;
 }
 
@@ -436,6 +436,7 @@
   z-index: 3;
   width: min(var(--container-max), calc(100% - 40px));
   min-height: 100svh;
+  min-height: 100dvh;
   margin: 0 auto;
   padding: calc(var(--header-h) + var(--safe-top) + 24px) 0 clamp(72px, 10vw, 120px);
   display: flex;
@@ -465,6 +466,7 @@
   .hero--video .hero__banner {
     aspect-ratio: auto;
     min-height: 100svh;
+    min-height: 100dvh;
     max-height: none;
   }
 
@@ -483,6 +485,7 @@
     width: 100%;
     max-width: var(--container-max);
     min-height: 100svh;
+    min-height: 100dvh;
     padding: calc(var(--header-h) + var(--safe-top) + 8px) clamp(24px, 4.5vw, 56px) clamp(72px, 8vw, 96px);
   }
 

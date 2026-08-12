@@ -368,46 +368,25 @@ class SectionStyle(models.Model):
     def __str__(self) -> str:
         return self.label or self.get_section_display()
 
-    def bg_css(self) -> str | None:
+    def _fill_css(self, prefix: str) -> str | None:
         from src.core.fill_style import resolve_fill
 
         return resolve_fill(
-            fill_type=self.bg_fill_type,
-            solid_color=self.bg_solid_color,
-            gradient_start=self.bg_gradient_start,
-            gradient_end=self.bg_gradient_end,
-            gradient_angle=self.bg_gradient_angle,
+            fill_type=getattr(self, f"{prefix}fill_type"),
+            solid_color=getattr(self, f"{prefix}solid_color"),
+            gradient_start=getattr(self, f"{prefix}gradient_start"),
+            gradient_end=getattr(self, f"{prefix}gradient_end"),
+            gradient_angle=getattr(self, f"{prefix}gradient_angle"),
         )
+
+    def bg_css(self) -> str | None:
+        return self._fill_css("bg_")
 
     def btn_primary_css(self) -> str | None:
-        from src.core.fill_style import resolve_fill
-
-        return resolve_fill(
-            fill_type=self.btn_primary_fill_type,
-            solid_color=self.btn_primary_solid_color,
-            gradient_start=self.btn_primary_gradient_start,
-            gradient_end=self.btn_primary_gradient_end,
-            gradient_angle=self.btn_primary_gradient_angle,
-        )
+        return self._fill_css("btn_primary_")
 
     def btn_secondary_css(self) -> str | None:
-        from src.core.fill_style import resolve_fill
-
-        return resolve_fill(
-            fill_type=self.btn_secondary_fill_type,
-            solid_color=self.btn_secondary_solid_color,
-            gradient_start=self.btn_secondary_gradient_start,
-            gradient_end=self.btn_secondary_gradient_end,
-            gradient_angle=self.btn_secondary_gradient_angle,
-        )
+        return self._fill_css("btn_secondary_")
 
     def btn_header_css(self) -> str | None:
-        from src.core.fill_style import resolve_fill
-
-        return resolve_fill(
-            fill_type=self.btn_header_fill_type,
-            solid_color=self.btn_header_solid_color,
-            gradient_start=self.btn_header_gradient_start,
-            gradient_end=self.btn_header_gradient_end,
-            gradient_angle=self.btn_header_gradient_angle,
-        )
+        return self._fill_css("btn_header_")

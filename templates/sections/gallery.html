@@ -4,12 +4,7 @@
   <div class="container">
     <div class="gallery__head" data-reveal>
       <div>
-        <p class="section__eyebrow">{% block_plain "home" "gallery.eyebrow" %}</p>
-        <div class="section__rule"></div>
-        <h2 class="section__title">
-          {% block_plain "home" "gallery.title" %}
-          <span class="section__title-accent">{% block_plain "home" "gallery.title_accent" %}</span>
-        </h2>
+        {% include "partials/section-heading.html" with key_prefix="gallery" %}
       </div>
     </div>
     <div class="gallery" data-gallery data-reveal data-reveal-delay="220">

@@ -1,3 +1,5 @@
+import { registerEscape, unregisterEscape } from "./escape-stack.js";
+
 export function initLightbox() {
   const root = document.querySelector("[data-lightbox-root]");
   const box = document.querySelector("[data-lightbox]");
@@ -8,6 +10,7 @@ export function initLightbox() {
   let index = 0;
   let lastFocus = null;
   let touchX = null;
+  let isOpen = false;
 
   const show = (i) => {
     index = (i + buttons.length) % buttons.length;
@@ -22,24 +25,30 @@ export function initLightbox() {
   };
 
   const open = (i) => {
-    lastFocus = document.activeElement;
+    if (!isOpen) {
+      lastFocus = document.activeElement;
+      box.hidden = false;
+      box.classList.add("is-open");
+      isOpen = true;
+      registerEscape("lightbox", close);
+      document.addEventListener("keydown", onArrowKey);
+    }
     show(i);
-    box.hidden = false;
-    box.classList.add("is-open");
-    document.addEventListener("keydown", onKey);
   };
 
   const close = () => {
+    if (!isOpen) return;
     box.classList.remove("is-open");
     box.hidden = true;
     img.removeAttribute("src");
     img.alt = "";
-    document.removeEventListener("keydown", onKey);
+    isOpen = false;
+    unregisterEscape("lightbox");
+    document.removeEventListener("keydown", onArrowKey);
     if (lastFocus) lastFocus.focus();
   };
 
-  const onKey = (e) => {
-    if (e.key === "Escape") close();
+  const onArrowKey = (e) => {
     if (e.key === "ArrowRight") show(index + 1);
     if (e.key === "ArrowLeft") show(index - 1);
   };

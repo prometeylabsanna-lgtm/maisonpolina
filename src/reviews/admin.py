@@ -4,16 +4,22 @@ from unfold.admin import ModelAdmin
 from src.core.admin_changelist import TopDropdownFilterMixin
 from src.core.admin_guidelines import AdminGuidelinesMixin
 from src.core.admin_tinymce import TinyMCEAdminMixin
-from src.core.admin_utils import image_preview
+from src.core.admin_utils import ImagePreviewAdminMixin
 from src.core.admin_webp import WebPAdminMixin
 from src.reviews.models import Testimonial
 
 
 @admin.register(Testimonial)
 class TestimonialAdmin(
-    WebPAdminMixin, TopDropdownFilterMixin, AdminGuidelinesMixin, TinyMCEAdminMixin, ModelAdmin
+    ImagePreviewAdminMixin,
+    WebPAdminMixin,
+    TopDropdownFilterMixin,
+    AdminGuidelinesMixin,
+    TinyMCEAdminMixin,
+    ModelAdmin,
 ):
     guidelines_prefix = "reviews"
+    preview_attr = "photo"
     list_display = (
         "get_photo_preview",
         "author_name_ru",
@@ -69,7 +75,3 @@ class TestimonialAdmin(
             },
         ),
     )
-
-    @admin.display(description="Фото")
-    def get_photo_preview(self, obj):
-        return image_preview(getattr(obj, "photo", None), size=56)

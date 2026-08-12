@@ -1,8 +1,10 @@
-from django.core.cache import cache
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.utils.translation import get_language
 from django.views.decorators.http import require_http_methods
+import time
 
+from src.core.rate_limit import client_ip, is_rate_limited
 from src.reviews.forms import ReviewForm
 from src.reviews.models import Testimonial
 
@@ -10,22 +12,16 @@ RATE_LIMIT = 3
 RATE_WINDOW = 3600
 
 
-def _client_ip(request: HttpRequest) -> str:
-    forwarded = request.META.get("HTTP_X_FORWARDED_FOR", "")
-    if forwarded:
-        return forwarded.split(",")[0].strip()
-    return request.META.get("REMOTE_ADDR", "")
-
-
-def _rate_limited(ip: str) -> bool:
-    if not ip:
-        return False
-    key = f"review_rate:{ip}"
-    count = cache.get(key, 0)
-    if count >= RATE_LIMIT:
-        return True
-    cache.set(key, count + 1, RATE_WINDOW)
-    return False
+@require_http_methods(["GET"])
+def review_form(request: HttpRequest) -> HttpResponse:
+    form = ReviewForm(
+        initial={
+            "language": get_language() or "ru",
+            "rating": 5,
+            "form_ts": str(time.time()),
+        }
+    )
+    return render(request, "partials/review-form.html", {"form": form})
 
 
 @require_http_methods(["POST"])
@@ -38,8 +34,8 @@ def review_submit(request: HttpRequest) -> HttpResponse:
         if form.cleaned_data.get("website"):
             return render(request, template_success)
 
-        ip = _client_ip(request)
-        if _rate_limited(ip):
+        ip = client_ip(request)
+        if is_rate_limited(f"review_rate:{ip}", limit=RATE_LIMIT, window=RATE_WINDOW):
             form.add_error(None, "Слишком много отзывов. Попробуйте позже.")
             return render(request, template_form, {"form": form}, status=429)
 

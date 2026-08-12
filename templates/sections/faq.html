@@ -2,12 +2,7 @@
 <section class="section section--alt" id="faq" data-section="faq">
   <div class="container">
     <div data-reveal>
-      <p class="section__eyebrow">{% block_plain "home" "faq.eyebrow" %}</p>
-      <div class="section__rule"></div>
-      <h2 class="section__title">
-        {% block_plain "home" "faq.title" %}
-        <span class="section__title-accent">{% block_plain "home" "faq.title_accent" %}</span>
-      </h2>
+      {% include "partials/section-heading.html" with key_prefix="faq" %}
     </div>
     <div class="accordion" data-accordion data-reveal data-reveal-delay="220">
       {% for item in faq_items %}

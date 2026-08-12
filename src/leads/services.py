@@ -70,7 +70,7 @@ def _send_telegram(lead: Lead) -> None:
 
 
 def _send_email(lead: Lead) -> None:
-    recipient = settings.DEFAULT_FROM_EMAIL
+    recipient = getattr(settings, "LEADS_NOTIFY_EMAIL", "") or settings.DEFAULT_FROM_EMAIL
     if not recipient:
         return
     subject = f"Новая заявка: {lead.name}"

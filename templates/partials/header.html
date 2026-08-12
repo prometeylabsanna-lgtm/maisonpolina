@@ -3,12 +3,7 @@
 <header class="header" data-sticky-header data-enter="0">
   <div class="header__inner">
     <nav class="header__nav" data-scrollspy aria-label="{% block_plain 'site' 'header.nav_aria' %}">
-      <a href="{{ home_url }}#about">{% block_plain "site" "nav.about" %}</a>
-      <a href="{{ home_url }}#gallery">{% block_plain "site" "nav.gallery" %}</a>
-      <a href="{{ home_url }}#services">{% block_plain "site" "nav.services" %}</a>
-      <a href="{{ home_url }}#reviews">{% block_plain "site" "nav.reviews" %}</a>
-      <a href="{{ home_url }}#faq">{% block_plain "site" "nav.faq" %}</a>
-      <a href="{{ home_url }}#contact">{% block_plain "site" "nav.contact" %}</a>
+      {% include "partials/site-nav-links.html" %}
     </nav>
     <div class="header__center">
       <span class="header__line header__line--left" aria-hidden="true"></span>

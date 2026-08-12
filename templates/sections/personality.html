@@ -2,12 +2,7 @@
 <section class="section section--alt" id="personality" data-section="personality">
   <div class="container">
     <div class="personality__intro" data-reveal>
-      <p class="section__eyebrow">{% block_plain "home" "personality.eyebrow" %}</p>
-      <div class="section__rule"></div>
-      <h2 class="section__title personality__title">
-        {% block_plain "home" "personality.title" %}
-        <span class="section__title-accent">{% block_plain "home" "personality.title_accent" %}</span>
-      </h2>
+      {% include "partials/section-heading.html" with key_prefix="personality" title_class="personality__title" %}
     </div>
 
     <div class="personality__grid" data-reveal data-reveal-delay="220">

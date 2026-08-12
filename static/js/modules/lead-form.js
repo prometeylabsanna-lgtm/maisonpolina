@@ -1,7 +1,16 @@
 export function initLeadForm() {
   const stamp = () => String(Date.now() / 1000);
-  document.querySelectorAll("[data-lead-ts]").forEach((el) => {
-    if (!el.value) el.value = stamp();
+
+  const stampFields = (root = document) => {
+    root.querySelectorAll("[data-lead-ts]").forEach((el) => {
+      el.value = stamp();
+    });
+  };
+
+  stampFields();
+
+  document.addEventListener("lead-form:ready", (e) => {
+    stampFields(e.detail?.root || document);
   });
 
   document.body.addEventListener("htmx:configRequest", (event) => {

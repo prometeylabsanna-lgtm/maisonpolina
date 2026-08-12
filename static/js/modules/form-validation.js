@@ -3,14 +3,15 @@ const FIELD_SEL = "[data-validate]";
 const ERROR_CLASS = "form__input--error";
 const FIELD_ERROR_CLASS = "form__field--error";
 
-const MESSAGES = {
-  nameDigits: "Ім'я не повинно містити цифр.",
-  phone: "Номер телефону не може містити літер та має бути не довшим за 14 цифр.",
-  messageMin: "Текст відгуку повинен містити мінімум 2 символи.",
+const FALLBACK = {
+  nameDigits: "Имя не должно содержать цифр.",
+  phone: "Номер телефона не может содержать буквы и должен содержать от 7 до 14 цифр.",
+  messageMin: "Текст отзыва должен содержать минимум 2 символа.",
 };
 
 const PHONE_ALLOWED = /^[0-9+\-()\s]*$/;
 const NAME_DIGIT = /[0-9]/;
+const MIN_PHONE_DIGITS = 7;
 const MAX_PHONE_DIGITS = 14;
 const MIN_MESSAGE = 2;
 
@@ -18,32 +19,48 @@ function digitCount(value) {
   return (value.match(/[0-9]/g) || []).length;
 }
 
-export function nameError(value) {
-  return NAME_DIGIT.test(value) ? MESSAGES.nameDigits : "";
+function messagesFor(form) {
+  return {
+    nameDigits: form?.dataset?.msgNameDigits || FALLBACK.nameDigits,
+    phone: form?.dataset?.msgPhone || FALLBACK.phone,
+    messageMin: form?.dataset?.msgMessageMin || FALLBACK.messageMin,
+  };
 }
 
-export function phoneError(value) {
-  if (!PHONE_ALLOWED.test(value) || digitCount(value) > MAX_PHONE_DIGITS) {
-    return MESSAGES.phone;
+export function nameError(value, messages = FALLBACK) {
+  return NAME_DIGIT.test(value) ? messages.nameDigits : "";
+}
+
+export function phoneError(value, messages = FALLBACK) {
+  const digits = digitCount(value);
+  if (
+    !value.trim() ||
+    !PHONE_ALLOWED.test(value) ||
+    digits < MIN_PHONE_DIGITS ||
+    digits > MAX_PHONE_DIGITS
+  ) {
+    return messages.phone;
   }
   return "";
 }
 
-export function messageError(value, required) {
+export function messageError(value, required, messages = FALLBACK) {
   const len = value.trim().length;
   if (len === 0) {
-    return required ? MESSAGES.messageMin : "";
+    return required ? messages.messageMin : "";
   }
-  return len < MIN_MESSAGE ? MESSAGES.messageMin : "";
+  return len < MIN_MESSAGE ? messages.messageMin : "";
 }
 
 function errorFor(field) {
+  const form = field.closest(FORM_SEL);
+  const messages = messagesFor(form);
   const type = field.dataset.validate;
   const value = field.value || "";
-  if (type === "name") return nameError(value);
-  if (type === "phone") return phoneError(value);
-  if (type === "message") return messageError(value, false);
-  if (type === "review") return messageError(value, true);
+  if (type === "name") return nameError(value, messages);
+  if (type === "phone") return phoneError(value, messages);
+  if (type === "message") return messageError(value, false, messages);
+  if (type === "review") return messageError(value, true, messages);
   return "";
 }
 

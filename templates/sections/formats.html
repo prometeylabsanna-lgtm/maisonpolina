@@ -2,12 +2,7 @@
 <section class="section section--alt" id="services" data-section="formats">
   <div class="container">
     <div data-reveal>
-      <p class="section__eyebrow">{% block_plain "home" "formats.eyebrow" %}</p>
-      <div class="section__rule"></div>
-      <h2 class="section__title">
-        {% block_plain "home" "formats.title" %}
-        <span class="section__title-accent">{% block_plain "home" "formats.title_accent" %}</span>
-      </h2>
+      {% include "partials/section-heading.html" with key_prefix="formats" %}
     </div>
     <div class="formats__grid" data-reveal data-reveal-delay="220">
       {% for fmt in formats %}

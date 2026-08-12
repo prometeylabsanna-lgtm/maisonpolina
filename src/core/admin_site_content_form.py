@@ -245,6 +245,11 @@ class SitePageContentForm(forms.Form):
     def _save_media_block(self, block: SiteBlock, page: str, key: str) -> None:
         block.content_type = SiteBlock.ContentType.IMAGE
         if self.cleaned_data.get(block_field_name(page, key, "clear_image")):
+            if block.image:
+                try:
+                    block.image.delete(save=False)
+                except OSError:
+                    pass
             block.image = ""
         uploaded = self.cleaned_data.get(block_field_name(page, key, "image"))
         if uploaded:
@@ -252,6 +257,11 @@ class SitePageContentForm(forms.Form):
         if key not in VIDEO_KEYS:
             return
         if self.cleaned_data.get(block_field_name(page, key, "clear_video")):
+            if block.video_file:
+                try:
+                    block.video_file.delete(save=False)
+                except OSError:
+                    pass
             block.video_file = ""
             block.video_url = ""
         video_file = self.cleaned_data.get(block_field_name(page, key, "video_file"))

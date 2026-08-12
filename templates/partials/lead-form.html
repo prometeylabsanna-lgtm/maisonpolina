@@ -1,4 +1,4 @@
-{% load site_content %}
+{% load i18n site_content %}
 {% url 'core:privacy' as privacy_url %}
 {% with form_target=form_target|default:"#lead-form-body" %}
 <form class="form"
@@ -8,12 +8,13 @@
       hx-target="{{ form_target }}"
       hx-swap="innerHTML"
       novalidate
-      data-lead-form>
+      data-lead-form
+      data-msg-name-digits="{% translate "Имя не должно содержать цифр." %}"
+      data-msg-phone="{% translate "Номер телефона не может содержать буквы и должен содержать от 7 до 14 цифр." %}"
+      data-msg-message-min="{% translate "Текст отзыва должен содержать минимум 2 символа." %}">
   {% csrf_token %}
   <input type="hidden" name="form_target" value="{{ form_target }}">
-  {% if service_label %}
-  <p class="form__hint">{% block_plain "site" "form.service_hint" %} <strong>{{ service_label }}</strong></p>
-  {% endif %}
+  <p class="form__hint"{% if not service_label %} hidden{% endif %}>{% block_plain "site" "form.service_hint" %} <strong data-lead-service-label>{{ service_label }}</strong></p>
   {% if form and form.non_field_errors %}
   <div class="form__errors">{{ form.non_field_errors }}</div>
   {% endif %}
@@ -55,18 +56,14 @@
     {% if form_target == "#contacts-form" %}
     <input id="lead-consent-contacts" type="checkbox" name="consent" required {% if form and form.consent.value %}checked{% endif %}>
     <p class="form__consent-text">
-      <label for="lead-consent-contacts">
-        {% block_plain "site" "form.consent_prefix" %}
-        <a href="{{ privacy_url }}">{% block_plain "site" "form.privacy_link" %}</a>
-      </label>
+      <label for="lead-consent-contacts">{% block_plain "site" "form.consent_prefix" %}</label>
+      <a href="{{ privacy_url }}">{% block_plain "site" "form.privacy_link" %}</a>
     </p>
     {% else %}
     <input id="lead-consent-modal" type="checkbox" name="consent" required {% if form and form.consent.value %}checked{% endif %}>
     <p class="form__consent-text">
-      <label for="lead-consent-modal">
-        {% block_plain "site" "form.consent_prefix" %}
-        <a href="{{ privacy_url }}">{% block_plain "site" "form.privacy_link" %}</a>
-      </label>
+      <label for="lead-consent-modal">{% block_plain "site" "form.consent_prefix" %}</label>
+      <a href="{{ privacy_url }}">{% block_plain "site" "form.privacy_link" %}</a>
     </p>
     {% endif %}
   </div>
@@ -74,6 +71,9 @@
   <input type="hidden" name="service" value="{% if form %}{{ form.service.value|default:service_label|default:'' }}{% else %}{{ service_label|default:'' }}{% endif %}" data-lead-service>
   <input type="hidden" name="source" value="{% if form %}{{ form.source.value|default:'contacts' }}{% else %}contacts{% endif %}" data-lead-source>
   <input type="hidden" name="language" value="{% if form %}{{ form.language.value|default:current_language|default:'ru' }}{% else %}{{ current_language|default:'ru' }}{% endif %}">
+  <input type="hidden" name="utm_source" value="{% if form %}{{ form.utm_source.value|default:'' }}{% endif %}">
+  <input type="hidden" name="utm_medium" value="{% if form %}{{ form.utm_medium.value|default:'' }}{% endif %}">
+  <input type="hidden" name="utm_campaign" value="{% if form %}{{ form.utm_campaign.value|default:'' }}{% endif %}">
   <input type="hidden" name="form_ts" value="{% if form %}{{ form.form_ts.value|default:'' }}{% endif %}" data-lead-ts>
   <div class="honeypot" aria-hidden="true">
     <label>{% block_plain "site" "form.honeypot" %}<input type="text" name="website" tabindex="-1" autocomplete="off"></label>

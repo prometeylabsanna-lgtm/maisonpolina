@@ -38,9 +38,24 @@ def test_phone_rejects_letters_and_extra_digits():
     else:
         raise AssertionError("expected ValidationError")
 
+    try:
+        validate_phone("+++")
+    except ValidationError as exc:
+        assert MSG_PHONE in exc.messages
+    else:
+        raise AssertionError("expected ValidationError")
+
+    try:
+        validate_phone("123")
+    except ValidationError as exc:
+        assert MSG_PHONE in exc.messages
+    else:
+        raise AssertionError("expected ValidationError")
+
 
 def test_phone_allows_formatted_value():
     assert validate_phone("+38 (099) 123-45-67") == "+38 (099) 123-45-67"
+    assert validate_phone("0991234567") == "0991234567"
 
 
 def test_message_min_length():

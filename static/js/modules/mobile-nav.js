@@ -1,11 +1,14 @@
+import { lockScroll, unlockScroll } from "./scroll-lock.js";
+import { registerEscape, unregisterEscape } from "./escape-stack.js";
+
 export function initMobileNav() {
   const nav = document.querySelector("[data-mobile-nav]");
   const openBtn = document.querySelector("[data-mobile-nav-open]");
   const closeBtn = document.querySelector("[data-mobile-nav-close]");
   if (!nav || !openBtn) return;
 
-  let scrollY = 0;
   let lastFocus = null;
+  let isOpen = false;
 
   const focusable = () =>
     nav.querySelectorAll(
@@ -28,33 +31,29 @@ export function initMobileNav() {
   };
 
   const open = () => {
+    if (isOpen) return;
     lastFocus = document.activeElement;
-    scrollY = window.scrollY;
-    document.documentElement.style.setProperty("--scroll-lock-top", `-${scrollY}px`);
-    document.body.classList.add("is-locked");
+    lockScroll();
     nav.hidden = false;
     nav.classList.add("is-open");
     openBtn.setAttribute("aria-expanded", "true");
-    document.addEventListener("keydown", onKey);
+    isOpen = true;
+    registerEscape("mobile-nav", close);
     nav.addEventListener("keydown", trap);
     const items = focusable();
     if (items[0]) items[0].focus();
   };
 
   const close = () => {
+    if (!isOpen) return;
     nav.classList.remove("is-open");
     nav.hidden = true;
     openBtn.setAttribute("aria-expanded", "false");
-    document.body.classList.remove("is-locked");
-    document.documentElement.style.removeProperty("--scroll-lock-top");
-    window.scrollTo(0, scrollY);
-    document.removeEventListener("keydown", onKey);
+    unlockScroll();
+    unregisterEscape("mobile-nav");
+    isOpen = false;
     nav.removeEventListener("keydown", trap);
     if (lastFocus) lastFocus.focus();
-  };
-
-  const onKey = (e) => {
-    if (e.key === "Escape") close();
   };
 
   openBtn.addEventListener("click", open);
@@ -62,7 +61,7 @@ export function initMobileNav() {
   nav.querySelectorAll("[data-mobile-nav-link]").forEach((el) => {
     el.addEventListener("click", () => {
       if (el.matches("[data-open-lead]")) {
-        // close after lead modal opens
+        // Lead modal opens first (lock), then mobile unlocks once — modal lock remains.
         setTimeout(close, 0);
       } else {
         close();

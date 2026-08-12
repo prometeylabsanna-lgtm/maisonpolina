@@ -1,5 +1,6 @@
 """Shared Unfold admin helpers."""
 
+from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
@@ -18,6 +19,17 @@ def image_preview(image_field, *, size: int = 72) -> str:
         size,
         size,
     )
+
+
+class ImagePreviewAdminMixin:
+    """Set preview_attr and optionally preview_size."""
+
+    preview_attr = "image"
+    preview_size = 56
+
+    @admin.display(description="Фото")
+    def get_photo_preview(self, obj):
+        return image_preview(getattr(obj, self.preview_attr, None), size=self.preview_size)
 
 
 def status_badge(label: str, *, tone: str = "neutral") -> str:

@@ -4,7 +4,7 @@ from unfold.admin import ModelAdmin, TabularInline
 from src.core.admin_changelist import TopDropdownFilterMixin
 from src.core.admin_guidelines import AdminGuidelinesMixin
 from src.core.admin_tinymce import TinyMCEAdminMixin
-from src.core.admin_utils import image_preview
+from src.core.admin_utils import ImagePreviewAdminMixin
 from src.core.admin_webp import WebPAdminMixin
 from src.formats.models import FormatFeature, ServiceFormat
 
@@ -24,9 +24,15 @@ class FormatFeatureInline(AdminGuidelinesMixin, TabularInline):
 
 @admin.register(ServiceFormat)
 class ServiceFormatAdmin(
-    WebPAdminMixin, TopDropdownFilterMixin, AdminGuidelinesMixin, TinyMCEAdminMixin, ModelAdmin
+    ImagePreviewAdminMixin,
+    WebPAdminMixin,
+    TopDropdownFilterMixin,
+    AdminGuidelinesMixin,
+    TinyMCEAdminMixin,
+    ModelAdmin,
 ):
     guidelines_prefix = "formats"
+    preview_attr = "image"
     list_display = (
         "get_photo_preview",
         "title_ru",
@@ -86,7 +92,3 @@ class ServiceFormatAdmin(
             },
         ),
     )
-
-    @admin.display(description="Фото")
-    def get_photo_preview(self, obj):
-        return image_preview(getattr(obj, "image", None), size=56)

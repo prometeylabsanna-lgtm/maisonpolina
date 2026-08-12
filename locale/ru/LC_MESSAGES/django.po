@@ -108,32 +108,39 @@ msgstr ""
 msgid "Имя"
 msgstr ""
 
-#: src/leads/forms.py:15 templates/partials/lead-form.html:23
-msgid "Телефон или e-mail"
+#: src/leads/forms.py:21
+msgid "Телефон"
 msgstr ""
 
-#: src/leads/forms.py:20 templates/partials/lead-form.html:28
+#: src/leads/forms.py:31
 msgid "Комментарий"
 msgstr ""
 
-#: src/leads/forms.py:24
+#: src/leads/forms.py:35
 msgid "Согласен на обработку персональных данных"
 msgstr ""
 
-#: src/leads/forms.py:25
+#: src/leads/forms.py:36
 msgid "Необходимо согласие на обработку данных"
 msgstr ""
 
-#: src/leads/forms.py:57
-msgid "Укажите телефон или e-mail"
+#: src/core/form_validators.py:8
+#: templates/partials/lead-form.html templates/partials/review-form.html
+msgid "Имя не должно содержать цифр."
 msgstr ""
 
-#: src/reviews/forms.py:16 templates/partials/review-form.html:43
+#: src/core/form_validators.py:9
+#: templates/partials/lead-form.html templates/partials/review-form.html
+msgid "Номер телефона не может содержать буквы и должен содержать от 7 до 14 цифр."
+msgstr ""
+
+#: src/core/form_validators.py:12
+#: templates/partials/lead-form.html templates/partials/review-form.html
+msgid "Текст отзыва должен содержать минимум 2 символа."
+msgstr ""
+
+#: src/reviews/forms.py:22
 msgid "Отзыв"
-msgstr ""
-
-#: src/reviews/forms.py:19
-msgid "Напишите чуть подробнее — минимум 10 символов"
 msgstr ""
 
 #: src/reviews/forms.py:25 templates/partials/review-form.html:21

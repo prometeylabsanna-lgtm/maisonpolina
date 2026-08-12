@@ -1,0 +1,8 @@
+{% load site_content %}
+{% url 'core:home' as home_url %}
+<a href="{{ home_url }}#about"{% if link_class %} class="{{ link_class }}"{% endif %}{% if link_attrs %} {{ link_attrs|safe }}{% endif %}>{% block_plain "site" "nav.about" %}</a>
+<a href="{{ home_url }}#gallery"{% if link_class %} class="{{ link_class }}"{% endif %}{% if link_attrs %} {{ link_attrs|safe }}{% endif %}>{% block_plain "site" "nav.gallery" %}</a>
+<a href="{{ home_url }}#services"{% if link_class %} class="{{ link_class }}"{% endif %}{% if link_attrs %} {{ link_attrs|safe }}{% endif %}>{% block_plain "site" "nav.services" %}</a>
+<a href="{{ home_url }}#reviews"{% if link_class %} class="{{ link_class }}"{% endif %}{% if link_attrs %} {{ link_attrs|safe }}{% endif %}>{% block_plain "site" "nav.reviews" %}</a>
+<a href="{{ home_url }}#faq"{% if link_class %} class="{{ link_class }}"{% endif %}{% if link_attrs %} {{ link_attrs|safe }}{% endif %}>{% block_plain "site" "nav.faq" %}</a>
+<a href="{{ home_url }}#contact"{% if link_class %} class="{{ link_class }}"{% endif %}{% if link_attrs %} {{ link_attrs|safe }}{% endif %}>{% block_plain "site" "nav.contact" %}</a>

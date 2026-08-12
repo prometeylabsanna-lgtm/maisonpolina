@@ -2,12 +2,7 @@
 <section class="section" id="about" data-section="about">
   <div class="container">
     <div class="about__intro" data-reveal>
-      <p class="section__eyebrow">{% block_plain "home" "about.eyebrow" %}</p>
-      <div class="section__rule"></div>
-      <h2 class="section__title about__title">
-        {% block_plain "home" "about.title" %}
-        <span class="section__title-accent">{% block_plain "home" "about.title_accent" %}</span>
-      </h2>
+      {% include "partials/section-heading.html" with key_prefix="about" title_class="about__title" %}
     </div>
     <div class="about__grid" data-reveal data-reveal-delay="220">
       <div class="about__media">

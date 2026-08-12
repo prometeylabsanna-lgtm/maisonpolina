@@ -176,6 +176,7 @@ CONTENT_SECURITY_POLICY = {
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="noreply@example.com")
+LEADS_NOTIFY_EMAIL = config("LEADS_NOTIFY_EMAIL", default="")
 EMAIL_HOST = config("EMAIL_HOST", default="")
 EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")

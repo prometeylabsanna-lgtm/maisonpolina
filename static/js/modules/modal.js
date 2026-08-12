@@ -1,10 +1,12 @@
+import { lockScroll, unlockScroll } from "./scroll-lock.js";
+import { registerEscape, unregisterEscape } from "./escape-stack.js";
+
 export function initModal() {
   const modals = [...document.querySelectorAll("[data-modal]")];
   if (!modals.length) return;
 
   let activeModal = null;
   let lastFocus = null;
-  let scrollY = 0;
 
   const focusable = (modal) =>
     modal.querySelectorAll(
@@ -27,15 +29,14 @@ export function initModal() {
   };
 
   const open = (modal) => {
+    if (activeModal === modal) return;
     if (activeModal && activeModal !== modal) close();
     lastFocus = document.activeElement;
-    scrollY = window.scrollY;
-    document.documentElement.style.setProperty("--scroll-lock-top", `-${scrollY}px`);
-    document.body.classList.add("is-locked");
+    lockScroll();
     modal.hidden = false;
     modal.classList.add("is-open");
     activeModal = modal;
-    document.addEventListener("keydown", onKey);
+    registerEscape("modal", close);
     modal.addEventListener("keydown", trap);
     const items = focusable(modal);
     if (items[0]) items[0].focus();
@@ -46,17 +47,11 @@ export function initModal() {
     const modal = activeModal;
     modal.classList.remove("is-open");
     modal.hidden = true;
-    document.body.classList.remove("is-locked");
-    document.documentElement.style.removeProperty("--scroll-lock-top");
-    window.scrollTo(0, scrollY);
-    document.removeEventListener("keydown", onKey);
+    unlockScroll();
+    unregisterEscape("modal");
     modal.removeEventListener("keydown", trap);
     activeModal = null;
     if (lastFocus) lastFocus.focus();
-  };
-
-  const onKey = (e) => {
-    if (e.key === "Escape") close();
   };
 
   const leadModal = document.querySelector("#lead-modal");
@@ -73,8 +68,11 @@ export function initModal() {
       leadModal.querySelectorAll("[data-lead-source]").forEach((el) => {
         el.value = source;
       });
-      const hint = leadModal.querySelector(".form__hint strong");
-      if (hint) hint.textContent = service || hint.textContent;
+      const hint = leadModal.querySelector(".form__hint");
+      const hintLabel = leadModal.querySelector("[data-lead-service-label]");
+      if (hintLabel) hintLabel.textContent = service;
+      if (hint) hint.hidden = !service;
+      if (activeModal === leadModal) return;
       open(leadModal);
     });
   });
@@ -109,6 +107,9 @@ export function initModal() {
     if (id === "lead-form-body" || id === "review-form-body" || id === "contacts-form") {
       const closeBtn = e.target.querySelector("[data-close-modal]");
       closeBtn?.addEventListener("click", close);
+      if (id === "lead-form-body" || id === "contacts-form") {
+        document.dispatchEvent(new CustomEvent("lead-form:ready", { detail: { root: e.target } }));
+      }
       if (id === "review-form-body") {
         document.dispatchEvent(new CustomEvent("review-form:ready"));
       }
