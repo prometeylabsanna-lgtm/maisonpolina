@@ -6,12 +6,17 @@ from django.conf import settings
 from django.utils import translation
 
 
+def _is_admin_path(path: str) -> bool:
+    prefix = "/" + settings.ADMIN_URL.strip("/")
+    return path == prefix or path.startswith(prefix + "/")
+
+
 class AdminRussianLocaleMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.path.startswith("/admin"):
+        if _is_admin_path(request.path):
             translation.activate("ru")
             request.LANGUAGE_CODE = "ru"
         response = self.get_response(request)
@@ -26,7 +31,7 @@ class LanguageCookieMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        if request.path.startswith("/admin"):
+        if _is_admin_path(request.path):
             return response
         lang = (getattr(request, "LANGUAGE_CODE", None) or translation.get_language() or "")[:2]
         allowed = {code for code, _name in settings.LANGUAGES}

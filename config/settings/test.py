@@ -1,4 +1,8 @@
-from .develop import *  # noqa: F403
+import os
+
+os.environ.setdefault("ADMIN_URL", "pytest-admin-path")
+
+from .develop import *  # noqa: E402, F403
 
 ALLOWED_HOSTS = ["testserver", "localhost", "127.0.0.1"]
 

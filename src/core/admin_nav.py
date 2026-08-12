@@ -132,6 +132,11 @@ def build_admin_navigation(_request=None):
             "separator": True,
             "items": [
                 {
+                    "title": "Смена пароля",
+                    "icon": "lock",
+                    "link": reverse_lazy("admin:password_change"),
+                },
+                {
                     "title": "Сайт",
                     "icon": "settings",
                     "link": reverse_lazy("admin:core_sitesettings_changelist"),

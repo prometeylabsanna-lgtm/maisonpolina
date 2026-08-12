@@ -1,7 +1,21 @@
+import re
 from pathlib import Path
 
 from decouple import config
+from django.core.exceptions import ImproperlyConfigured
 from django.templatetags.static import static
+
+_ADMIN_URL_RE = re.compile(r"^[A-Za-z0-9_-]{8,64}$")
+
+
+def _normalize_admin_url(raw: str) -> str:
+    slug = (raw or "").strip().strip("/")
+    if slug.lower() == "admin" or not _ADMIN_URL_RE.fullmatch(slug):
+        raise ImproperlyConfigured(
+            "ADMIN_URL must be a random 8–64 character path "
+            "(letters, digits, _ or -), not 'admin'."
+        )
+    return f"{slug}/"
 
 
 def _resolve_base_dir() -> Path:
@@ -21,6 +35,9 @@ BASE_DIR = str(_BASE_PATH)
 SECRET_KEY = config(
     "SECRET_KEY",
     default="insecure-build-placeholder-change-me",
+)
+ADMIN_URL = _normalize_admin_url(
+    config("ADMIN_URL", default="build-placeholder-admin-path")
 )
 
 DEBUG = False
@@ -142,7 +159,7 @@ X_FRAME_OPTIONS = "DENY"
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 CONTENT_SECURITY_POLICY = {
-    "EXCLUDE_URL_PREFIXES": ("/admin/",),
+    "EXCLUDE_URL_PREFIXES": (f"/{ADMIN_URL}",),
     "DIRECTIVES": {
         "default-src": ["'self'"],
         "script-src": ["'self'"],

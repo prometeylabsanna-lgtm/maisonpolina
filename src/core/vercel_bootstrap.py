@@ -15,7 +15,7 @@ _DONE = False
 
 
 def ensure_admin_superuser() -> None:
-    """Create/update admin from env (defaults: admin / admin)."""
+    """Create admin from env if missing. Never overwrite a password set in admin."""
     from django.contrib.auth import get_user_model
 
     username = (os.environ.get("DJANGO_SUPERUSER_USERNAME") or "admin").strip()
@@ -39,7 +39,7 @@ def ensure_admin_superuser() -> None:
         user.is_staff = True
         user.is_superuser = True
         changed = True
-    if created or not user.check_password(password):
+    if created or not user.has_usable_password():
         user.set_password(password)
         changed = True
     if changed:

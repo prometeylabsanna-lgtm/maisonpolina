@@ -127,7 +127,7 @@ def robots_txt(_request):
     lines = [
         "User-agent: *",
         "Allow: /",
-        "Disallow: /admin/",
+        "Disallow: /admin/",  # decoy; do not publish ADMIN_URL
         f"Sitemap: {sitemap}",
     ]
     return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")

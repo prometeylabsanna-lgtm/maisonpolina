@@ -16,7 +16,7 @@ python3 manage.py runserver
 ```
 
 Сайт: `http://127.0.0.1:8000/ru/`  
-Адмінка: `http://127.0.0.1:8000/admin/`
+Адмінка: `http://127.0.0.1:8000/<ADMIN_URL>/` — шлях з `.env`, не `/admin/`
 
 ## Тести
 
@@ -60,3 +60,4 @@ pytest
 - `SECURE_SSL_REDIRECT = False` у `config/settings/docker.py` — інакше healthcheck ламається.
 - `ALLOWED_HOSTS` мусить містити `web`.
 - Seed ідемпотентний: `python manage.py seed_content` не перезаписує вміст.
+- `ADMIN_URL` у `.env` (і в env хостингу) має бути унікальним; `/admin/` віддає 404.
