@@ -2383,7 +2383,7 @@ body.is-locked {
 
 .gallery__track {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   gap: var(--gallery-gap);
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -2401,7 +2401,7 @@ body.is-locked {
 .gallery__item {
   margin: 0;
   flex: 0 0 var(--gallery-card);
-  height: auto;
+  aspect-ratio: 3 / 4;
   background: var(--color-surface);
   border: 1px solid var(--color-line-soft);
   overflow: hidden;
@@ -2453,27 +2453,25 @@ body.is-locked {
 .gallery__button {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
   color: inherit;
-  line-height: 0;
 }
 
 .gallery__img {
   display: block;
   width: 100%;
-  height: auto;
-  max-width: none;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
   object-position: center top;
 }
 
 .gallery__placeholder {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  height: 100%;
   display: grid;
   place-items: center;
   padding: 14px;
