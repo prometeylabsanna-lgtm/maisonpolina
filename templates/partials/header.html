@@ -21,12 +21,15 @@
              height="36"
              decoding="async">
         {% else %}
-        <img class="header__brand-mark header__brand-mark--mono"
-             src="{% static 'images/brand-monogram-header.png' %}?v={{ static_version }}"
-             alt=""
-             width="48"
-             height="36"
-             decoding="async">
+        <picture>
+          <source type="image/webp" srcset="{% static 'images/brand-monogram-header.webp' %}?v={{ static_version }}">
+          <img class="header__brand-mark header__brand-mark--mono"
+               src="{% static 'images/brand-monogram-header.png' %}?v={{ static_version }}"
+               alt=""
+               width="48"
+               height="36"
+               decoding="async">
+        </picture>
         {% endif %}
         <span class="header__brand-mark header__brand-mark--text">
           <span class="header__brand-line">{% block_plain "site" "header.brand_line_1" %}</span>

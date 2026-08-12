@@ -31,13 +31,23 @@
     <textarea class="form__textarea" name="message" rows="3">{% if form %}{{ form.message.value|default:'' }}{% endif %}</textarea>
   </label>
   <div class="form__consent">
-    <input id="lead-consent" type="checkbox" name="consent" required {% if form and form.consent.value %}checked{% endif %}>
+    {% if form_target == "#contacts-form" %}
+    <input id="lead-consent-contacts" type="checkbox" name="consent" required {% if form and form.consent.value %}checked{% endif %}>
     <p class="form__consent-text">
-      <label for="lead-consent">
+      <label for="lead-consent-contacts">
         {% block_plain "site" "form.consent_prefix" %}
         <a href="{{ privacy_url }}">{% block_plain "site" "form.privacy_link" %}</a>
       </label>
     </p>
+    {% else %}
+    <input id="lead-consent-modal" type="checkbox" name="consent" required {% if form and form.consent.value %}checked{% endif %}>
+    <p class="form__consent-text">
+      <label for="lead-consent-modal">
+        {% block_plain "site" "form.consent_prefix" %}
+        <a href="{{ privacy_url }}">{% block_plain "site" "form.privacy_link" %}</a>
+      </label>
+    </p>
+    {% endif %}
   </div>
   {% if form and form.consent.errors %}<span class="form__field-error">{{ form.consent.errors.0 }}</span>{% endif %}
   <input type="hidden" name="service" value="{% if form %}{{ form.service.value|default:service_label|default:'' }}{% else %}{{ service_label|default:'' }}{% endif %}" data-lead-service>

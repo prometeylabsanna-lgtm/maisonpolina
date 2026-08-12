@@ -122,6 +122,20 @@ class SiteBlock(BilingualTextMixin, models.Model):
     def visibility_on(self) -> bool:
         return self.text_ru.strip() in {"1", "true", "True"}
 
+    def get_video_src(self) -> str:
+        if self.video_file:
+            try:
+                return self.video_file.url
+            except ValueError:
+                pass
+        url = (self.video_url or "").strip()
+        if not url:
+            return ""
+        lower = url.lower()
+        if any(host in lower for host in ("youtube.com", "youtu.be", "vimeo.com")):
+            return ""
+        return url
+
 
 class SeoMeta(BilingualTextMixin, models.Model):
     page = models.CharField(max_length=64, unique=True)

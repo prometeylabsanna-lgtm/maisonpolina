@@ -10,9 +10,19 @@ export function initCarousel() {
   let index = 0;
   let timer = null;
   let touchX = null;
+  let centerHeight = 0;
 
   const perView = () =>
     window.matchMedia("(min-width: 768px)").matches && slides.length >= 3 ? 3 : 1;
+
+  const applyCenterHeight = (center) => {
+    if (!center) return;
+    const h = center.offsetHeight;
+    if (h && h !== centerHeight) {
+      centerHeight = h;
+      track.style.minHeight = `${h}px`;
+    }
+  };
 
   const go = (i) => {
     const n = slides.length;
@@ -22,6 +32,7 @@ export function initCarousel() {
     if (view === 1) {
       track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
       track.style.minHeight = "";
+      centerHeight = 0;
       slides.forEach((slide, di) => {
         slide.classList.toggle("is-center", di === index);
         slide.classList.toggle("is-side", false);
@@ -31,7 +42,6 @@ export function initCarousel() {
         slide.setAttribute("aria-hidden", di === index ? "false" : "true");
       });
     } else {
-      /* три в ряд: активний по центру, сусіди з боків */
       track.style.transform = "";
       slides.forEach((slide, di) => {
         let d = di - index;
@@ -46,9 +56,7 @@ export function initCarousel() {
         slide.setAttribute("aria-hidden", d === 0 ? "false" : "true");
       });
       const center = slides[index];
-      if (center) {
-        track.style.minHeight = `${center.offsetHeight}px`;
-      }
+      window.requestAnimationFrame(() => applyCenterHeight(center));
     }
 
     dots.forEach((dot, di) => dot.classList.toggle("is-active", di === index));
@@ -116,7 +124,10 @@ export function initCarousel() {
     { passive: true }
   );
 
-  window.addEventListener("resize", () => go(index));
+  root.addEventListener("review-clamp-change", () => {
+    centerHeight = 0;
+    go(index);
+  });
 
   go(0);
   start();

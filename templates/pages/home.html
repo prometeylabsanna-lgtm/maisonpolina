@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block resource_hints %}
+<link rel="preload"
+      as="image"
+      type="image/webp"
+      imagesrcset="{% static 'images/hero-portrait-640.webp' %}?v={{ static_version }} 640w,
+                   {% static 'images/hero-portrait-960.webp' %}?v={{ static_version }} 960w,
+                   {% static 'images/hero-portrait.webp' %}?v={{ static_version }} 1400w"
+      imagesizes="(max-width: 767px) 91vw, 40vw">
+{% endblock %}
+
 {% block page_css %}
-<link rel="stylesheet" href="{% static 'css/pages/home-1.css' %}?v={{ static_version }}">
-<link rel="stylesheet" href="{% static 'css/pages/home-1b.css' %}?v={{ static_version }}">
-<link rel="stylesheet" href="{% static 'css/pages/home-2.css' %}?v={{ static_version }}">
-<link rel="stylesheet" href="{% static 'css/pages/home-3.css' %}?v={{ static_version }}">
+<link rel="stylesheet" href="{% static 'css/pages/home.css' %}?v={{ static_version }}">
 {% endblock %}
 
 {% block content %}

@@ -13,6 +13,15 @@
       {% for fmt in formats %}
       <article class="card{% if fmt.is_featured %} card--featured{% endif %}">
         <div class="card__head">
+          {% if fmt.image %}
+          <img class="card__photo"
+               src="{{ fmt.image.url }}"
+               alt=""
+               width="640"
+               height="480"
+               loading="lazy"
+               decoding="async">
+          {% else %}
           <span class="card__icon" aria-hidden="true">
             {% if forloop.counter == 1 %}
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
@@ -38,6 +47,7 @@
             </svg>
             {% endif %}
           </span>
+          {% endif %}
           {% if fmt.is_featured %}
           <span class="card__badge">{% block_plain "site" "formats.featured_badge" %}</span>
           {% endif %}

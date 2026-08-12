@@ -23,11 +23,12 @@ _HOME_SECTIONS: tuple[ContentSection, ...] = (
             ("home", "hero.cta_secondary"),
             ("home", "hero.tagline"),
             ("home", "hero.media"),
+            ("home", "hero.media_layout"),
         ),
         field_groups=(
             FieldGroup("Тексты", ("hero.title", "hero.subtitle", "hero.lead", "hero.tagline")),
             FieldGroup("Кнопки", ("hero.cta_primary", "hero.cta_secondary")),
-            FieldGroup("Медиа", ("hero.media",)),
+            FieldGroup("Медиа", ("hero.media_layout", "hero.media")),
         ),
     ),
     ContentSection(

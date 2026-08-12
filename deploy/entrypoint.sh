@@ -41,6 +41,8 @@ if python manage.py help compilemessages &>/dev/null; then
 fi
 
 if [ "${DJANGO_SETTINGS_MODULE:-}" = "config.settings.production" ] || [ "${DJANGO_SETTINGS_MODULE:-}" = "config.settings.docker" ]; then
+    echo "==> Building CSS bundles..."
+    python3 scripts/build_css.py
     echo "==> Collecting static files..."
     python manage.py collectstatic --noinput --verbosity 0
     _count=$(find "${STATIC_ROOT:-/app/staticfiles}" -type f 2>/dev/null | wc -l | tr -d ' ')

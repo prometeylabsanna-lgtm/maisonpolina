@@ -1,5 +1,6 @@
 (() => {
   const STORAGE_KEY = "cms-admin-lang";
+  const TAB_SELECTOR = ".cms-lang-tab[data-cms-lang]";
 
   const getLang = () => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
@@ -8,9 +9,11 @@
 
   const applyLang = (lang) => {
     const next = lang === "en" ? "en" : "ru";
+    // Needed for CSS: html[data-cms-lang="en"] .cms-lang-pane--*
     document.documentElement.dataset.cmsLang = next;
     window.localStorage.setItem(STORAGE_KEY, next);
-    document.querySelectorAll("[data-cms-lang]").forEach((btn) => {
+    // Only tab buttons — never <html>, which also gets data-cms-lang
+    document.querySelectorAll(TAB_SELECTOR).forEach((btn) => {
       const active = btn.getAttribute("data-cms-lang") === next;
       btn.classList.toggle("is-active", active);
       btn.setAttribute("aria-selected", active ? "true" : "false");
@@ -39,7 +42,7 @@
 
   const boot = () => {
     applyLang(getLang());
-    document.querySelectorAll("[data-cms-lang]").forEach((btn) => {
+    document.querySelectorAll(TAB_SELECTOR).forEach((btn) => {
       btn.addEventListener("click", (event) => {
         event.preventDefault();
         applyLang(btn.getAttribute("data-cms-lang"));
@@ -53,7 +56,6 @@
     boot();
   }
 
-  // Optional Alpine sync if Unfold already booted Alpine
   document.addEventListener("alpine:init", () => {
     const Alpine = window.Alpine;
     if (!Alpine || Alpine.store("cmsLang")) return;

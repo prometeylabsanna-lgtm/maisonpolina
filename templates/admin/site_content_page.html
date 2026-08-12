@@ -11,7 +11,7 @@
 {% block extrahead %}
 {{ block.super }}
 {% if tinymce_media %}{{ tinymce_media }}{% endif %}
-<script src="{% static 'js/admin/cms_lang_tabs.js' %}" defer></script>
+<script src="{% static 'js/admin/cms_lang_tabs.js' %}?v=2" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -77,23 +77,72 @@
                   <span>{{ row.field.label }}</span>
                 </label>
               </div>
+            {% elif row.kind == "choice" %}
+              <div class="site-content-editor__field">
+                <label class="site-content-editor__field-label" for="{{ row.choice.id_for_label }}">{{ row.label }}</label>
+                {% if row.choice %}
+                  {{ row.choice.as_widget }}
+                  {% if row.choice.errors %}<div class="text-sm text-red-500">{{ row.choice.errors }}</div>{% endif %}
+                {% endif %}
+              </div>
             {% elif row.is_image %}
               <div class="site-content-editor__field">
                 <p class="site-content-editor__field-label">{{ row.label }}</p>
-                {% if row.block.image %}
-                <p class="mb-3">
-                  <img src="{{ row.block.image.url }}" alt="" width="180" height="120"
-                       class="rounded-default object-cover border border-base-200 dark:border-base-700">
-                </p>
+                {% if row.preview_url %}
+                <div class="cms-image-preview">
+                  <img src="{{ row.preview_url }}"
+                       alt="{{ row.label }}"
+                       width="240"
+                       height="160"
+                       class="cms-image-preview__img"
+                       loading="lazy">
+                  {% if row.preview_caption %}
+                  <p class="cms-image-preview__caption">{{ row.preview_caption }}</p>
+                  {% endif %}
+                </div>
                 {% endif %}
                 {% if row.image %}
-                <div class="mb-2">{{ row.image.as_widget }}</div>
+                <div class="mb-2">
+                  <p class="site-content-editor__field-label">Загрузить другое фото</p>
+                  {{ row.image.as_widget }}
+                  {% if row.image.help_text %}<p class="cms-image-preview__caption">{{ row.image.help_text }}</p>{% endif %}
+                </div>
                 {% endif %}
-                {% if row.clear_image %}
+                {% if row.clear_image and row.has_upload %}
                 <label class="inline-flex items-center gap-2 text-sm" for="{{ row.clear_image.id_for_label }}">
                   {{ row.clear_image.as_widget }}
                   <span>{{ row.clear_image.label }}</span>
                 </label>
+                {% endif %}
+                {% if row.has_video_fields %}
+                <div class="mt-4">
+                  <p class="site-content-editor__field-label">Видео на весь экран</p>
+                  {% if row.video_current %}
+                  <p class="cms-image-preview__caption">Текущее: {{ row.video_current }}</p>
+                  {% endif %}
+                  {% if row.video_file %}
+                  <div class="mb-2">
+                    <p class="site-content-editor__field-label">{{ row.video_file.label }}</p>
+                    {{ row.video_file.as_widget }}
+                    {% if row.video_file.help_text %}<p class="cms-image-preview__caption">{{ row.video_file.help_text }}</p>{% endif %}
+                    {% if row.video_file.errors %}<div class="text-sm text-red-500">{{ row.video_file.errors }}</div>{% endif %}
+                  </div>
+                  {% endif %}
+                  {% if row.video_url %}
+                  <div class="mb-2">
+                    <p class="site-content-editor__field-label">{{ row.video_url.label }}</p>
+                    {{ row.video_url.as_widget }}
+                    {% if row.video_url.help_text %}<p class="cms-image-preview__caption">{{ row.video_url.help_text }}</p>{% endif %}
+                    {% if row.video_url.errors %}<div class="text-sm text-red-500">{{ row.video_url.errors }}</div>{% endif %}
+                  </div>
+                  {% endif %}
+                  {% if row.clear_video and row.has_video %}
+                  <label class="inline-flex items-center gap-2 text-sm" for="{{ row.clear_video.id_for_label }}">
+                    {{ row.clear_video.as_widget }}
+                    <span>{{ row.clear_video.label }}</span>
+                  </label>
+                  {% endif %}
+                </div>
                 {% endif %}
               </div>
             {% else %}

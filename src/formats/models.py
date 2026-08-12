@@ -12,6 +12,7 @@ class ServiceFormat(BilingualTextMixin, models.Model):
     price_text_en = models.CharField(max_length=128, blank=True)
     label_ru = models.CharField(max_length=64, blank=True, help_text="Напр. Формат I")
     label_en = models.CharField(max_length=64, blank=True)
+    image = models.ImageField(upload_to="formats/", blank=True)
     is_featured = models.BooleanField(default=False)
     order = models.PositiveSmallIntegerField(default=0)
     is_active = models.BooleanField(default=True)

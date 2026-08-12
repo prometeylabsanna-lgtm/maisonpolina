@@ -37,9 +37,22 @@ class GalleryPhoto(BilingualTextMixin, models.Model):
         return self.get_text("caption")
 
     def get_image_url(self) -> str:
-        """Prefer shipped static images (Vercel-safe), else media upload."""
+        """Prefer shipped static images (Vercel-safe), else media upload.
+
+        If static path is .jpg/.png and a sibling .webp exists, serve WebP.
+        """
         if self.static_image:
-            return static(self.static_image)
+            path = self.static_image
+            lower = path.lower()
+            if lower.endswith((".jpg", ".jpeg", ".png")):
+                from pathlib import Path
+
+                from django.contrib.staticfiles.finders import find
+
+                webp_path = str(Path(path).with_suffix(".webp"))
+                if find(webp_path):
+                    return static(webp_path)
+            return static(path)
         if self.image:
             try:
                 return self.image.url

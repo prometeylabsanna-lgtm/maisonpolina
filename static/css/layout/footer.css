@@ -162,6 +162,10 @@
 }
 
 .footer__menu-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 0;
   font-family: var(--font-display);
   font-size: 13px;
   letter-spacing: 0.06em;

@@ -103,3 +103,32 @@ def test_testimonial_author_name_by_locale(client):
     assert en.status_code == 200
     assert b"Alexander G." in en.content
     assert "Александр Г.".encode() not in en.content
+
+
+@pytest.mark.django_db
+def test_testimonial_photo_on_home(client):
+    from io import BytesIO
+
+    from django.core.files.uploadedfile import SimpleUploadedFile
+    from PIL import Image
+
+    buf = BytesIO()
+    Image.new("RGB", (8, 8), (80, 20, 24)).save(buf, format="JPEG")
+    buf.seek(0)
+    item = Testimonial.objects.create(
+        author_name_ru="Анна",
+        author_name_en="Anna",
+        text_ru="Длинный отзыв о встрече, который должен появиться на главной.",
+        text_en="A long review that should appear on the home page.",
+        rating=5,
+        is_active=True,
+    )
+    item.photo.save(
+        "reviewer.jpg",
+        SimpleUploadedFile("reviewer.jpg", buf.read(), content_type="image/jpeg"),
+        save=True,
+    )
+    response = client.get("/ru/")
+    html = response.content.decode()
+    assert "carousel__photo" in html
+    assert "reviewer" in html

@@ -83,11 +83,15 @@
           {% if portrait %}
           <img src="{{ portrait.url }}?v={{ static_version }}" alt="{% block_plain 'site' 'personality.portrait_alt' %}" width="560" height="700" loading="lazy">
           {% else %}
-          <img src="{% static 'images/personality-portrait.jpg' %}?v={{ static_version }}"
-               alt="{% block_plain 'site' 'personality.portrait_alt' %}"
-               width="560"
-               height="700"
-               loading="lazy">
+          <picture>
+            <source type="image/webp" srcset="{% static 'images/personality-portrait.webp' %}?v={{ static_version }}">
+            <img src="{% static 'images/personality-portrait.jpg' %}?v={{ static_version }}"
+                 alt="{% block_plain 'site' 'personality.portrait_alt' %}"
+                 width="560"
+                 height="700"
+                 loading="lazy"
+                 decoding="async">
+          </picture>
           {% endif %}
         </div>
         <ul class="personality__list">

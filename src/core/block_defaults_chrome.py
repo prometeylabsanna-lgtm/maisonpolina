@@ -246,6 +246,16 @@ CHROME_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "text_ru": "Оставить отзыв",
         "text_en": "Leave a review",
     },
+    ("site", "review.more"): {
+        "label": "Отзывы — читать далее",
+        "text_ru": "Читать далее",
+        "text_en": "Read more",
+    },
+    ("site", "review.less"): {
+        "label": "Отзывы — свернуть",
+        "text_ru": "Свернуть",
+        "text_en": "Show less",
+    },
     ("site", "formats.featured_badge"): {
         "label": "Форматы — значок",
         "text_ru": "Чаще всего",

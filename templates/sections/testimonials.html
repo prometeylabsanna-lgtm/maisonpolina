@@ -14,7 +14,7 @@
         <div class="carousel__track" data-carousel-track>
           {% for item in testimonials %}
           <blockquote class="carousel__slide">
-            <div class="rating rating--display" aria-label="{% blocktrans with n=item.rating %}Оценка {{ n }} из 5{% endblocktrans %}">
+            <div class="rating rating--display" role="img" aria-label="{% blocktrans with n=item.rating %}Оценка {{ n }} из 5{% endblocktrans %}">
               {% for star in "12345" %}
               <span class="rating__star{% if forloop.counter <= item.rating %} is-on{% endif %}" aria-hidden="true">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25">
@@ -24,8 +24,27 @@
               {% endfor %}
             </div>
             <span class="carousel__quote-mark" aria-hidden="true">“</span>
-            <div class="carousel__text">{{ item.text|richtext }}</div>
+            <div class="carousel__text-wrap">
+              <div class="carousel__text" data-review-text>{{ item.text|richtext }}</div>
+              <button type="button"
+                      class="carousel__more"
+                      hidden
+                      data-review-more
+                      data-label-more="{% block_plain 'site' 'review.more' %}"
+                      data-label-less="{% block_plain 'site' 'review.less' %}">
+                {% block_plain "site" "review.more" %}
+              </button>
+            </div>
             <footer class="carousel__footer">
+              {% if item.photo %}
+              <img class="carousel__photo"
+                   src="{{ item.photo.url }}"
+                   alt=""
+                   width="72"
+                   height="72"
+                   loading="lazy"
+                   decoding="async">
+              {% endif %}
               <p class="carousel__name">{{ item.author_name }}</p>
               {% if item.role %}<p class="carousel__role">{{ item.role }}</p>{% endif %}
             </footer>

@@ -10,12 +10,19 @@
          height="821"
          decoding="async">
     {% else %}
-    <img class="contacts__bg-img"
-         src="{% static 'images/contacts-bg.jpg' %}?v={{ static_version }}"
-         alt=""
-         width="1915"
-         height="821"
-         decoding="async">
+    <picture>
+      <source type="image/webp"
+              srcset="{% static 'images/contacts-bg-1200.webp' %}?v={{ static_version }} 1200w,
+                      {% static 'images/contacts-bg.webp' %}?v={{ static_version }} 1915w"
+              sizes="100vw">
+      <img class="contacts__bg-img"
+           src="{% static 'images/contacts-bg.jpg' %}?v={{ static_version }}"
+           alt=""
+           width="1915"
+           height="821"
+           decoding="async"
+           loading="lazy">
+    </picture>
     {% endif %}
     <div class="contacts__bg-matte"></div>
   </div>

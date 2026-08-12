@@ -11,6 +11,23 @@ IMAGE_KEYS: frozenset[str] = frozenset(
     }
 )
 
+VIDEO_KEYS: frozenset[str] = frozenset({"hero.media"})
+
+CHOICE_KEYS: dict[str, tuple[tuple[str, str], ...]] = {
+    "hero.media_layout": (
+        ("half", "Половина секции"),
+        ("full", "На весь фон"),
+    ),
+}
+
+# Static fallbacks shown on the site when SiteBlock.image is empty (same as templates/).
+IMAGE_STATIC_FALLBACKS: dict[str, str] = {
+    "hero.media": "images/hero-portrait.png",
+    "about.portrait": "images/about-portrait.jpg",
+    "personality.portrait": "images/personality-portrait.jpg",
+    "contacts.bg": "images/contacts-bg.jpg",
+}
+
 
 def is_visibility_key(key: str) -> bool:
     return key.endswith("_section_visible") or key.endswith("_visible")
@@ -69,6 +86,11 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "label": "Hero — фото",
         "text_ru": "",
         "text_en": "",
+    },
+    ("home", "hero.media_layout"): {
+        "label": "Hero — размер фото",
+        "text_ru": "half",
+        "text_en": "half",
     },
     ("home", "about_section_visible"): {
         "label": "Обо мне — видимость",

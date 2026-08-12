@@ -193,7 +193,7 @@
   /* --------------------------------------------------------------------------
      Velvet — fine sharp grain in #4c0d13 (ref fabric), CSS-driven stack
      -------------------------------------------------------------------------- */
-  --texture-velvet: url("/static/images/bg-velvet.png");
+  --texture-velvet: url("/static/images/bg-velvet.webp");
   /* CSS micro-nap (styles only) — fine, crisp, low contrast */
   --texture-velvet-css:
     repeating-linear-gradient(0deg,

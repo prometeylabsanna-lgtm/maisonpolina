@@ -30,13 +30,25 @@
       <div class="gallery-photos-admin__grid">
         <div class="site-content-editor__field">
           <label class="site-content-editor__field-label" for="{{ form.image.id_for_label }}">{{ form.image.label }}</label>
-          {{ form.image }}
-          {% if form.instance.pk and form.instance.get_image_url %}
-          <p class="mt-2">
-            <img src="{{ form.instance.get_image_url }}" alt="" width="120" height="90"
-                 class="rounded-default object-cover border border-base-200 dark:border-base-700">
-          </p>
+          {% if form.instance.pk %}
+            {% with preview=form.instance.get_image_url %}
+              {% if preview %}
+              <div class="cms-image-preview">
+                <img src="{{ preview }}"
+                     alt=""
+                     width="240"
+                     height="160"
+                     class="cms-image-preview__img"
+                     loading="lazy">
+                <p class="cms-image-preview__caption">Текущее фото галереи</p>
+              </div>
+              {% endif %}
+            {% endwith %}
           {% endif %}
+          <p class="site-content-editor__field-label">
+            {% if form.instance.pk %}Загрузить другое фото{% else %}Выберите файл{% endif %}
+          </p>
+          {{ form.image }}
         </div>
 
         <div class="site-content-editor__field">

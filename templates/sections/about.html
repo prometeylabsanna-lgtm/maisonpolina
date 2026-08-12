@@ -20,11 +20,15 @@
              height="800"
              loading="lazy">
         {% else %}
-        <img src="{% static 'images/about-portrait.jpg' %}?v={{ static_version }}"
-             alt="{{ portrait_alt }}"
-             width="682"
-             height="800"
-             loading="lazy">
+        <picture>
+          <source type="image/webp" srcset="{% static 'images/about-portrait.webp' %}?v={{ static_version }}">
+          <img src="{% static 'images/about-portrait.jpg' %}?v={{ static_version }}"
+               alt="{{ portrait_alt }}"
+               width="682"
+               height="800"
+               loading="lazy"
+               decoding="async">
+        </picture>
         {% endif %}
       </div>
       <div class="about__body">

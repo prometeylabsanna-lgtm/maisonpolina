@@ -252,6 +252,30 @@ html[data-cms-lang="en"] .cms-lang-pane--en {
   }
 }
 
+.cms-image-preview {
+  margin: 0 0 0.85rem;
+  max-width: 20rem;
+}
+
+.cms-image-preview__img {
+  display: block;
+  width: 100%;
+  max-width: 20rem;
+  height: auto;
+  max-height: 16rem;
+  object-fit: cover;
+  border: 1px solid rgb(209 213 219);
+  border-radius: 0.5rem;
+  background: rgb(243 244 246);
+}
+
+.cms-image-preview__caption {
+  margin: 0.4rem 0 0;
+  font-size: 0.8125rem;
+  color: rgb(75 85 99);
+  line-height: 1.35;
+}
+
 #content-main:has(.site-content-editor),
 #content-main:has(.site-styles-editor) {
   max-width: none;

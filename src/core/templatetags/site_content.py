@@ -79,6 +79,24 @@ def block_image(context, page, key):
     return None
 
 
+@register.simple_tag(takes_context=True)
+def block_video_src(context, page, key):
+    blocks = context.get("site_blocks") or context.get("blocks")
+    block = get_block(page, key, blocks)
+    if not block:
+        return ""
+    getter = getattr(block, "get_video_src", None)
+    return getter() if callable(getter) else ""
+
+
+@register.filter
+def video_mime(url):
+    lower = (url or "").lower().split("?", 1)[0]
+    if lower.endswith(".webm"):
+        return "video/webm"
+    return "video/mp4"
+
+
 @register.simple_tag
 def gallery_image_url(photo):
     """Prefer shipped static gallery images (Vercel-safe), else media."""

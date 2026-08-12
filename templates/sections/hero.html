@@ -1,18 +1,46 @@
 {% load i18n static site_content %}
-<section class="hero" id="hero" data-section="hero">
+{% block_image "home" "hero.media" as hero_media %}
+{% block_video_src "home" "hero.media" as hero_video %}
+{% block_plain "home" "hero.media_layout" as hero_layout %}
+<section class="hero{% if hero_video %} hero--video{% elif hero_layout == 'full' %} hero--full{% else %} hero--half{% endif %}"
+         id="hero"
+         data-section="hero">
   <div class="hero__banner">
     <div class="hero__bg" aria-hidden="true"></div>
-    {% block_image "home" "hero.media" as hero_media %}
     <div class="hero__media" data-enter="1">
+      {% if hero_video %}
+      <video class="hero__video"
+             muted
+             loop
+             playsinline
+             autoplay
+             preload="metadata"
+             {% if hero_media %}poster="{{ hero_media.url }}"{% else %}poster="{% static 'images/hero-portrait.webp' %}?v={{ static_version }}"{% endif %}>
+        <source src="{{ hero_video }}" type="{{ hero_video|video_mime }}">
+      </video>
+      {% endif %}
       {% if hero_media %}
-      <img src="{{ hero_media.url }}" alt="" fetchpriority="high">
-      {% else %}
       <img class="hero__portrait"
-           src="{% static 'images/hero-portrait.png' %}?v={{ static_version }}"
+           src="{{ hero_media.url }}"
            alt=""
            width="1400"
            height="1400"
            fetchpriority="high">
+      {% else %}
+      <picture>
+        <source type="image/webp"
+                srcset="{% static 'images/hero-portrait-640.webp' %}?v={{ static_version }} 640w,
+                        {% static 'images/hero-portrait-960.webp' %}?v={{ static_version }} 960w,
+                        {% static 'images/hero-portrait.webp' %}?v={{ static_version }} 1400w"
+                sizes="(max-width: 767px) 91vw, 40vw">
+        <img class="hero__portrait"
+             src="{% static 'images/hero-portrait.png' %}?v={{ static_version }}"
+             alt=""
+             width="1400"
+             height="1400"
+             fetchpriority="high"
+             decoding="async">
+      </picture>
       {% endif %}
     </div>
     <div class="hero__shade-x" aria-hidden="true"></div>

@@ -32,6 +32,8 @@ UI_CONTENT_SECTIONS: tuple[ContentSection, ...] = (
             ("site", "review.success_title"),
             ("site", "review.success_text"),
             ("site", "review.cta"),
+            ("site", "review.more"),
+            ("site", "review.less"),
             ("site", "formats.featured_badge"),
             ("site", "formats.includes"),
             ("site", "formats.order_cta"),
@@ -93,6 +95,8 @@ UI_CONTENT_SECTIONS: tuple[ContentSection, ...] = (
                     "review.success_title",
                     "review.success_text",
                     "review.cta",
+                    "review.more",
+                    "review.less",
                 ),
             ),
             FieldGroup(

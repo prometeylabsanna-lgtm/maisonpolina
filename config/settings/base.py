@@ -55,6 +55,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "src.core.middleware.AdminRussianLocaleMiddleware",
+    "src.core.middleware.LanguageCookieMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -115,6 +116,8 @@ LANGUAGES = [
     ("ru", "Русский"),
     ("en", "English"),
 ]
+LANGUAGE_COOKIE_AGE = 60 * 60 * 24 * 365
+LANGUAGE_COOKIE_SAMESITE = "Lax"
 LOCALE_PATHS = [str(_BASE_PATH / "locale")]
 TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
@@ -145,6 +148,7 @@ CONTENT_SECURITY_POLICY = {
         "style-src": ["'self'", "'unsafe-inline'"],
         "font-src": ["'self'", "data:"],
         "img-src": ["'self'", "data:", "blob:"],
+        "media-src": ["'self'", "blob:", "https:"],
         "connect-src": ["'self'"],
         "frame-ancestors": ["'none'"],
         "base-uri": ["'self'"],

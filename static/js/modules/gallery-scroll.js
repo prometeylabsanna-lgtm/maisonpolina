@@ -11,32 +11,34 @@ export function initGalleryScroll() {
     let index = 0;
     let byArrow = false;
     let settleTimer = null;
+    let offsets = [];
+    let max = 0;
 
-    // .gallery має position: relative, тож offsetLeft уже рахується від треку
-    const offsetOf = (card) => card.offsetLeft - cards[0].offsetLeft;
-    const maxScroll = () => track.scrollWidth - track.clientWidth;
+    const rebuildMetrics = () => {
+      const base = cards[0].offsetLeft;
+      offsets = cards.map((card) => card.offsetLeft - base);
+      max = track.scrollWidth - track.clientWidth;
+    };
+
+    const offsetOf = (i) => offsets[i] ?? 0;
 
     const nearestIndex = () =>
       cards.reduce(
-        (best, card, i) =>
-          Math.abs(offsetOf(card) - track.scrollLeft) <
-          Math.abs(offsetOf(cards[best]) - track.scrollLeft)
+        (best, _card, i) =>
+          Math.abs(offsetOf(i) - track.scrollLeft) < Math.abs(offsetOf(best) - track.scrollLeft)
             ? i
             : best,
         0
       );
 
     const sync = () => {
-      const max = maxScroll();
       root.classList.toggle("is-static", max <= 1);
       if (prev) prev.disabled = track.scrollLeft <= 1;
       if (next) next.disabled = track.scrollLeft >= max - 1;
     };
 
-    const targetLeft = () => Math.min(offsetOf(cards[index]), maxScroll());
+    const targetLeft = () => Math.min(offsetOf(index), max);
 
-    // власний індекс, а не поточний scrollLeft: інакше швидкі кліки
-    // під час плавної анімації дають крок на місці
     const go = (dir) => {
       index = Math.min(Math.max(index + dir, 0), cards.length - 1);
       byArrow = true;
@@ -51,7 +53,6 @@ export function initGalleryScroll() {
           index = nearestIndex();
           return;
         }
-        // серія кліків перериває плавну анімацію — доводимо трек до цілі
         if (Math.abs(track.scrollLeft - targetLeft()) > 2) {
           track.scrollTo({ left: targetLeft(), behavior: "smooth" });
           return;
@@ -64,15 +65,25 @@ export function initGalleryScroll() {
     next?.addEventListener("click", () => go(1));
     track.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", () => {
+      rebuildMetrics();
       index = nearestIndex();
       sync();
     });
 
-    // після довантаження лінивих фото ширина треку змінюється
     track.querySelectorAll("img").forEach((img) => {
-      if (!img.complete) img.addEventListener("load", sync, { once: true });
+      if (!img.complete) {
+        img.addEventListener(
+          "load",
+          () => {
+            rebuildMetrics();
+            sync();
+          },
+          { once: true }
+        );
+      }
     });
 
+    rebuildMetrics();
     sync();
   });
 }

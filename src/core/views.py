@@ -111,10 +111,13 @@ class PrivacyView(TemplateView):
 
 
 def robots_txt(_request):
+    from django.conf import settings
+
+    sitemap = f"{settings.SITE_URL.rstrip('/')}/sitemap.xml"
     lines = [
         "User-agent: *",
         "Allow: /",
         "Disallow: /admin/",
-        "Sitemap: /sitemap.xml",
+        f"Sitemap: {sitemap}",
     ]
-    return HttpResponse("\n".join(lines), content_type="text/plain")
+    return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")
