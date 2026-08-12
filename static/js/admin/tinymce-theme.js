@@ -1,27 +1,17 @@
 /**
- * Sync TinyMCE with Unfold admin light/dark theme.
- * Loads before django_tinymce/init_tinymce.js via TINYMCE_EXTRA_MEDIA.
+ * Sync TinyMCE with Unfold .dark class only.
+ * Light = white field. Dark = dark theme surface. Gold border only — no burgundy fill.
+ * Does not write classes on <html> (that broke editing via re-init loop).
  */
 (function () {
-  var DARK_BODY_BG = "#1c1416";
-  var DARK_BODY_FG = "#e8e0d8";
+  var DARK_BODY_BG = "#111827";
+  var DARK_BODY_FG = "#e5e7eb";
   var LIGHT_BODY_BG = "#ffffff";
   var LIGHT_BODY_FG = "#111827";
+  var reinitLock = false;
 
   function isAdminDark() {
-    if (document.documentElement.classList.contains("dark")) {
-      return true;
-    }
-    try {
-      var theme = JSON.parse(localStorage.getItem("adminTheme") || '"light"');
-      if (theme === "dark") return true;
-      if (theme === "auto") {
-        return window.matchMedia("(prefers-color-scheme: dark)").matches;
-      }
-    } catch (_err) {
-      /* ignore */
-    }
-    return false;
+    return document.documentElement.classList.contains("dark");
   }
 
   function applyThemeToConfig(conf) {
@@ -29,19 +19,21 @@
     if (isAdminDark()) {
       next.skin = "oxide-dark";
       next.content_css = "dark";
-      next.content_style = [
-        next.content_style || "",
-        "body{background-color:" + DARK_BODY_BG + ";color:" + DARK_BODY_FG + ";",
-        "margin:0.85rem;line-height:1.55;}",
-      ].join("");
+      next.content_style =
+        "body{background-color:" +
+        DARK_BODY_BG +
+        ";color:" +
+        DARK_BODY_FG +
+        ";margin:0.85rem;line-height:1.55;}";
     } else {
       next.skin = "oxide";
       next.content_css = false;
-      next.content_style = [
-        next.content_style || "",
-        "body{background-color:" + LIGHT_BODY_BG + ";color:" + LIGHT_BODY_FG + ";",
-        "margin:0.85rem;line-height:1.55;}",
-      ].join("");
+      next.content_style =
+        "body{background-color:" +
+        LIGHT_BODY_BG +
+        ";color:" +
+        LIGHT_BODY_FG +
+        ";margin:0.85rem;line-height:1.55;}";
     }
     return next;
   }
@@ -52,10 +44,6 @@
     var dark = isAdminDark();
     body.style.backgroundColor = dark ? DARK_BODY_BG : LIGHT_BODY_BG;
     body.style.color = dark ? DARK_BODY_FG : LIGHT_BODY_FG;
-    var container = editor.getContainer && editor.getContainer();
-    if (container) {
-      container.classList.toggle("tox-tinymce--admin-dark", dark);
-    }
   }
 
   function patchTinyMCEInit() {
@@ -70,6 +58,8 @@
         });
         if (typeof userSetup === "function") {
           userSetup(editor);
+        } else if (typeof userSetup === "string" && window[userSetup]) {
+          window[userSetup](editor);
         }
       };
       return originalInit(themed);
@@ -77,64 +67,63 @@
     window.tinyMCE.__cmsThemePatched = true;
   }
 
-  function refreshOpenEditors() {
-    if (!window.tinyMCE || !window.tinyMCE.editors || !window.tinyMCE.editors.length) {
-      document.documentElement.classList.toggle("tinymce-theme-dark", isAdminDark());
-      return;
-    }
-    var snapshot = [];
-    window.tinyMCE.editors.forEach(function (editor) {
-      if (!editor || !editor.id) return;
-      var el = document.getElementById(editor.id);
-      if (!el || !el.dataset.mceConf) return;
-      var conf;
-      try {
-        conf = JSON.parse(el.dataset.mceConf);
-      } catch (_err) {
-        return;
-      }
-      snapshot.push({
-        id: editor.id,
-        conf: conf,
-        content: editor.getContent(),
-      });
-    });
-
-    snapshot.forEach(function (item) {
-      var existing = window.tinyMCE.get(item.id);
-      if (existing) {
-        existing.remove();
-      }
-    });
-
-    snapshot.forEach(function (item) {
-      var el = document.getElementById(item.id);
-      if (!el) return;
-      el.value = item.content;
-      var conf = applyThemeToConfig(
-        Object.assign({}, item.conf, { selector: "#" + item.id })
-      );
-      var userSetup = conf.setup;
-      conf.setup = function (editor) {
-        editor.on("init", function () {
-          editor.setContent(item.content);
-          styleEditorBody(editor);
-        });
-        if (typeof userSetup === "function") {
-          userSetup(editor);
-        } else if (typeof userSetup === "string" && window[userSetup]) {
-          window[userSetup](editor);
+  function reinitOpenEditors() {
+    if (reinitLock || !window.tinyMCE || !window.tinyMCE.editors) return;
+    reinitLock = true;
+    try {
+      var snapshot = [];
+      window.tinyMCE.editors.forEach(function (editor) {
+        if (!editor || !editor.id) return;
+        var el = document.getElementById(editor.id);
+        if (!el || !el.dataset.mceConf) return;
+        var conf;
+        try {
+          conf = JSON.parse(el.dataset.mceConf);
+        } catch (_err) {
+          return;
         }
-      };
-      window.tinyMCE.init(conf);
-    });
+        snapshot.push({
+          id: editor.id,
+          conf: conf,
+          content: editor.getContent(),
+        });
+      });
 
-    document.documentElement.classList.toggle("tinymce-theme-dark", isAdminDark());
+      snapshot.forEach(function (item) {
+        var existing = window.tinyMCE.get(item.id);
+        if (existing) existing.remove();
+      });
+
+      snapshot.forEach(function (item) {
+        var el = document.getElementById(item.id);
+        if (!el) return;
+        el.value = item.content;
+        var conf = applyThemeToConfig(
+          Object.assign({}, item.conf, { selector: "#" + item.id })
+        );
+        var userSetup = conf.setup;
+        conf.setup = function (editor) {
+          editor.on("init", function () {
+            editor.setContent(item.content);
+            styleEditorBody(editor);
+          });
+          if (typeof userSetup === "function") {
+            userSetup(editor);
+          } else if (typeof userSetup === "string" && window[userSetup]) {
+            window[userSetup](editor);
+          }
+        };
+        window.tinyMCE.init(conf);
+      });
+    } finally {
+      window.setTimeout(function () {
+        reinitLock = false;
+      }, 100);
+    }
   }
 
   function boot() {
     patchTinyMCEInit();
-    document.documentElement.classList.toggle("tinymce-theme-dark", isAdminDark());
   }
 
   if (document.readyState === "loading") {
@@ -143,7 +132,6 @@
     boot();
   }
 
-  // TinyMCE script may load after this file — retry patch.
   var tries = 0;
   var timer = window.setInterval(function () {
     tries += 1;
@@ -160,7 +148,7 @@
     var next = isAdminDark();
     if (next === lastDark) return;
     lastDark = next;
-    refreshOpenEditors();
+    reinitOpenEditors();
   }).observe(document.documentElement, {
     attributes: true,
     attributeFilter: ["class"],

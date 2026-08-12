@@ -1,41 +1,40 @@
-/* TinyMCE chrome — visible frame in dark admin theme */
+/* TinyMCE: gold frame only. Light = white. Dark = theme surface (no burgundy fill). */
 
 .tox-tinymce {
-  border: 1px solid rgb(209 213 219);
+  border: 1px solid rgb(202 182 149 / 0.72);
   border-radius: 0.5rem;
   overflow: hidden;
+  background-color: #fff;
+  box-shadow: none;
 }
 
-.dark .tox-tinymce,
-.tinymce-theme-dark .tox-tinymce,
-.tox-tinymce--admin-dark {
-  border: 1px solid rgb(202 182 149 / 0.55);
-  background-color: #1c1416;
-  box-shadow: 0 0 0 1px rgb(76 13 19 / 0.25);
+.dark .tox-tinymce {
+  border: 1px solid rgb(202 182 149 / 0.65);
+  background-color: #111827;
+  box-shadow: none;
 }
 
-.dark .tox .tox-edit-area,
-.tinymce-theme-dark .tox .tox-edit-area {
-  border-top: 1px solid rgb(202 182 149 / 0.35);
-  background-color: #1c1416;
+.dark .tox .tox-edit-area {
+  border-top: 1px solid rgb(202 182 149 / 0.4);
+  background-color: #111827;
 }
 
-.dark .tox .tox-edit-area__iframe,
-.tinymce-theme-dark .tox .tox-edit-area__iframe {
-  background-color: #1c1416;
+.dark .tox .tox-edit-area__iframe {
+  background-color: #111827;
 }
 
-.dark .tox .tox-statusbar,
-.tinymce-theme-dark .tox .tox-statusbar {
-  border-top: 1px solid rgb(202 182 149 / 0.35);
-  background-color: #24181c;
+.tox .tox-edit-area__iframe {
+  background-color: #fff;
+}
+
+.dark .tox .tox-statusbar {
+  border-top: 1px solid rgb(202 182 149 / 0.4);
+  background-color: #111827;
   color: #c0b0a4;
 }
 
 .dark .tox .tox-statusbar a,
-.dark .tox .tox-statusbar span,
-.tinymce-theme-dark .tox .tox-statusbar a,
-.tinymce-theme-dark .tox .tox-statusbar span {
+.dark .tox .tox-statusbar span {
   color: #c0b0a4;
 }
 
