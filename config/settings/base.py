@@ -227,9 +227,38 @@ UNFOLD = {
     "SITE_HEADER": "MaisonPolina",
     "SITE_SUBHEADER": "Панель сайта",
     "SITE_SYMBOL": "person",
+    "SITE_ICON": {
+        "light": lambda request: static("apple-touch-icon.png"),
+        "dark": lambda request: static("images/brand-monogram-transparent.png"),
+    },
+    "SITE_FAVICONS": [
+        {
+            "rel": "icon",
+            "href": lambda request: static("favicon.ico"),
+            "sizes": "any",
+        },
+        {
+            "rel": "icon",
+            "type": "image/png",
+            "sizes": "32x32",
+            "href": lambda request: static("favicon-32x32.png"),
+        },
+        {
+            "rel": "icon",
+            "type": "image/png",
+            "sizes": "16x16",
+            "href": lambda request: static("favicon-16x16.png"),
+        },
+        {
+            "rel": "apple-touch-icon",
+            "sizes": "180x180",
+            "href": lambda request: static("apple-touch-icon.png"),
+        },
+    ],
     "THEME": None,
     "STYLES": [
         lambda request: static("css/admin/changelist_filters.css"),
+        lambda request: static("css/admin/brand.css"),
     ],
     "SCRIPTS": [
         lambda request: static("js/admin/theme-default.js"),

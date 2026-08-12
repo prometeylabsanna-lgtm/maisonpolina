@@ -1,0 +1,30 @@
+{% load i18n %}
+
+{% if site_icon %}
+    <div class="admin-brand__mark-wrap shrink-0">
+        <{% if site_dropdown %}span{% else %}a href="{% url "admin:index" %}"{% endif %} class="admin-brand__mark-link">
+        {% if site_icon.light and site_icon.dark %}
+            <img src="{{ site_icon.dark }}" alt="{% trans 'Home' %}" class="admin-brand__mark admin-brand__mark--dark hidden dark:block"/>
+            <img src="{{ site_icon.light }}" alt="{% trans 'Home' %}" class="admin-brand__mark admin-brand__mark--light block dark:hidden" />
+        {% else %}
+            <img src="{{ site_icon }}" class="admin-brand__mark" alt="{% trans 'Home' %}" />
+        {% endif %}
+    </{% if site_dropdown %}span{% else %}a{% endif %}>
+    </div>
+{% else %}
+    <{% if site_dropdown %}span{% else %}a href="{% url "admin:index" %}"{% endif %} class="bg-primary-600 flex h-[38px] items-center justify-center rounded-default shrink-0 text-white text-xs w-[38px]">
+    <span class="material-symbols-outlined md-18">{% if site_symbol %}{{ site_symbol }}{% else %}settings{% endif %}</span>
+    </{% if site_dropdown %}span{% else %}a{% endif %}>
+{% endif %}
+
+<div class="admin-brand__text flex flex-col grow justify-center min-w-0">
+    <div class="admin-brand__name text-important tracking-tight *:truncate">
+        {{ branding }}
+    </div>
+
+    {% if site_subheader %}
+        <div class="admin-brand__sub font-normal truncate">
+            {{ site_subheader }}
+        </div>
+    {% endif %}
+</div>
