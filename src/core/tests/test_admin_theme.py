@@ -20,6 +20,12 @@ def test_unfold_primary_is_burgundy():
     assert primary["500"] == "#8a2433"
 
 
+def test_tinymce_extra_media_includes_theme_sync():
+    extra = settings.TINYMCE_EXTRA_MEDIA
+    assert "js/admin/tinymce-theme.js" in extra["js"]
+    assert "css/admin/tinymce-theme.css" in extra["css"]["all"]
+
+
 @pytest.mark.django_db
 def test_admin_theme_switcher_visible(client, admin_user):
     client.force_login(admin_user)

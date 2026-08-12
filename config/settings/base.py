@@ -308,3 +308,7 @@ TINYMCE_DEFAULT_CONFIG = {
     "convert_urls": True,
 }
 TINYMCE_COMPRESSOR = False
+TINYMCE_EXTRA_MEDIA = {
+    "js": ["js/admin/tinymce-theme.js"],
+    "css": {"all": ["css/admin/tinymce-theme.css"]},
+}
