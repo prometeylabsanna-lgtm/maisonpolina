@@ -16,6 +16,17 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+:root {
+  --admin-burgundy: #4c0d13;
+  --admin-burgundy-soft: #5a1218;
+  --admin-burgundy-tint: #f3e4e6;
+  --admin-burgundy-glow: rgb(76 13 19 / 0.28);
+  --admin-gold: #cab695;
+  --admin-gold-soft: #dfccb7;
+  --admin-gold-line: rgb(202 182 149 / 0.55);
+  --admin-gold-line-strong: rgb(202 182 149 / 0.72);
+}
+
 .admin-brand__mark-link,
 .admin-brand__fallback {
   display: flex;
@@ -28,8 +39,8 @@
 
 .admin-brand__fallback {
   border-radius: 50%;
-  background: #4c0d13;
-  color: #cab695;
+  background: var(--admin-burgundy);
+  color: var(--admin-gold);
 }
 
 .admin-brand__mark {
@@ -64,6 +75,7 @@
   font-weight: 400;
   letter-spacing: 0.06em;
   line-height: 1.2;
+  color: var(--admin-gold);
 }
 
 .admin-brand__sub {
@@ -73,11 +85,72 @@
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #8a7a6e;
+  color: var(--admin-gold-soft);
 }
 
 .dark .admin-brand__sub {
-  color: #c0b0a4;
+  color: var(--admin-gold);
+}
+
+/* Active nav highlight — burgundy */
+#nav-sidebar-apps a.active {
+  background-color: var(--admin-burgundy-tint);
+  color: var(--admin-burgundy);
+}
+
+.dark #nav-sidebar-apps a.active {
+  background-color: var(--admin-burgundy-glow);
+  color: var(--admin-gold-soft);
+}
+
+/* Sidebar group titles — gold inscriptions */
+#nav-sidebar-apps h2 {
+  color: var(--admin-gold);
+}
+
+.dark #nav-sidebar-apps h2 {
+  color: var(--admin-gold-soft);
+}
+
+/* Menu separators / lines */
+#nav-sidebar-apps hr {
+  border-color: var(--admin-gold-line);
+}
+
+.dark #nav-sidebar-apps hr {
+  border-color: var(--admin-gold-line-strong);
+}
+
+/* Sidebar chrome lines */
+#nav-sidebar {
+  border-right-color: var(--admin-gold-line);
+}
+
+.dark #nav-sidebar {
+  border-right-color: var(--admin-gold-line-strong);
+}
+
+#nav-sidebar > .border-b {
+  border-bottom-color: var(--admin-gold-line);
+}
+
+.dark #nav-sidebar > .border-b {
+  border-bottom-color: var(--admin-gold-line-strong);
+}
+
+/* Breadcrumb / header chevrons & arrows */
+h1 .material-symbols-outlined,
+#nav-sidebar-apps h2 .material-symbols-outlined {
+  color: var(--admin-gold);
+}
+
+/* Vertical rule beside breadcrumbs */
+.bg-base-200.h-5.w-px {
+  background-color: var(--admin-gold-line-strong);
+}
+
+.dark .bg-base-200.h-5.w-px {
+  background-color: var(--admin-gold-line);
 }
 
 @media (max-width: 639px) {

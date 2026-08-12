@@ -1,4 +1,4 @@
-/* CMS section editors — light admin + emerald accent */
+/* CMS section editors — burgundy accent + gold inscriptions */
 
 .site-content-editor {
   display: grid;
@@ -28,6 +28,11 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: #cab695;
+}
+
+.dark .site-content-editor__eyebrow {
+  color: #dfccb7;
 }
 
 .site-content-editor__title {
@@ -128,7 +133,7 @@
 .site-content-editor__field input:focus,
 .site-content-editor__field textarea:focus,
 .site-content-editor__field select:focus {
-  outline: 2px solid rgb(5 150 105 / 0.45);
+  outline: 2px solid rgb(76 13 19 / 0.45);
   outline-offset: 1px;
 }
 
@@ -168,7 +173,7 @@ textarea.cms-admin-input {
 .cms-lang-tab.is-active {
   background: rgb(255 255 255);
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
-  color: rgb(5 150 105);
+  color: #4c0d13;
 }
 
 .cms-lang-tabs--page .cms-lang-tab {
@@ -220,12 +225,12 @@ html[data-cms-lang="en"] .cms-lang-pane--en {
   white-space: nowrap;
   cursor: pointer;
   background: rgb(255 255 255);
-  color: rgb(5 150 105);
-  border-color: rgb(167 243 208);
+  color: #4c0d13;
+  border-color: #e5c5c9;
 }
 
 .personality-items-admin__add:hover {
-  background: rgb(236 253 245);
+  background: #f3e4e6;
 }
 
 .personality-items-admin__slot-title {
@@ -276,12 +281,12 @@ html[data-cms-lang="en"] .cms-lang-pane--en {
   white-space: nowrap;
   cursor: pointer;
   background: rgb(255 255 255);
-  color: rgb(5 150 105);
-  border-color: rgb(167 243 208);
+  color: #4c0d13;
+  border-color: #e5c5c9;
 }
 
 .gallery-photos-admin__add:hover {
-  background: rgb(236 253 245);
+  background: #f3e4e6;
 }
 
 .gallery-photos-admin__slot-title {

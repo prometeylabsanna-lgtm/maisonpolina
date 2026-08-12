@@ -14,6 +14,12 @@ def test_unfold_theme_is_unlocked():
     assert not settings.UNFOLD.get("THEME")
 
 
+def test_unfold_primary_is_burgundy():
+    primary = settings.UNFOLD["COLORS"]["primary"]
+    assert primary["600"] == "#4c0d13"
+    assert primary["500"] == "#8a2433"
+
+
 @pytest.mark.django_db
 def test_admin_theme_switcher_visible(client, admin_user):
     client.force_login(admin_user)
