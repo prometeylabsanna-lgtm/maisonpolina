@@ -227,9 +227,12 @@ UNFOLD = {
     "SITE_HEADER": "MaisonPolina",
     "SITE_SUBHEADER": "Панель сайта",
     "SITE_SYMBOL": "person",
-    "THEME": "light",
+    "THEME": None,
     "STYLES": [
         lambda request: static("css/admin/changelist_filters.css"),
+    ],
+    "SCRIPTS": [
+        lambda request: static("js/admin/theme-default.js"),
     ],
     "COLORS": {
         "primary": {
