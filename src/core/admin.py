@@ -64,7 +64,13 @@ class SiteSettingsAdmin(WebPAdminMixin, AdminGuidelinesMixin, ModelAdmin):
 
     @admin.display(description="Превью логотипа")
     def get_logo_preview(self, obj):
-        return image_preview(getattr(obj, "logo", None), size=96)
+        from django.templatetags.static import static
+
+        return image_preview(
+            getattr(obj, "logo", None),
+            size=96,
+            fallback_url=static("images/brand-monogram-header.png"),
+        )
 
     def has_add_permission(self, request):
         return not SiteSettings.objects.exists()

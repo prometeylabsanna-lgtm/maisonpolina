@@ -5,16 +5,20 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 
-def image_preview(image_field, *, size: int = 72) -> str:
-    if not image_field:
-        return "—"
-    try:
-        url = image_field.url
-    except (ValueError, AttributeError):
+def image_preview(image_field, *, size: int = 72, fallback_url: str = "") -> str:
+    url = ""
+    if image_field:
+        try:
+            url = image_field.url
+        except (ValueError, AttributeError):
+            url = ""
+    if not url:
+        url = fallback_url
+    if not url:
         return "—"
     return format_html(
         '<img src="{}" width="{}" height="{}" '
-        'class="rounded-default object-cover" alt="" loading="lazy" />',
+        'class="rounded-default object-contain" alt="" loading="lazy" />',
         url,
         size,
         size,

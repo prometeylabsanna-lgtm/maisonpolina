@@ -1,10 +1,11 @@
-/* Changelist filters + search on one control baseline. */
+/* Changelist filters + search: one baseline, no overlap. */
 
 .changelist-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr);
+  align-items: end;
+  column-gap: 0.75rem;
+  row-gap: 0.75rem;
   width: 100%;
 }
 
@@ -12,12 +13,10 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  flex: 1 1 16rem;
   min-width: 0;
-  max-width: 24rem;
+  max-width: 100%;
 }
 
-/* Match filter label height so search lines up with selects */
 .changelist-toolbar__search-label {
   display: block;
   margin: 0 0 0.25rem;
@@ -29,12 +28,18 @@
   pointer-events: none;
 }
 
-.changelist-toolbar__search #toolbar {
+.changelist-toolbar #toolbar,
+.changelist-toolbar #changelist-search {
+  float: none;
   width: 100%;
+  max-width: 100%;
+  margin: 0;
 }
 
-.changelist-toolbar__search #toolbar > form > div {
+.changelist-toolbar__search-field {
   box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
   height: 38px;
   min-height: 38px;
 }
@@ -44,18 +49,19 @@
   flex-wrap: wrap;
   align-items: flex-end;
   gap: 0.75rem;
-  flex: 1 1 auto;
   min-width: 0;
+  width: 100%;
 }
 
 .changelist-filter-top__item {
-  flex: 1 1 10rem;
-  min-width: 10rem;
+  flex: 1 1 9rem;
+  min-width: 0;
   max-width: 100%;
 }
 
 .changelist-filter-top__item > div {
   margin-bottom: 0;
+  width: 100%;
 }
 
 .changelist-filter-top__item .mb-4 {
@@ -74,6 +80,8 @@
 .changelist-filter-top .select2-container,
 .changelist-filter-top .select2-container .select2-selection--single {
   box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
   height: 38px;
   min-height: 38px;
 }
@@ -94,15 +102,13 @@
   line-height: 1;
 }
 
-@media (max-width: 639px) {
-  .changelist-toolbar__search {
-    flex: 1 1 100%;
-    max-width: none;
+@media (max-width: 767px) {
+  .changelist-toolbar {
+    grid-template-columns: 1fr;
   }
 
   .changelist-filter-top__item {
     flex: 1 1 100%;
-    min-width: 0;
   }
 
   .changelist-filter-top__submit {
@@ -113,16 +119,12 @@
 @supports (-webkit-touch-callout: none) {
   .changelist-filter-top select,
   .changelist-filter-top .select2-container,
-  .changelist-toolbar__search #toolbar > form > div {
+  .changelist-toolbar__search-field {
     font-size: 16px;
   }
 
-  .changelist-filter-top__submit {
-    min-height: 44px;
-    height: 44px;
-  }
-
-  .changelist-toolbar__search #toolbar > form > div,
+  .changelist-filter-top__submit,
+  .changelist-toolbar__search-field,
   .changelist-filter-top select,
   .changelist-filter-top .select2-container,
   .changelist-filter-top .select2-container .select2-selection--single {

@@ -1104,7 +1104,9 @@ body.is-locked {
   }
 
   .header__brand-mark--mono {
-    display: none;
+    display: block;
+    width: 40px;
+    max-height: 32px;
   }
 
   .header__brand-mark--text {
