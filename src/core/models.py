@@ -48,7 +48,7 @@ class SiteSettings(models.Model):
     )
     logo = WebPImageField(upload_to="brand/", blank=True, verbose_name="Логотип")
     phone = models.CharField(
-        max_length=64, blank=True, default="+380 95 472 2029", verbose_name="Телефон"
+        max_length=64, blank=True, default="+380 95 472 7859", verbose_name="Телефон"
     )
     email = models.EmailField(
         blank=True, default="hello@example.com", verbose_name="Email"
@@ -60,7 +60,9 @@ class SiteSettings(models.Model):
         blank=True, default="https://instagram.com/", verbose_name="Instagram"
     )
     whatsapp_url = models.URLField(
-        blank=True, default="https://wa.me/", verbose_name="WhatsApp"
+        blank=True,
+        default="https://wa.me/qr/ZPQAL5UEFCQIN1",
+        verbose_name="WhatsApp",
     )
     copyright_name = models.CharField(
         max_length=128, default="MAISON POLINA", verbose_name="Имя в копирайте"

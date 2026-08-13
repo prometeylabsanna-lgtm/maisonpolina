@@ -1073,20 +1073,18 @@ body.is-locked {
   height: 44px;
   flex-shrink: 0;
   border-radius: 8px;
-  background: #fff;
-  color: var(--color-floral);
-  border: 1px solid #fff;
+  background: transparent;
+  color: #fff;
+  border: 1px solid transparent;
   transition:
-    background var(--t-base),
     color var(--t-base),
-    border-color var(--t-base);
+    background var(--t-base);
 }
 
 .header__whatsapp:hover,
 .header__whatsapp:focus-visible {
-  background: #f3e4e6;
-  border-color: #f3e4e6;
-  color: var(--color-floral-deep);
+  background: rgb(255 255 255 / 0.08);
+  color: #fff;
 }
 
 .header__whatsapp-icon {
