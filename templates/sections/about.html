@@ -9,11 +9,11 @@
         {% block_image "home" "about.portrait" as portrait %}
         {% block_plain "home" "about.portrait" as portrait_alt %}
         {% if portrait %}
-        <img src="{{ portrait.url }}"
+        <img src="{{ portrait.url }}?v={{ static_version }}"
              alt="{{ portrait_alt }}"
              width="682"
              height="800"
-             loading="lazy">
+             decoding="async">
         {% else %}
         <picture>
           <source type="image/webp" srcset="{% static 'images/about-portrait.webp' %}?v={{ static_version }}">

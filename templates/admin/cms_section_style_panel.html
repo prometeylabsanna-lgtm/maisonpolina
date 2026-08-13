@@ -1,0 +1,26 @@
+<section class="site-content-fieldset cms-style-panel border border-base-200 dark:border-base-700 rounded-default shadow-sm dark:bg-base-900 p-3 md:p-4">
+  <div class="cms-style-panel__head">
+    <div>
+      <h2 class="site-content-fieldset__title cms-style-panel__title text-font-important-light dark:text-font-important-dark">Цвета блока</h2>
+      <p class="cms-style-panel__hint text-font-subtle-light dark:text-font-subtle-dark">
+        Круг открывает полную палитру. «Сайт» — как в теме. «Цвет» — однотон. «Градиент» — два цвета.
+      </p>
+    </div>
+    {% if style_key %}
+    <button type="submit"
+            name="reset_section"
+            value="{{ style_key }}"
+            class="cms-style-panel__reset border border-base-200 dark:border-base-700 rounded-default px-3 py-2 text-sm"
+            data-confirm-reset="Вернуть фирменные цвета этого блока?">
+      Дефолт
+    </button>
+    {% endif %}
+  </div>
+  {{ style_form.label.as_hidden }}
+  {% if style_form.non_field_errors %}{{ style_form.non_field_errors }}{% endif %}
+  <div class="cms-style-panel__rows">
+    {% for group in style_groups %}
+      {% include "admin/cms_style_fill_group.html" %}
+    {% endfor %}
+  </div>
+</section>

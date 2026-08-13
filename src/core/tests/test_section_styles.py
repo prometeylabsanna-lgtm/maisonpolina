@@ -75,7 +75,10 @@ def test_styles_admin_get_post(client, admin_user):
     url = reverse("admin:core_themestylessettings_change", args=[1])
     response = client.get(url)
     assert response.status_code == 200
-    assert "Вернуть дефолт" in response.content.decode()
+    html = response.content.decode()
+    assert "Дефолт" in html
+    assert "cms-color-picker" in html
+    assert "cms-style-panel" in html
 
     get_section_styles_css()
     assert cache.get(SECTION_STYLES_CACHE_KEY) is not None
@@ -158,3 +161,76 @@ def test_privacy_body_uses_tinymce(client, admin_user):
     assert 'name="block__privacy__body__ru"' in html
     assert "tinymce" in html.lower()
     assert 'class="cms-admin-input tinymce"' in html or "TinyMCE" in html
+    assert "Цвета блока" not in html
+
+
+@pytest.mark.django_db
+def test_cms_block_has_compact_style_panel(client, admin_user):
+    SiteSettings.get_solo()
+    ensure_section_styles()
+    client.force_login(admin_user)
+    url = reverse("admin:core_homeherosettings_change", args=[1])
+    html = client.get(url).content.decode()
+    assert "Цвета блока" in html
+    assert "cms-color-picker" in html
+    assert 'name="style-bg_fill_type"' in html
+    assert 'name="style-btn_primary_solid_color"' in html
+    assert "Градиент" in html
+
+    response = client.post(
+        url,
+        {
+            "section_visible": "on",
+            "block__home__hero.title__ru": "Имя",
+            "block__home__hero.title__en": "Name",
+            "block__home__hero.subtitle__ru": "",
+            "block__home__hero.subtitle__en": "",
+            "block__home__hero.lead__ru": "Lead",
+            "block__home__hero.lead__en": "Lead",
+            "block__home__hero.cta_primary__ru": "CTA",
+            "block__home__hero.cta_primary__en": "CTA",
+            "block__home__hero.cta_secondary__ru": "Sec",
+            "block__home__hero.cta_secondary__en": "Sec",
+            "block__home__hero.tagline__ru": "Tag",
+            "block__home__hero.tagline__en": "Tag",
+            "block__home__hero.media_layout__choice": "full",
+            "style-label": "Баннер",
+            "style-bg_fill_type": FillType.SOLID,
+            "style-bg_solid_color": "#1a0508",
+            "style-bg_gradient_start": "#4c0d13",
+            "style-bg_gradient_end": "#3a0a0f",
+            "style-bg_gradient_angle": "180",
+            "style-btn_primary_fill_type": FillType.GRADIENT,
+            "style-btn_primary_solid_color": "#cab695",
+            "style-btn_primary_gradient_start": "#dfccb7",
+            "style-btn_primary_gradient_end": "#b09572",
+            "style-btn_primary_gradient_angle": "90",
+            "style-btn_secondary_fill_type": FillType.SOLID,
+            "style-btn_secondary_solid_color": "#cab695",
+            "style-btn_secondary_gradient_start": "",
+            "style-btn_secondary_gradient_end": "",
+            "style-btn_secondary_gradient_angle": "180",
+        },
+    )
+    assert response.status_code in (200, 302)
+    hero = SectionStyle.objects.get(section=SectionStyle.Section.HERO)
+    assert hero.bg_fill_type == FillType.SOLID
+    assert hero.bg_solid_color == "#1a0508"
+    assert hero.btn_primary_fill_type == FillType.GRADIENT
+
+
+@pytest.mark.django_db
+def test_footer_style_panel_has_solid_and_gradient(client, admin_user):
+    SiteSettings.get_solo()
+    ensure_section_styles()
+    client.force_login(admin_user)
+    html = client.get(
+        reverse("admin:core_sitefootersettings_change", args=[1])
+    ).content.decode()
+    assert "Цвета блока" in html
+    assert "Фон" in html
+    assert "Цвет" in html
+    assert "Градиент" in html
+    assert 'name="style-bg_solid_color"' in html
+    assert 'name="style-bg_gradient_start"' in html
+    assert 'name="style-btn_primary_solid_color"' in html

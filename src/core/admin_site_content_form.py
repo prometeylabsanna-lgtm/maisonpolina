@@ -29,6 +29,10 @@ from src.core.block_defaults import (
 from src.core.fields import ADMIN_IMAGE_ACCEPT, AdminWebPImageField
 from src.core.models import SiteBlock
 from src.core.services import invalidate_site_blocks_cache
+from src.core.admin_site_content_settings import (
+    add_settings_fields,
+    save_settings_fields,
+)
 from src.core.site_content_registry import (
     ContentSection,
     iter_section_blocks,
@@ -116,6 +120,7 @@ class SitePageContentForm(forms.Form):
 
         for page, key in section.blocks:
             self._add_block_fields(blocks[(page, key)])
+        add_settings_fields(self, section)
 
     def _visibility_page_key(self, section: ContentSection) -> tuple[str, str]:
         for page, key in iter_section_blocks(section):
@@ -245,6 +250,7 @@ class SitePageContentForm(forms.Form):
                 ).strip()
             block.save()
 
+        save_settings_fields(self, self.section)
         invalidate_site_blocks_cache()
 
     def _save_media_block(self, block: SiteBlock, page: str, key: str) -> None:

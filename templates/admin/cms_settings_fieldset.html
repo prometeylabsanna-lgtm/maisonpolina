@@ -1,0 +1,44 @@
+<section class="site-content-fieldset border border-base-200 dark:border-base-700 rounded-default shadow-sm dark:bg-base-900 p-4 md:p-5">
+  <h2 class="site-content-fieldset__title text-font-important-light dark:text-font-important-dark">Реквизиты</h2>
+  <div class="site-content-fieldset__fields">
+    {% for row in settings_rows %}
+      {% if row.kind == "settings_image" %}
+        <div class="site-content-editor__field">
+          <p class="site-content-editor__field-label">{{ row.label }}</p>
+          {% if row.help_text %}
+          <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ row.help_text }}</p>
+          {% endif %}
+          {% if row.preview_url %}
+          <div class="cms-image-preview">
+            <img src="{{ row.preview_url }}" alt="{{ row.label }}" width="240" height="160" class="cms-image-preview__img" loading="lazy">
+            {% if row.preview_caption %}
+            <p class="cms-image-preview__caption">{{ row.preview_caption }}</p>
+            {% endif %}
+          </div>
+          {% endif %}
+          <div class="mb-2">{{ row.field.as_widget }}</div>
+          {% if row.has_upload %}
+          <label class="inline-flex items-center gap-2 text-sm" for="{{ row.clear.id_for_label }}">
+            {{ row.clear.as_widget }}
+            <span>{{ row.clear.label }}</span>
+          </label>
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="site-content-editor__field">
+          <p class="site-content-editor__field-label">{{ row.label }}</p>
+          {% if row.lang %}
+          <div class="cms-lang-panes">
+            <div class="cms-lang-pane cms-lang-pane--{{ row.lang }}">
+              {{ row.field.as_widget }}
+            </div>
+          </div>
+          {% else %}
+            {{ row.field.as_widget }}
+          {% endif %}
+          {% if row.field.errors %}<div class="cms-field-error">{{ row.field.errors }}</div>{% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>

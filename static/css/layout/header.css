@@ -96,7 +96,7 @@
   justify-content: flex-start;
   gap: 10px;
   flex: 0 0 auto;
-  max-width: calc(100% - 96px);
+  max-width: calc(100% - 120px);
   z-index: 1;
 }
 
@@ -197,6 +197,42 @@
   letter-spacing: 0.12em;
 }
 
+.header__whatsapp {
+  display: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--color-floral);
+  border: 1px solid #fff;
+  transition:
+    background var(--t-base),
+    color var(--t-base),
+    border-color var(--t-base);
+}
+
+.header__whatsapp:hover,
+.header__whatsapp:focus-visible {
+  background: #f3e4e6;
+  border-color: #f3e4e6;
+  color: var(--color-floral-deep);
+}
+
+.header__whatsapp-icon {
+  display: block;
+}
+
+.header__whatsapp--bar {
+  display: grid;
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
 .header__burger {
   position: absolute;
   right: 0;
@@ -253,7 +289,7 @@
 @media (min-width: 1280px) {
   .header__inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1.25fr) auto minmax(0, 1fr);
     align-items: center;
     column-gap: clamp(12px, 1.4vw, 24px);
     width: min(var(--container-max), calc(100% - 40px));
@@ -273,16 +309,34 @@
   }
 
   .header__center {
+    grid-column: 2;
+    justify-self: center;
+    max-width: none;
+  }
+
+  .header__brand-mark--mono {
     display: none;
+  }
+
+  .header__line {
+    width: 8px;
   }
 
   .header__actions {
     display: flex;
-    grid-column: 2;
+    grid-column: 3;
     justify-self: end;
     flex: 0 0 auto;
     gap: clamp(8px, 1vw, 14px);
     max-width: 100%;
+  }
+
+  .header__actions .header__whatsapp {
+    display: grid;
+  }
+
+  .header__whatsapp--bar {
+    display: none;
   }
 
   .header__phone {
@@ -299,10 +353,18 @@
 }
 
 @media (min-width: 1440px) {
+  .header__line {
+    width: 9px;
+  }
+
   .header__nav {
     gap: clamp(10px, 1.1vw, 18px);
     font-size: clamp(12px, 0.95vw, 14px);
     letter-spacing: 0.05em;
+  }
+
+  .header__brand-mark--text {
+    font-size: 14px;
   }
 
   .header__phone {
@@ -350,4 +412,17 @@
   background: var(--btn-fill-hover);
   border-color: var(--color-champagne-soft);
   color: var(--text-on-gold);
+}
+
+@media (max-width: 1023px) {
+  .header__whatsapp--bar {
+    right: 48px;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .header__whatsapp {
+    min-width: 44px;
+    min-height: 44px;
+  }
 }

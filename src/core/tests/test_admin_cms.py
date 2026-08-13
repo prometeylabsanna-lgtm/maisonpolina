@@ -22,7 +22,7 @@ def test_admin_section_get_post(client, admin_user):
     url = reverse("admin:core_homeherosettings_change", args=[1])
     response = client.get(url)
     assert response.status_code == 200
-    assert b"Hero" in response.content
+    assert "Баннер" in response.content.decode()
 
     get_site_blocks()
     assert cache.get(SITE_BLOCKS_CACHE_KEY) is not None
@@ -182,9 +182,10 @@ def test_admin_styles_russian_labels(client, admin_user):
     assert response.status_code == 200
     html = response.content.decode()
     assert "Цвета и кнопки на сайте" in html
-    assert "Главная кнопка" in html
+    assert "Кнопка" in html
     assert "Вторая кнопка" in html
-    assert "угол градиента" in html
+    assert "Угол" in html
+    assert "Градиент" in html
     assert "Primary" not in html
     assert "Secondary" not in html
     assert "tokens.css" not in html

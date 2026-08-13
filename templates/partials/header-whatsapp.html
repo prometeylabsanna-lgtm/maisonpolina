@@ -1,0 +1,19 @@
+{% if site_settings.get_whatsapp_url %}
+<a class="header__whatsapp{% if extra_class %} {{ extra_class }}{% endif %}"
+   href="{{ site_settings.get_whatsapp_url }}"
+   target="_blank"
+   rel="noopener noreferrer"
+   aria-label="WhatsApp">
+  <svg class="header__whatsapp-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 3.7A8.3 8.3 0 0 0 5.2 16.5L4.1 20l3.6-1.1A8.3 8.3 0 1 0 12 3.7z"
+          stroke="currentColor"
+          stroke-width="1.35"
+          stroke-linejoin="round"/>
+    <path d="M9.2 8.8c.15-.4.35-.45.65-.45h.35c.25 0 .4.12.5.4l.45 1.15c.08.25 0 .45-.2.6l-.35.35c-.15.15-.18.38 0 .58 1 .95 2.15 1.75 3.35 2.35.2.1.45.08.6-.12l.35-.35c.18-.18.42-.25.65-.15l1.15.45c.28.1.42.28.42.55v.38c0 .28-.12.5-.52.7-1.25.6-2.75.48-4.15-.25-1.55-.8-2.85-2.15-3.55-3.7-.5-1.15-.55-2.35-.2-3.5z"
+          stroke="currentColor"
+          stroke-width="1.25"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+  </svg>
+</a>
+{% endif %}

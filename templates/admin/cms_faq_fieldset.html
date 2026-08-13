@@ -1,0 +1,110 @@
+<section class="site-content-fieldset border border-base-200 dark:border-base-700 rounded-default shadow-sm dark:bg-base-900 p-4 md:p-5">
+  <div class="cms-list-admin" data-cms-list-root data-cms-list-prefix="{{ formset.prefix }}">
+    <div class="cms-list-admin__toolbar">
+      <div>
+        <h2 class="site-content-fieldset__title text-font-important-light dark:text-font-important-dark">Вопросы и ответы</h2>
+        <p class="site-content-fieldset__hint text-font-subtle-light dark:text-font-subtle-dark">
+          Снимите «Активно», чтобы скрыть вопрос на сайте. Язык — кнопки RU / EN вверху.
+        </p>
+      </div>
+      <button type="button"
+              class="cms-list-admin__add border border-base-200 dark:border-base-700 rounded-default px-3 py-2 text-sm"
+              data-cms-list-add>
+        Добавить вопрос
+      </button>
+    </div>
+
+    {{ formset.management_form }}
+    <div class="cms-list-admin__list" data-cms-list>
+      {% for form in formset %}
+      <article class="cms-list-admin__item border border-base-200 dark:border-base-700 rounded-default p-3 md:p-4{% if not form.instance.pk %} is-empty-slot{% endif %}">
+        <p class="cms-list-admin__slot-title">{% if form.instance.pk %}Вопрос {{ forloop.counter }}{% else %}Новый вопрос{% endif %}</p>
+        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+        <div class="cms-lang-panes">
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--ru">
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.question_ru.id_for_label }}">{{ form.question_ru.label }}</label>
+              {{ form.question_ru }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.answer_ru.id_for_label }}">{{ form.answer_ru.label }}</label>
+              {{ form.answer_ru }}
+            </div>
+          </div>
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--en">
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.question_en.id_for_label }}">{{ form.question_en.label }}</label>
+              {{ form.question_en }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.answer_en.id_for_label }}">{{ form.answer_en.label }}</label>
+              {{ form.answer_en }}
+            </div>
+          </div>
+        </div>
+        <div class="cms-list-admin__meta">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.order.id_for_label }}">{{ form.order.label }}</label>
+            {{ form.order }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.is_active.id_for_label }}">{{ form.is_active.label }}</label>
+            {{ form.is_active }}
+            {% if formset.can_delete %}
+            <label class="mt-3 inline-flex items-center gap-2 text-sm" for="{{ form.DELETE.id_for_label }}">
+              {{ form.DELETE }}
+              <span>Удалить</span>
+            </label>
+            {% endif %}
+          </div>
+        </div>
+        {% if form.errors %}<div class="mt-2 text-sm text-red-500">{{ form.errors }}</div>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+
+    <template id="{{ formset.prefix }}-empty-form-template">
+      {% with form=formset.empty_form %}
+      <article class="cms-list-admin__item border border-base-200 dark:border-base-700 rounded-default p-3 md:p-4 is-empty-slot">
+        <p class="cms-list-admin__slot-title">Новый вопрос</p>
+        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+        <div class="cms-lang-panes">
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--ru">
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label">{{ form.question_ru.label }}</label>
+              {{ form.question_ru }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label">{{ form.answer_ru.label }}</label>
+              {{ form.answer_ru }}
+            </div>
+          </div>
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--en">
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label">{{ form.question_en.label }}</label>
+              {{ form.question_en }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label">{{ form.answer_en.label }}</label>
+              {{ form.answer_en }}
+            </div>
+          </div>
+        </div>
+        <div class="cms-list-admin__meta">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.order.label }}</label>
+            {{ form.order }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.is_active.label }}</label>
+            {{ form.is_active }}
+            {% if formset.can_delete %}
+            <label class="mt-3 inline-flex items-center gap-2 text-sm">{{ form.DELETE }}<span>Удалить</span></label>
+            {% endif %}
+          </div>
+        </div>
+      </article>
+      {% endwith %}
+    </template>
+  </div>
+</section>

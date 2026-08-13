@@ -965,7 +965,7 @@ body.is-locked {
   justify-content: flex-start;
   gap: 10px;
   flex: 0 0 auto;
-  max-width: calc(100% - 96px);
+  max-width: calc(100% - 120px);
   z-index: 1;
 }
 
@@ -1066,6 +1066,42 @@ body.is-locked {
   letter-spacing: 0.12em;
 }
 
+.header__whatsapp {
+  display: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--color-floral);
+  border: 1px solid #fff;
+  transition:
+    background var(--t-base),
+    color var(--t-base),
+    border-color var(--t-base);
+}
+
+.header__whatsapp:hover,
+.header__whatsapp:focus-visible {
+  background: #f3e4e6;
+  border-color: #f3e4e6;
+  color: var(--color-floral-deep);
+}
+
+.header__whatsapp-icon {
+  display: block;
+}
+
+.header__whatsapp--bar {
+  display: grid;
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
 .header__burger {
   position: absolute;
   right: 0;
@@ -1122,7 +1158,7 @@ body.is-locked {
 @media (min-width: 1280px) {
   .header__inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1.25fr) auto minmax(0, 1fr);
     align-items: center;
     column-gap: clamp(12px, 1.4vw, 24px);
     width: min(var(--container-max), calc(100% - 40px));
@@ -1142,16 +1178,34 @@ body.is-locked {
   }
 
   .header__center {
+    grid-column: 2;
+    justify-self: center;
+    max-width: none;
+  }
+
+  .header__brand-mark--mono {
     display: none;
+  }
+
+  .header__line {
+    width: 8px;
   }
 
   .header__actions {
     display: flex;
-    grid-column: 2;
+    grid-column: 3;
     justify-self: end;
     flex: 0 0 auto;
     gap: clamp(8px, 1vw, 14px);
     max-width: 100%;
+  }
+
+  .header__actions .header__whatsapp {
+    display: grid;
+  }
+
+  .header__whatsapp--bar {
+    display: none;
   }
 
   .header__phone {
@@ -1168,10 +1222,18 @@ body.is-locked {
 }
 
 @media (min-width: 1440px) {
+  .header__line {
+    width: 9px;
+  }
+
   .header__nav {
     gap: clamp(10px, 1.1vw, 18px);
     font-size: clamp(12px, 0.95vw, 14px);
     letter-spacing: 0.05em;
+  }
+
+  .header__brand-mark--text {
+    font-size: 14px;
   }
 
   .header__phone {
@@ -1219,6 +1281,19 @@ body.is-locked {
   background: var(--btn-fill-hover);
   border-color: var(--color-champagne-soft);
   color: var(--text-on-gold);
+}
+
+@media (max-width: 1023px) {
+  .header__whatsapp--bar {
+    right: 48px;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .header__whatsapp {
+    min-width: 44px;
+    min-height: 44px;
+  }
 }
 
 /* --- layout/footer.css --- */
@@ -1477,6 +1552,31 @@ body.is-locked {
   padding-top: 4px;
 }
 
+.footer__legal {
+  margin: 4px 0 0;
+  text-align: center;
+}
+
+.footer__legal-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 8px 4px;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  color: var(--color-type-subtle);
+  text-decoration: none;
+  transition: color var(--t-base);
+}
+
+.footer__legal-link:hover,
+.footer__legal-link:focus-visible {
+  color: var(--color-champagne-soft);
+}
+
 @media (max-width: 767px) {
   .footer {
     /* фон тягнеться під dock, без сірої «дірки» body */
@@ -1563,6 +1663,10 @@ body.is-locked {
   .footer__location {
     display: none;
   }
+
+  .footer__legal {
+    width: 100%;
+  }
 }
 
 @media (min-width: 768px) {
@@ -1623,6 +1727,17 @@ body.is-locked {
 
   .footer__menu-extra {
     align-items: flex-end;
+  }
+
+  .footer__legal {
+    grid-column: 1 / -1;
+    margin-top: 20px;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .footer__legal-link {
+    min-height: 44px;
   }
 }
 
@@ -2324,6 +2439,28 @@ body.is-locked {
   color: var(--color-interactive-hover);
 }
 
+.mobile-nav__privacy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 8px 4px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--color-type-subtle);
+  text-decoration: none;
+  transition: color var(--t-base);
+}
+
+.mobile-nav__privacy:hover,
+.mobile-nav__privacy:focus-visible {
+  color: var(--color-champagne-soft);
+}
+
 .mobile-nav__bottom {
   margin-top: auto;
   padding-top: 20px;
@@ -2355,13 +2492,35 @@ body.is-locked {
   border-bottom-color: var(--color-interactive-hover);
 }
 
-.mobile-nav__bottom .btn {
+.mobile-nav__cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   width: 100%;
+}
+
+.mobile-nav__cta .header__whatsapp {
+  display: grid;
+}
+
+.mobile-nav__bottom .btn,
+.mobile-nav__cta .btn {
+  width: 100%;
+}
+
+.mobile-nav__cta .btn {
+  flex: 1 1 auto;
 }
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .mobile-nav {
     background: rgb(var(--color-floral-rgb) / 0.98);
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .mobile-nav__privacy {
+    min-height: 44px;
   }
 }
 

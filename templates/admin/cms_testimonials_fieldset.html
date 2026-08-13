@@ -1,0 +1,126 @@
+<section class="site-content-fieldset border border-base-200 dark:border-base-700 rounded-default shadow-sm dark:bg-base-900 p-4 md:p-5">
+  <div class="cms-list-admin" data-cms-list-root data-cms-list-prefix="{{ formset.prefix }}">
+    <div class="cms-list-admin__toolbar">
+      <div>
+        <h2 class="site-content-fieldset__title text-font-important-light dark:text-font-important-dark">Отзывы</h2>
+        <p class="site-content-fieldset__hint text-font-subtle-light dark:text-font-subtle-dark">
+          Снимите «Активно», чтобы скрыть отзыв. Фото 256×256 px. Язык — RU / EN вверху.
+        </p>
+      </div>
+      <button type="button"
+              class="cms-list-admin__add border border-base-200 dark:border-base-700 rounded-default px-3 py-2 text-sm"
+              data-cms-list-add>
+        Добавить отзыв
+      </button>
+    </div>
+
+    {{ formset.management_form }}
+    <div class="cms-list-admin__list" data-cms-list>
+      {% for form in formset %}
+      <article class="cms-list-admin__item border border-base-200 dark:border-base-700 rounded-default p-3 md:p-4{% if not form.instance.pk %} is-empty-slot{% endif %}">
+        <p class="cms-list-admin__slot-title">{% if form.instance.pk %}Отзыв {{ forloop.counter }}{% else %}Новый отзыв{% endif %}</p>
+        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+        <div class="cms-list-admin__grid">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.photo.id_for_label }}">{{ form.photo.label }}</label>
+            {% if form.instance.photo %}
+            <div class="cms-image-preview">
+              <img src="{{ form.instance.photo.url }}" alt="" width="240" height="160" class="cms-image-preview__img" loading="lazy">
+            </div>
+            {% endif %}
+            {{ form.photo }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.is_active.id_for_label }}">{{ form.is_active.label }}</label>
+            {{ form.is_active }}
+            {% if formset.can_delete %}
+            <label class="mt-3 inline-flex items-center gap-2 text-sm" for="{{ form.DELETE.id_for_label }}">
+              {{ form.DELETE }}<span>Удалить</span>
+            </label>
+            {% endif %}
+          </div>
+        </div>
+        <div class="cms-lang-panes mt-3">
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--ru">
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.author_name_ru.id_for_label }}">{{ form.author_name_ru.label }}</label>
+              {{ form.author_name_ru }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.role_ru.id_for_label }}">{{ form.role_ru.label }}</label>
+              {{ form.role_ru }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.text_ru.id_for_label }}">{{ form.text_ru.label }}</label>
+              {{ form.text_ru }}
+            </div>
+          </div>
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--en">
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.author_name_en.id_for_label }}">{{ form.author_name_en.label }}</label>
+              {{ form.author_name_en }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.role_en.id_for_label }}">{{ form.role_en.label }}</label>
+              {{ form.role_en }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.text_en.id_for_label }}">{{ form.text_en.label }}</label>
+              {{ form.text_en }}
+            </div>
+          </div>
+        </div>
+        <div class="cms-list-admin__meta">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.rating.id_for_label }}">{{ form.rating.label }}</label>
+            {{ form.rating }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.order.id_for_label }}">{{ form.order.label }}</label>
+            {{ form.order }}
+          </div>
+        </div>
+        {% if form.errors %}<div class="mt-2 text-sm text-red-500">{{ form.errors }}</div>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+
+    <template id="{{ formset.prefix }}-empty-form-template">
+      {% with form=formset.empty_form %}
+      <article class="cms-list-admin__item border border-base-200 dark:border-base-700 rounded-default p-3 md:p-4 is-empty-slot">
+        <p class="cms-list-admin__slot-title">Новый отзыв</p>
+        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+        <div class="cms-list-admin__grid">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.photo.label }}</label>
+            {{ form.photo }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.is_active.label }}</label>
+            {{ form.is_active }}
+            {% if formset.can_delete %}
+            <label class="mt-3 inline-flex items-center gap-2 text-sm">{{ form.DELETE }}<span>Удалить</span></label>
+            {% endif %}
+          </div>
+        </div>
+        <div class="cms-lang-panes mt-3">
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--ru">
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.author_name_ru.label }}</label>{{ form.author_name_ru }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.role_ru.label }}</label>{{ form.role_ru }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.text_ru.label }}</label>{{ form.text_ru }}</div>
+          </div>
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--en">
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.author_name_en.label }}</label>{{ form.author_name_en }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.role_en.label }}</label>{{ form.role_en }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.text_en.label }}</label>{{ form.text_en }}</div>
+          </div>
+        </div>
+        <div class="cms-list-admin__meta">
+          <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.rating.label }}</label>{{ form.rating }}</div>
+          <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.order.label }}</label>{{ form.order }}</div>
+        </div>
+      </article>
+      {% endwith %}
+    </template>
+  </div>
+</section>

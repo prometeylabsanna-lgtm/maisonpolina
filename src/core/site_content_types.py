@@ -24,3 +24,7 @@ class ContentSection:
     admin_model_name: str = ""
     has_gallery: bool = False
     has_personality_items: bool = False
+    has_formats: bool = False
+    has_testimonials: bool = False
+    has_faq: bool = False
+    settings_fields: tuple[str, ...] = ()

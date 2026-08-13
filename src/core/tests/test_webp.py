@@ -7,7 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from PIL import Image
 
 from src.core.admin_site_content_form import SitePageContentForm, load_section_blocks
-from src.core.fields import AdminWebPImageField, _IMAGE_TYPE_ERROR
+from src.core.fields import AdminWebPImageField, _HEIC_ERROR, _IMAGE_TYPE_ERROR
 from src.core.models import SiteBlock, SiteSettings
 from src.core.site_content_registry import get_section
 from src.core.webp import convert_bytes_to_webp, convert_path_to_webp
@@ -101,6 +101,19 @@ def test_admin_form_field_converts_heic():
     assert result.name.endswith(".webp")
     with Image.open(result) as image:
         assert image.format == "WEBP"
+
+
+def test_admin_form_field_rejects_unreadable_heic(monkeypatch):
+    monkeypatch.setattr("src.core.fields.to_webp_file", lambda *args, **kwargs: None)
+    field = AdminWebPImageField(required=False)
+    uploaded = SimpleUploadedFile(
+        "IMG_1234.HEIC",
+        b"not-a-heic",
+        content_type="image/heic",
+    )
+    with pytest.raises(ValidationError) as exc:
+        field.clean(uploaded)
+    assert _HEIC_ERROR in exc.value.messages
 
 
 def test_admin_form_field_rejects_oversized():

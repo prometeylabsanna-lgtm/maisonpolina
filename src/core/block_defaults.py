@@ -40,22 +40,22 @@ def block_content_type(key: str) -> str:
 # (page, key) -> dict with text_ru, text_en, label
 _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     ("home", "hero_section_visible"): {
-        "label": "Hero — видимость",
+        "label": "Баннер — видимость",
         "text_ru": "1",
         "text_en": "1",
     },
     ("home", "hero.title"): {
-        "label": "Hero — имя",
+        "label": "Баннер — имя",
         "text_ru": "MAISON POLINA",
         "text_en": "MAISON POLINA",
     },
     ("home", "hero.subtitle"): {
-        "label": "Hero — подзаголовок",
+        "label": "Баннер — подзаголовок",
         "text_ru": "",
         "text_en": "",
     },
     ("home", "hero.lead"): {
-        "label": "Hero — текст",
+        "label": "Баннер — текст",
         "text_ru": (
             "Ценю живой разговор, эстетику и подлинный контакт. "
             "Ужины, приёмы, деловые поездки — каждая встреча продумана так, "
@@ -68,27 +68,27 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         ),
     },
     ("home", "hero.cta_primary"): {
-        "label": "Hero — главная кнопка",
+        "label": "Баннер — главная кнопка",
         "text_ru": "Оставить заявку",
         "text_en": "Send a request",
     },
     ("home", "hero.cta_secondary"): {
-        "label": "Hero — вторая кнопка",
+        "label": "Баннер — вторая кнопка",
         "text_ru": "Услуги и цены",
         "text_en": "Services and rates",
     },
     ("home", "hero.tagline"): {
-        "label": "Hero — слоган",
+        "label": "Баннер — слоган",
         "text_ru": "Independent · Private · Confidence",
         "text_en": "Independent · Private · Confidence",
     },
     ("home", "hero.media"): {
-        "label": "Hero — фото",
+        "label": "Баннер — фото",
         "text_ru": "",
         "text_en": "",
     },
     ("home", "hero.media_layout"): {
-        "label": "Hero — размер фото",
+        "label": "Баннер — размер фото",
         "text_ru": "half",
         "text_en": "half",
     },

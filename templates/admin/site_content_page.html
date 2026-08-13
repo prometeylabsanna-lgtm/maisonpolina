@@ -6,15 +6,25 @@
 {% block extrastyle %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'css/admin/site_content.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin/site_content_lists.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin/site_styles.css' %}">
 {% endblock %}
 
 {% block extrahead %}
 {{ block.super }}
 {% if tinymce_media %}{{ tinymce_media }}{% endif %}
 <script src="{% static 'js/admin/cms_lang_tabs.js' %}?v=4" defer></script>
-{% if personality_facts_formset or personality_extras_formset %}
+{% if personality_facts_formset or personality_extras_formset or formats_formset or testimonials_formset or faq_formset %}
 <script src="{% static 'js/admin/formset-add.js' %}" defer></script>
+{% endif %}
+{% if personality_facts_formset or personality_extras_formset %}
 <script src="{% static 'js/admin/personality_formset.js' %}" defer></script>
+{% endif %}
+{% if formats_formset or testimonials_formset or faq_formset %}
+<script src="{% static 'js/admin/cms_list_formset.js' %}" defer></script>
+{% endif %}
+{% if style_form %}
+<script src="{% static 'js/admin/site_styles.js' %}" defer></script>
 {% endif %}
 {% endblock %}
 
@@ -84,6 +94,12 @@
     {% endif %}
 
     <div class="site-content-editor__fieldsets">
+      {% if style_form %}
+      {% include "admin/cms_section_style_panel.html" %}
+      {% endif %}
+      {% if settings_rows %}
+      {% include "admin/cms_settings_fieldset.html" %}
+      {% endif %}
       {% for fieldset_title, fieldset_rows in fieldsets %}
       <section class="site-content-fieldset border border-base-200 dark:border-base-700 rounded-default shadow-sm dark:bg-base-900 p-4 md:p-5">
         {% if fieldset_title %}
@@ -207,6 +223,15 @@
 
       {% if gallery_formset %}
       {% include "admin/gallery_photos_fieldset.html" with formset=gallery_formset %}
+      {% endif %}
+      {% if formats_formset %}
+      {% include "admin/cms_formats_fieldset.html" with formset=formats_formset %}
+      {% endif %}
+      {% if testimonials_formset %}
+      {% include "admin/cms_testimonials_fieldset.html" with formset=testimonials_formset %}
+      {% endif %}
+      {% if faq_formset %}
+      {% include "admin/cms_faq_fieldset.html" with formset=faq_formset %}
       {% endif %}
     </div>
 

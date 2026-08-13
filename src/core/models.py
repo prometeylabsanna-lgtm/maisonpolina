@@ -97,6 +97,22 @@ class SiteSettings(models.Model):
         value = getattr(self, f"location_{lang}", "") or ""
         return value or self.location_ru
 
+    def get_whatsapp_url(self) -> str:
+        url = (self.whatsapp_url or "").strip()
+        if not url:
+            return ""
+        bare = url.rstrip("/").lower()
+        if bare in {
+            "https://wa.me",
+            "http://wa.me",
+            "https://www.wa.me",
+            "http://www.wa.me",
+            "https://api.whatsapp.com/send",
+            "http://api.whatsapp.com/send",
+        }:
+            return ""
+        return url
+
 
 class SiteBlock(BilingualTextMixin, models.Model):
     class ContentType(models.TextChoices):
@@ -221,57 +237,57 @@ class SeoMeta(BilingualTextMixin, models.Model):
 class HomeHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Главная — Hero"
-        verbose_name_plural = "Главная — Hero"
+        verbose_name = "Баннер"
+        verbose_name_plural = "Баннер"
 
 
 class HomeAboutSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Главная — Обо мне"
-        verbose_name_plural = "Главная — Обо мне"
+        verbose_name = "Восемь лет ярких впечатлений"
+        verbose_name_plural = "Восемь лет ярких впечатлений"
 
 
 class HomePersonalitySettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Главная — Личность"
-        verbose_name_plural = "Главная — Личность"
+        verbose_name = "Дополнительная информация"
+        verbose_name_plural = "Дополнительная информация"
 
 
 class HomeGallerySettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Главная — Галерея"
-        verbose_name_plural = "Главная — Галерея"
+        verbose_name = "Галерея"
+        verbose_name_plural = "Галерея"
 
 
 class HomeFormatsSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Главная — Форматы"
-        verbose_name_plural = "Главная — Форматы"
+        verbose_name = "Услуги"
+        verbose_name_plural = "Услуги"
 
 
 class HomeTestimonialsSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Главная — Отзывы"
-        verbose_name_plural = "Главная — Отзывы"
+        verbose_name = "Отзывы"
+        verbose_name_plural = "Отзывы"
 
 
 class HomeFaqSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Главная — Вопросы"
-        verbose_name_plural = "Главная — Вопросы"
+        verbose_name = "Вопросы"
+        verbose_name_plural = "Вопросы"
 
 
 class HomeContactsSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Главная — Контакты"
-        verbose_name_plural = "Главная — Контакты"
+        verbose_name = "Заявка"
+        verbose_name_plural = "Заявка"
 
 
 class PrivacySettings(SiteSettings):
@@ -284,8 +300,8 @@ class PrivacySettings(SiteSettings):
 class SiteHeaderSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = "Шапка"
-        verbose_name_plural = "Шапка"
+        verbose_name = "Шапка профиля"
+        verbose_name_plural = "Шапка профиля"
 
 
 class SiteFooterSettings(SiteSettings):
@@ -416,3 +432,20 @@ class SectionStyle(models.Model):
 
     def btn_header_css(self) -> str | None:
         return self._fill_css("btn_header_")
+
+
+class StoredMedia(models.Model):
+    """Persistent file bytes for Vercel (no local disk)."""
+
+    name = models.CharField(max_length=255, unique=True, db_index=True)
+    content = models.BinaryField()
+    content_type = models.CharField(max_length=64, blank=True, default="")
+    size = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Файл"
+        verbose_name_plural = "Файлы"
+
+    def __str__(self) -> str:
+        return self.name

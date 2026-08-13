@@ -68,6 +68,28 @@
   color: var(--color-interactive-hover);
 }
 
+.mobile-nav__privacy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 8px 4px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--color-type-subtle);
+  text-decoration: none;
+  transition: color var(--t-base);
+}
+
+.mobile-nav__privacy:hover,
+.mobile-nav__privacy:focus-visible {
+  color: var(--color-champagne-soft);
+}
+
 .mobile-nav__bottom {
   margin-top: auto;
   padding-top: 20px;
@@ -99,12 +121,34 @@
   border-bottom-color: var(--color-interactive-hover);
 }
 
-.mobile-nav__bottom .btn {
+.mobile-nav__cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   width: 100%;
+}
+
+.mobile-nav__cta .header__whatsapp {
+  display: grid;
+}
+
+.mobile-nav__bottom .btn,
+.mobile-nav__cta .btn {
+  width: 100%;
+}
+
+.mobile-nav__cta .btn {
+  flex: 1 1 auto;
 }
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .mobile-nav {
     background: rgb(var(--color-floral-rgb) / 0.98);
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .mobile-nav__privacy {
+    min-height: 44px;
   }
 }

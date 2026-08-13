@@ -1,0 +1,151 @@
+<section class="site-content-fieldset border border-base-200 dark:border-base-700 rounded-default shadow-sm dark:bg-base-900 p-4 md:p-5">
+  <div class="cms-list-admin" data-cms-list-root data-cms-list-prefix="{{ formset.prefix }}">
+    <div class="cms-list-admin__toolbar">
+      <div>
+        <h2 class="site-content-fieldset__title text-font-important-light dark:text-font-important-dark">Карточки услуг</h2>
+        <p class="site-content-fieldset__hint text-font-subtle-light dark:text-font-subtle-dark">
+          Снимите «Активно», чтобы скрыть формат. «Что входит» — каждый пункт с новой строки.
+        </p>
+      </div>
+      <button type="button"
+              class="cms-list-admin__add border border-base-200 dark:border-base-700 rounded-default px-3 py-2 text-sm"
+              data-cms-list-add>
+        Добавить формат
+      </button>
+    </div>
+
+    {{ formset.management_form }}
+    <div class="cms-list-admin__list" data-cms-list>
+      {% for form in formset %}
+      <article class="cms-list-admin__item border border-base-200 dark:border-base-700 rounded-default p-3 md:p-4{% if not form.instance.pk %} is-empty-slot{% endif %}">
+        <p class="cms-list-admin__slot-title">{% if form.instance.pk %}{{ form.instance.title_ru|default:"Формат" }}{% else %}Новый формат{% endif %}</p>
+        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+        <div class="cms-list-admin__grid">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.image.id_for_label }}">{{ form.image.label }}</label>
+            {% if form.instance.image %}
+            <div class="cms-image-preview">
+              <img src="{{ form.instance.image.url }}" alt="" width="240" height="160" class="cms-image-preview__img" loading="lazy">
+            </div>
+            {% endif %}
+            {{ form.image }}
+            {% if form.image.help_text %}
+            <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.image.help_text }}</p>
+            {% endif %}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.is_active.id_for_label }}">{{ form.is_active.label }}</label>
+            {{ form.is_active }}
+            <label class="mt-3 inline-flex items-center gap-2 text-sm" for="{{ form.is_featured.id_for_label }}">
+              {{ form.is_featured }}<span>{{ form.is_featured.label }}</span>
+            </label>
+            {% if formset.can_delete %}
+            <label class="mt-3 inline-flex items-center gap-2 text-sm" for="{{ form.DELETE.id_for_label }}">
+              {{ form.DELETE }}<span>Удалить</span>
+            </label>
+            {% endif %}
+          </div>
+        </div>
+        <div class="cms-lang-panes mt-3">
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--ru">
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.title_ru.id_for_label }}">{{ form.title_ru.label }}</label>
+              {{ form.title_ru }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.label_ru.id_for_label }}">{{ form.label_ru.label }}</label>
+              {{ form.label_ru }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.price_text_ru.id_for_label }}">{{ form.price_text_ru.label }}</label>
+              {{ form.price_text_ru }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.description_ru.id_for_label }}">{{ form.description_ru.label }}</label>
+              {{ form.description_ru }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.features_ru.id_for_label }}">{{ form.features_ru.label }}</label>
+              {{ form.features_ru }}
+              {% if form.features_ru.help_text %}
+              <p class="site-content-editor__help text-font-subtle-light dark:text-font-subtle-dark">{{ form.features_ru.help_text }}</p>
+              {% endif %}
+            </div>
+          </div>
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--en">
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.title_en.id_for_label }}">{{ form.title_en.label }}</label>
+              {{ form.title_en }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.label_en.id_for_label }}">{{ form.label_en.label }}</label>
+              {{ form.label_en }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.price_text_en.id_for_label }}">{{ form.price_text_en.label }}</label>
+              {{ form.price_text_en }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.description_en.id_for_label }}">{{ form.description_en.label }}</label>
+              {{ form.description_en }}
+            </div>
+            <div class="site-content-editor__field">
+              <label class="site-content-editor__field-label" for="{{ form.features_en.id_for_label }}">{{ form.features_en.label }}</label>
+              {{ form.features_en }}
+            </div>
+          </div>
+        </div>
+        <div class="cms-list-admin__meta">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label" for="{{ form.order.id_for_label }}">{{ form.order.label }}</label>
+            {{ form.order }}
+          </div>
+        </div>
+        {% if form.errors %}<div class="mt-2 text-sm text-red-500">{{ form.errors }}</div>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+
+    <template id="{{ formset.prefix }}-empty-form-template">
+      {% with form=formset.empty_form %}
+      <article class="cms-list-admin__item border border-base-200 dark:border-base-700 rounded-default p-3 md:p-4 is-empty-slot">
+        <p class="cms-list-admin__slot-title">Новый формат</p>
+        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+        <div class="cms-list-admin__grid">
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.image.label }}</label>
+            {{ form.image }}
+          </div>
+          <div class="site-content-editor__field">
+            <label class="site-content-editor__field-label">{{ form.is_active.label }}</label>
+            {{ form.is_active }}
+            <label class="mt-3 inline-flex items-center gap-2 text-sm">{{ form.is_featured }}<span>{{ form.is_featured.label }}</span></label>
+            {% if formset.can_delete %}
+            <label class="mt-3 inline-flex items-center gap-2 text-sm">{{ form.DELETE }}<span>Удалить</span></label>
+            {% endif %}
+          </div>
+        </div>
+        <div class="cms-lang-panes mt-3">
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--ru">
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.title_ru.label }}</label>{{ form.title_ru }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.label_ru.label }}</label>{{ form.label_ru }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.price_text_ru.label }}</label>{{ form.price_text_ru }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.description_ru.label }}</label>{{ form.description_ru }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.features_ru.label }}</label>{{ form.features_ru }}</div>
+          </div>
+          <div class="cms-list-admin__grid cms-lang-pane cms-lang-pane--en">
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.title_en.label }}</label>{{ form.title_en }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.label_en.label }}</label>{{ form.label_en }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.price_text_en.label }}</label>{{ form.price_text_en }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.description_en.label }}</label>{{ form.description_en }}</div>
+            <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.features_en.label }}</label>{{ form.features_en }}</div>
+          </div>
+        </div>
+        <div class="cms-list-admin__meta">
+          <div class="site-content-editor__field"><label class="site-content-editor__field-label">{{ form.order.label }}</label>{{ form.order }}</div>
+        </div>
+      </article>
+      {% endwith %}
+    </template>
+  </div>
+</section>

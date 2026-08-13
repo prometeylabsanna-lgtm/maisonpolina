@@ -38,10 +38,12 @@
       {% if site_settings.phone %}
       <a class="header__phone" href="tel:{{ site_settings.phone|cut:' '|cut:'-' }}">{{ site_settings.phone }}</a>
       {% endif %}
+      {% include "partials/header-whatsapp.html" %}
       <button type="button" class="btn btn--compact" data-open-lead data-source="header" data-service="">
         {% block_plain "site" "header.cta" %}
       </button>
     </div>
+    {% include "partials/header-whatsapp.html" with extra_class="header__whatsapp--bar" %}
     <button type="button" class="header__burger" data-mobile-nav-open aria-label="{% block_plain 'site' 'header.menu_aria' %}"
       aria-expanded="false" aria-controls="mobile-nav">
       <span class="header__burger-line"></span>

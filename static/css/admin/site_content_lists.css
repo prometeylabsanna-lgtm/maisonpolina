@@ -1,0 +1,76 @@
+.cms-list-admin {
+  display: grid;
+  gap: 0.875rem;
+}
+
+.cms-list-admin__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cms-list-admin__list {
+  display: grid;
+  gap: 0.875rem;
+}
+
+.cms-list-admin__add {
+  white-space: nowrap;
+  cursor: pointer;
+  background: rgb(255 255 255);
+  color: #4c0d13;
+  border-color: #e5c5c9;
+}
+
+.cms-list-admin__add:hover {
+  background: #f3e4e6;
+}
+
+.cms-list-admin__slot-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.cms-list-admin__item.is-empty-slot {
+  border-style: dashed;
+}
+
+.cms-list-admin__grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cms-list-admin__meta {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .cms-list-admin__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cms-list-admin__meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+html[data-cms-lang="en"] .cms-list-admin__grid.cms-lang-pane--en {
+  display: grid;
+}
+
+@media (max-width: 767px) {
+  .cms-list-admin__add {
+    min-height: 44px;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .cms-list-admin__add {
+    min-height: 44px;
+  }
+}

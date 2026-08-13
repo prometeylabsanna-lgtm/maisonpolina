@@ -1,15 +1,14 @@
-"""Admin screen for per-section styles (sidebar «Стили»)."""
+"""Admin screen for per-section styles (sidebar «Цвета и кнопки»)."""
 
 from __future__ import annotations
 
-from django import forms
 from django.contrib import admin, messages
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from unfold.admin import ModelAdmin
 
-from src.core.fill_style import FillType, fill_field_names
+from src.core.admin_style_panel import SectionStyleForm, build_style_groups
 from src.core.models import SectionStyle, SiteSettings, ThemeStylesSettings
 from src.core.section_styles import invalidate_section_styles_cache
 from src.core.style_defaults import (
@@ -19,81 +18,7 @@ from src.core.style_defaults import (
 )
 
 
-HEX_WIDGET = forms.TextInput(
-    attrs={
-        "placeholder": "#4c0d13",
-        "class": "cms-hex-input",
-        "pattern": "#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?",
-        "autocomplete": "off",
-    }
-)
-FILL_TYPE_CHOICES = [("", "— как на сайте сейчас —"), *FillType.choices]
-
-# Group titles on the styles page (non-technical Russian)
-FILL_GROUP_META = {
-    "bg": {
-        "title": "Фон блока",
-        "hint": "Цвет или градиент фона этой секции на сайте.",
-    },
-    "btn_primary": {
-        "title": "Главная кнопка",
-        "hint": "Основная кнопка действия в секции (яркая).",
-    },
-    "btn_secondary": {
-        "title": "Вторая кнопка",
-        "hint": "Дополнительная кнопка рядом с главной.",
-    },
-    "btn_header": {
-        "title": "Кнопка в шапке",
-        "hint": "Кнопка заявки в верхнем меню. Только для блока «Шапка».",
-    },
-}
-
-
-class SectionStyleForm(forms.ModelForm):
-    class Meta:
-        model = SectionStyle
-        fields = (
-            "label",
-            *fill_field_names("bg"),
-            *fill_field_names("btn_primary"),
-            *fill_field_names("btn_secondary"),
-            *fill_field_names("btn_header"),
-        )
-        widgets = {
-            "bg_solid_color": HEX_WIDGET,
-            "bg_gradient_start": HEX_WIDGET,
-            "bg_gradient_end": HEX_WIDGET,
-            "btn_primary_solid_color": HEX_WIDGET,
-            "btn_primary_gradient_start": HEX_WIDGET,
-            "btn_primary_gradient_end": HEX_WIDGET,
-            "btn_secondary_solid_color": HEX_WIDGET,
-            "btn_secondary_gradient_start": HEX_WIDGET,
-            "btn_secondary_gradient_end": HEX_WIDGET,
-            "btn_header_solid_color": HEX_WIDGET,
-            "btn_header_gradient_start": HEX_WIDGET,
-            "btn_header_gradient_end": HEX_WIDGET,
-            "bg_fill_type": forms.Select(choices=FILL_TYPE_CHOICES),
-            "btn_primary_fill_type": forms.Select(choices=FILL_TYPE_CHOICES),
-            "btn_secondary_fill_type": forms.Select(choices=FILL_TYPE_CHOICES),
-            "btn_header_fill_type": forms.Select(choices=FILL_TYPE_CHOICES),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        section = getattr(self.instance, "section", "")
-        if section == SectionStyle.Section.HEADER:
-            for name in (
-                *fill_field_names("btn_primary"),
-                *fill_field_names("btn_secondary"),
-            ):
-                self.fields.pop(name, None)
-        else:
-            for name in fill_field_names("btn_header"):
-                self.fields.pop(name, None)
-
-
-def _section_forms(request: HttpRequest) -> list[tuple[SectionStyle, SectionStyleForm]]:
+def _section_forms(request: HttpRequest) -> list[tuple[SectionStyle, SectionStyleForm, list]]:
     ensure_section_styles()
     order = list(SECTION_STYLE_DEFAULTS.keys())
     styles = {
@@ -108,7 +33,7 @@ def _section_forms(request: HttpRequest) -> list[tuple[SectionStyle, SectionStyl
             form = SectionStyleForm(request.POST, instance=obj, prefix=prefix)
         else:
             form = SectionStyleForm(instance=obj, prefix=prefix)
-        result.append((obj, form))
+        result.append((obj, form, build_style_groups(form)))
     return result
 
 
@@ -132,10 +57,10 @@ def site_styles_view(
                 )
             return HttpResponseRedirect(request.path)
 
-    pairs = _section_forms(request)
+    triples = _section_forms(request)
     if request.method == "POST":
-        if all(form.is_valid() for _, form in pairs):
-            for _, form in pairs:
+        if all(form.is_valid() for _, form, _ in triples):
+            for _, form, _ in triples:
                 form.save()
             invalidate_section_styles_cache()
             messages.success(request, "Стили сохранены")
@@ -146,13 +71,10 @@ def site_styles_view(
         **(model_admin.admin_site.each_context(request) if model_admin else {}),
         "title": "Цвета и кнопки на сайте",
         "page_hint": (
-            "Пустые поля оставляют обычный вид сайта. "
-            "«Вернуть дефолт» в секции восстанавливает фирменные цвета. "
-            "Кнопку в верхнем меню настраивайте только в блоке «Шапка»."
+            "Цвета также можно менять внутри каждого блока. "
+            "Пустые поля оставляют обычный вид сайта."
         ),
-        "pairs": pairs,
-        "fill_groups": FILL_GROUP_META,
-        "header_section": SectionStyle.Section.HEADER,
+        "triples": triples,
         "opts": model_admin.model._meta if model_admin else None,
     }
     return render(request, "admin/site_styles_page.html", context)

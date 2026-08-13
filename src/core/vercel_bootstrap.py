@@ -58,9 +58,12 @@ def bootstrap_vercel_db() -> None:
     db_url = os.environ.get("DATABASE_URL", "").strip()
     if db_url.startswith("postgres"):
         try:
+            from django.core.management import call_command
+
+            call_command("migrate", interactive=False, verbosity=0)
             ensure_admin_superuser()
         except Exception:
-            logger.exception("Vercel Postgres admin bootstrap failed")
+            logger.exception("Vercel Postgres bootstrap failed")
         _DONE = True
         return
 

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
@@ -15,6 +17,12 @@ ADMIN_IMAGE_ACCEPT = (
 )
 _IMAGE_TYPE_ERROR = (
     "Нужен файл JPEG, PNG, WebP, GIF или HEIC (фото с iPhone)."
+)
+_HEIC_SUFFIXES = {".heic", ".heif"}
+_HEIC_TYPES = {"image/heic", "image/heif"}
+_HEIC_ERROR = (
+    "Не удалось прочитать фото с iPhone (HEIC). "
+    "В «Фото» экспортируйте кадр как JPEG и загрузите снова."
 )
 
 
@@ -36,6 +44,12 @@ def to_webp_file(name: str, content) -> tuple[str, ContentFile] | None:
     return webp_name, ContentFile(payload, name=webp_name)
 
 
+def _is_heic_upload(uploaded) -> bool:
+    name = (getattr(uploaded, "name", "") or "").lower()
+    ctype = (getattr(uploaded, "content_type", "") or "").lower()
+    return Path(name).suffix in _HEIC_SUFFIXES or ctype in _HEIC_TYPES
+
+
 def prepare_admin_image_upload(uploaded):
     """Convert a new admin upload to WebP. Leave existing files untouched."""
     if not uploaded or uploaded is False:
@@ -43,11 +57,13 @@ def prepare_admin_image_upload(uploaded):
     if getattr(uploaded, "_committed", False):
         return uploaded
     converted = to_webp_file(getattr(uploaded, "name", "") or "image", uploaded)
-    if converted is None:
-        return uploaded
-    _name, content = converted
-    content.content_type = "image/webp"
-    return content
+    if converted is not None:
+        _name, content = converted
+        content.content_type = "image/webp"
+        return content
+    if _is_heic_upload(uploaded):
+        raise ValidationError(_HEIC_ERROR, code="heic")
+    return uploaded
 
 
 class WebPFieldFile(ImageFieldFile):
@@ -72,6 +88,7 @@ class AdminWebPImageField(forms.ImageField):
         "empty": "Выберите файл фото.",
         "missing": "Выберите файл фото.",
         "max_size": "Файл больше 12 МБ. Сожмите фото или выберите меньший файл.",
+        "heic": _HEIC_ERROR,
     }
 
     def clean(self, data, initial=None):
@@ -82,5 +99,16 @@ class AdminWebPImageField(forms.ImageField):
                     self.error_messages["max_size"],
                     code="max_size",
                 )
+            if _is_heic_upload(data):
+                converted = to_webp_file(
+                    getattr(data, "name", "") or "image.heic", data
+                )
+                if converted is None:
+                    raise ValidationError(
+                        self.error_messages["heic"],
+                        code="heic",
+                    )
+                _name, data = converted
+                data.content_type = "image/webp"
         uploaded = super().clean(data, initial)
         return prepare_admin_image_upload(uploaded)

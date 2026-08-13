@@ -153,12 +153,12 @@ h1 .material-symbols-outlined,
 
 /* Unfold fieldset language tabs (Русский / English) */
 .admin-fieldset-tabs-wrap {
-  margin: 0.75rem 0 1rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--admin-gold-line-strong);
-  border-radius: 0.625rem;
-  background: #fffaf7;
-  box-shadow: 0 1px 4px rgb(76 13 19 / 0.08);
+  margin: 0 0 1rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .admin-fieldset-tabs__label {
@@ -210,8 +210,9 @@ h1 .material-symbols-outlined,
 }
 
 .dark .admin-fieldset-tabs-wrap {
-  background: rgb(76 13 19 / 0.22);
-  border-color: var(--admin-gold-line);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .dark .admin-fieldset-tabs__label {

@@ -1,4 +1,5 @@
 {% load site_content %}
+{% url 'core:privacy' as privacy_url %}
 <div class="mobile-nav" id="mobile-nav" data-mobile-nav hidden>
   <div class="mobile-nav__top">
     <span class="header__brand-mark">
@@ -10,12 +11,18 @@
   <nav class="mobile-nav__list" aria-label="{% block_plain 'site' 'mobile.nav_aria' %}">
     {% include "partials/site-nav-links.html" with link_attrs="data-mobile-nav-link" %}
   </nav>
+  <a class="mobile-nav__privacy" href="{{ privacy_url }}" data-mobile-nav-link>
+    {% block_plain "site" "footer.privacy_1" %} {% block_plain "site" "footer.privacy_2" %}
+  </a>
   <div class="mobile-nav__bottom">
     {% if site_settings.phone %}
     <a class="mobile-nav__phone" href="tel:{{ site_settings.phone|cut:' '|cut:'-' }}">{{ site_settings.phone }}</a>
     {% endif %}
-    <button type="button" class="btn btn--block" data-open-lead data-source="header" data-service="" data-mobile-nav-link>
-      {% block_plain "site" "header.cta" %}
-    </button>
+    <div class="mobile-nav__cta">
+      {% include "partials/header-whatsapp.html" %}
+      <button type="button" class="btn btn--block" data-open-lead data-source="header" data-service="" data-mobile-nav-link>
+        {% block_plain "site" "header.cta" %}
+      </button>
+    </div>
   </div>
 </div>

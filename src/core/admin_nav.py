@@ -3,6 +3,10 @@
 from django.urls import reverse_lazy
 
 
+def _link(name: str):
+    return reverse_lazy(name)
+
+
 def build_admin_navigation(_request=None):
     return [
         {
@@ -10,102 +14,69 @@ def build_admin_navigation(_request=None):
             "separator": True,
             "items": [
                 {
-                    "title": "Hero",
-                    "icon": "image",
-                    "link": reverse_lazy("admin:core_homeherosettings_changelist"),
-                },
-                {
-                    "title": "Обо мне",
-                    "icon": "person",
-                    "link": reverse_lazy("admin:core_homeaboutsettings_changelist"),
-                },
-                {
-                    "title": "Личность",
-                    "icon": "badge",
-                    "link": reverse_lazy("admin:core_homepersonalitysettings_changelist"),
-                },
-                {
-                    "title": "Галерея",
-                    "icon": "photo_library",
-                    "link": reverse_lazy("admin:core_homegallerysettings_changelist"),
-                },
-                {
-                    "title": "Форматы",
-                    "icon": "view_agenda",
-                    "link": reverse_lazy("admin:core_homeformatssettings_changelist"),
-                },
-                {
-                    "title": "Отзывы",
-                    "icon": "format_quote",
-                    "link": reverse_lazy(
-                        "admin:core_hometestimonialssettings_changelist"
-                    ),
-                },
-                {
-                    "title": "Вопросы",
-                    "icon": "help",
-                    "link": reverse_lazy("admin:core_homefaqsettings_changelist"),
-                },
-                {
-                    "title": "Контакты",
-                    "icon": "mail",
-                    "link": reverse_lazy("admin:core_homecontactssettings_changelist"),
-                },
-                {
-                    "title": "Шапка",
+                    "title": "Шапка профиля",
                     "icon": "web_asset",
-                    "link": reverse_lazy("admin:core_siteheadersettings_changelist"),
+                    "link": _link("admin:core_siteheadersettings_changelist"),
                 },
                 {
-                    "title": "Подвал",
-                    "icon": "horizontal_rule",
-                    "link": reverse_lazy("admin:core_sitefootersettings_changelist"),
-                },
-                {
-                    "title": "Интерфейс",
-                    "icon": "tune",
-                    "link": reverse_lazy("admin:core_siteuisettings_changelist"),
-                },
-                {
-                    "title": "Чат (тексты)",
-                    "icon": "chat",
-                    "link": reverse_lazy("admin:core_sitechatsettings_changelist"),
-                },
-                {
-                    "title": "Ошибки",
-                    "icon": "error",
-                    "link": reverse_lazy("admin:core_siteerrorssettings_changelist"),
-                },
-                {
-                    "title": "Политика",
-                    "icon": "policy",
-                    "link": reverse_lazy("admin:core_privacysettings_changelist"),
-                },
-                {
-                    "title": "Цвета и кнопки",
-                    "icon": "palette",
-                    "link": reverse_lazy("admin:core_themestylessettings_changelist"),
+                    "title": "Баннер",
+                    "icon": "image",
+                    "link": _link("admin:core_homeherosettings_changelist"),
                 },
             ],
         },
         {
-            "title": "Списки",
-            "separator": True,
+            "title": "Обо мне",
+            "collapsible": False,
             "items": [
                 {
-                    "title": "Форматы услуг",
-                    "icon": "sell",
-                    "link": reverse_lazy("admin:formats_serviceformat_changelist"),
+                    "title": "Восемь лет ярких впечатлений",
+                    "icon": "person",
+                    "link": _link("admin:core_homeaboutsettings_changelist"),
+                },
+                {
+                    "title": "Дополнительная информация",
+                    "icon": "badge",
+                    "link": _link("admin:core_homepersonalitysettings_changelist"),
+                },
+            ],
+        },
+        {
+            "items": [
+                {
+                    "title": "Галерея",
+                    "icon": "photo_library",
+                    "link": _link("admin:core_homegallerysettings_changelist"),
+                },
+                {
+                    "title": "Услуги",
+                    "icon": "view_agenda",
+                    "link": _link("admin:core_homeformatssettings_changelist"),
                 },
                 {
                     "title": "Отзывы",
-                    "icon": "reviews",
-                    "link": reverse_lazy("admin:reviews_testimonial_changelist"),
+                    "icon": "format_quote",
+                    "link": _link("admin:core_hometestimonialssettings_changelist"),
                 },
                 {
-                    "title": "Вопросы и ответы",
-                    "icon": "quiz",
-                    "link": reverse_lazy("admin:faq_faqitem_changelist"),
+                    "title": "Вопросы",
+                    "icon": "help",
+                    "link": _link("admin:core_homefaqsettings_changelist"),
+                },
+                {
+                    "title": "Заявка",
+                    "icon": "mail",
+                    "link": _link("admin:core_homecontactssettings_changelist"),
+                },
+                {
+                    "title": "Подвал",
+                    "icon": "horizontal_rule",
+                    "link": _link("admin:core_sitefootersettings_changelist"),
+                },
+                {
+                    "title": "Политика конфиденциальности",
+                    "icon": "policy",
+                    "link": _link("admin:core_privacysettings_changelist"),
                 },
             ],
         },
@@ -116,14 +87,12 @@ def build_admin_navigation(_request=None):
                 {
                     "title": "Все заявки",
                     "icon": "inbox",
-                    "link": reverse_lazy("admin:leads_lead_changelist"),
+                    "link": _link("admin:leads_lead_changelist"),
                 },
                 {
                     "title": "Чаты Telegram",
                     "icon": "forum",
-                    "link": reverse_lazy(
-                        "admin:chat_telegramchatsession_changelist"
-                    ),
+                    "link": _link("admin:chat_telegramchatsession_changelist"),
                 },
             ],
         },
@@ -132,19 +101,34 @@ def build_admin_navigation(_request=None):
             "separator": True,
             "items": [
                 {
-                    "title": "Смена пароля",
-                    "icon": "lock",
-                    "link": reverse_lazy("admin:password_change"),
-                },
-                {
                     "title": "Сайт",
                     "icon": "settings",
-                    "link": reverse_lazy("admin:core_sitesettings_changelist"),
+                    "link": _link("admin:core_sitesettings_changelist"),
                 },
                 {
                     "title": "SEO",
                     "icon": "travel_explore",
-                    "link": reverse_lazy("admin:core_seometa_changelist"),
+                    "link": _link("admin:core_seometa_changelist"),
+                },
+                {
+                    "title": "Цвета и кнопки",
+                    "icon": "palette",
+                    "link": _link("admin:core_themestylessettings_changelist"),
+                },
+                {
+                    "title": "Чат (тексты)",
+                    "icon": "chat",
+                    "link": _link("admin:core_sitechatsettings_changelist"),
+                },
+                {
+                    "title": "Ошибки",
+                    "icon": "error",
+                    "link": _link("admin:core_siteerrorssettings_changelist"),
+                },
+                {
+                    "title": "Смена пароля",
+                    "icon": "lock",
+                    "link": _link("admin:password_change"),
                 },
             ],
         },

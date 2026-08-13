@@ -278,8 +278,8 @@ CHROME_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("site", "contacts.telegram_sub"): {
         "label": "Контакты — Telegram подпись",
-        "text_ru": "Написать в чат-бот",
-        "text_en": "Message the chat bot",
+        "text_ru": "Написать в чат",
+        "text_en": "Write to chat",
     },
     ("site", "contacts.form_label"): {
         "label": "Контакты — подпись формы",

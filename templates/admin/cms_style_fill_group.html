@@ -1,0 +1,48 @@
+<div class="cms-style-row" data-style-row data-mode="{{ group.mode }}">
+  <p class="cms-style-row__title">{{ group.title }}</p>
+  <div class="cms-style-type" data-style-type>
+    <button type="button" class="cms-style-type__btn{% if not group.mode %} is-active{% endif %}" data-value="" aria-pressed="{% if not group.mode %}true{% else %}false{% endif %}">Сайт</button>
+    <button type="button" class="cms-style-type__btn{% if group.mode == 'solid' %} is-active{% endif %}" data-value="solid" aria-pressed="{% if group.mode == 'solid' %}true{% else %}false{% endif %}">Цвет</button>
+    <button type="button" class="cms-style-type__btn{% if group.mode == 'gradient' %} is-active{% endif %}" data-value="gradient" aria-pressed="{% if group.mode == 'gradient' %}true{% else %}false{% endif %}">Градиент</button>
+    <span class="cms-style-type__select">{{ group.fill_type }}</span>
+  </div>
+  <div class="cms-style-swatches">
+    <label class="cms-style-swatch" data-show="solid">
+      <span class="cms-style-swatch__label">Цвет</span>
+      <span class="cms-color-row">
+        <input type="color"
+               class="cms-color-picker"
+               data-hex-target="{{ group.solid.id_for_label }}"
+               value="{{ group.picker_solid }}"
+               aria-label="Цвет {{ group.title }}">
+        {{ group.solid }}
+      </span>
+    </label>
+    <label class="cms-style-swatch" data-show="gradient">
+      <span class="cms-style-swatch__label">Начало</span>
+      <span class="cms-color-row">
+        <input type="color"
+               class="cms-color-picker"
+               data-hex-target="{{ group.grad_start.id_for_label }}"
+               value="{{ group.picker_start }}"
+               aria-label="Начало градиента {{ group.title }}">
+        {{ group.grad_start }}
+      </span>
+    </label>
+    <label class="cms-style-swatch" data-show="gradient">
+      <span class="cms-style-swatch__label">Конец</span>
+      <span class="cms-color-row">
+        <input type="color"
+               class="cms-color-picker"
+               data-hex-target="{{ group.grad_end.id_for_label }}"
+               value="{{ group.picker_end }}"
+               aria-label="Конец градиента {{ group.title }}">
+        {{ group.grad_end }}
+      </span>
+    </label>
+    <label class="cms-style-swatch cms-style-swatch--angle" data-show="gradient">
+      <span class="cms-style-swatch__label">Угол</span>
+      {{ group.angle }}
+    </label>
+  </div>
+</div>

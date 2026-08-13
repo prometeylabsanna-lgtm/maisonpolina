@@ -24,14 +24,19 @@ def test_admin_brand_sub_contrasts_on_light_theme():
 def test_admin_lang_toggles_have_no_shared_block():
     brand = (Path(settings.BASE_DIR) / "static/css/admin/brand.css").read_text()
     cms = (Path(settings.BASE_DIR) / "static/css/admin/site_content.css").read_text()
+    wrap = brand.split(".admin-fieldset-tabs-wrap {", 1)[1].split("}", 1)[0]
     fieldset = brand.split(".admin-fieldset-tabs {", 1)[1].split("}", 1)[0]
     tabs = cms.split(".cms-lang-tabs {", 1)[1].split("}", 1)[0]
+    assert "background: transparent" in wrap
+    assert "border: 0" in wrap
+    assert "background: #fffaf7" not in wrap
     assert "background: transparent" in fieldset
     assert "border: 0" in fieldset
     assert "background: #fff" not in fieldset
     assert "background: transparent" in tabs
     assert "border: 0" in tabs
     assert "background: #1a1214" not in cms.split(".dark .cms-lang-tabs {", 1)[1].split("}", 1)[0]
+    assert "rgb(76 13 19 / 0.22)" not in brand.split(".dark .admin-fieldset-tabs-wrap {", 1)[1].split("}", 1)[0]
 
 
 def test_unfold_theme_is_unlocked():

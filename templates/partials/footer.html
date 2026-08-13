@@ -44,13 +44,12 @@
           <div class="footer__menu-extra">
             <a class="footer__menu-link" href="{{ home_url }}#faq">{% block_plain "site" "nav.faq" %}</a>
             <a class="footer__menu-link" href="{{ home_url }}#contact">{% block_plain "site" "nav.contact" %}</a>
-            <a class="footer__menu-link footer__menu-link--privacy" href="{% url 'core:privacy' %}">
-              <span>{% block_plain "site" "footer.privacy_1" %}</span>
-              <span>{% block_plain "site" "footer.privacy_2" %}</span>
-            </a>
           </div>
         </details>
       </nav>
     </div>
+    <p class="footer__legal">
+      <a class="footer__legal-link" href="{% url 'core:privacy' %}">{% block_plain "site" "footer.privacy_1" %} {% block_plain "site" "footer.privacy_2" %}</a>
+    </p>
   </div>
 </footer>

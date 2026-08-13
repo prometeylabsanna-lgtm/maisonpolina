@@ -8,8 +8,8 @@ _HOME_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug="hero",
         page_slug="home",
-        title="Hero",
-        sidebar_title="Hero",
+        title="Баннер",
+        sidebar_title="Баннер",
         sidebar_icon="image",
         preview_url="/",
         description="Имя, текст, кнопки и медиа первого экрана.",
@@ -34,11 +34,11 @@ _HOME_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug="about",
         page_slug="home",
-        title="Обо мне",
-        sidebar_title="Обо мне",
+        title="Восемь лет ярких впечатлений",
+        sidebar_title="Восемь лет ярких впечатлений",
         sidebar_icon="person",
         preview_url="/#about",
-        description="Заголовок, текст, статистика и портрет.",
+        description="Заголовок, текст, статистика и портрет блока «Обо мне».",
         visibility_key="about_section_visible",
         admin_model_name="homeaboutsettings",
         blocks=(
@@ -78,10 +78,11 @@ _HOME_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug="personality",
         page_slug="home",
-        title="Личность",
-        sidebar_title="Личность",
+        title="Дополнительная информация",
+        sidebar_title="Дополнительная информация",
         sidebar_icon="badge",
         preview_url="/#personality",
+        description="Внешность, портрет и дополнительные пункты. Снимите «Активно», чтобы скрыть строку.",
         visibility_key="personality_section_visible",
         admin_model_name="homepersonalitysettings",
         has_personality_items=True,
@@ -95,6 +96,7 @@ _HOME_SECTIONS: tuple[ContentSection, ...] = (
             ("home", "personality.education"),
             ("home", "personality.travel"),
             ("home", "personality.portrait"),
+            ("site", "personality.portrait_alt"),
         ),
         field_groups=(
             FieldGroup(
@@ -109,6 +111,7 @@ _HOME_SECTIONS: tuple[ContentSection, ...] = (
                 "Дополнительно",
                 (
                     "personality.portrait",
+                    "personality.portrait_alt",
                     "personality.languages",
                     "personality.respect",
                     "personality.education",

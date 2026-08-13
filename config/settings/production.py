@@ -93,6 +93,7 @@ else:
 
 if IS_VERCEL:
     MEDIA_ROOT = "/tmp/maisonpolina-media"
+    SERVE_MEDIA = True
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
@@ -102,3 +103,7 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
+if IS_VERCEL:
+    STORAGES["default"] = {
+        "BACKEND": "src.core.media_storage.DatabaseFileStorage",
+    }

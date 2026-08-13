@@ -1,12 +1,12 @@
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.http import HttpResponse
 from django.urls import include, path
 from django.views.i18n import set_language
 
+from src.core.media_storage import serve_media
 from src.core.sitemaps import StaticViewSitemap
 from src.core.views import robots_txt
 
@@ -41,5 +41,6 @@ urlpatterns += i18n_patterns(
     prefix_default_language=True,
 )
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += [
+    path("media/<path:path>", serve_media, name="media"),
+]
