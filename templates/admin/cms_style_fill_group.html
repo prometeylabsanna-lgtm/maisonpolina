@@ -1,4 +1,10 @@
-<div class="cms-style-row" data-style-row data-mode="{{ group.mode }}">
+<div class="cms-style-row"
+     data-style-row
+     data-mode="{{ group.mode }}"
+     data-default-solid="{{ group.default_solid }}"
+     data-default-start="{{ group.default_start }}"
+     data-default-end="{{ group.default_end }}"
+     data-default-angle="{{ group.default_angle }}">
   <p class="cms-style-row__title">{{ group.title }}</p>
   <div class="cms-style-type" data-style-type>
     <button type="button" class="cms-style-type__btn{% if not group.mode %} is-active{% endif %}" data-value="" aria-pressed="{% if not group.mode %}true{% else %}false{% endif %}">Сайт</button>

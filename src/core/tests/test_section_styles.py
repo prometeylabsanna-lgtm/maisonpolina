@@ -47,6 +47,16 @@ def test_resolve_fill_solid_and_gradient():
         )
         is None
     )
+    assert (
+        resolve_fill(
+            fill_type="",
+            solid_color="#111111",
+            gradient_start="#222222",
+            gradient_end="#333333",
+            gradient_angle=90,
+        )
+        is None
+    )
 
 
 @pytest.mark.django_db
@@ -148,6 +158,64 @@ def test_styles_admin_reset_section_to_brand_preset(client, admin_user):
     assert hero.bg_solid_color == "#4c0d13"
     assert hero.btn_primary_solid_color == "#cab695"
     assert cache.get(SECTION_STYLES_CACHE_KEY) is None
+
+
+@pytest.mark.django_db
+def test_site_mode_clears_custom_colors_on_save(client, admin_user):
+    SiteSettings.get_solo()
+    ensure_section_styles()
+    hero = SectionStyle.objects.get(section=SectionStyle.Section.HERO)
+    hero.bg_fill_type = FillType.SOLID
+    hero.bg_solid_color = "#111111"
+    hero.btn_primary_fill_type = FillType.SOLID
+    hero.btn_primary_solid_color = "#222222"
+    hero.save()
+
+    client.force_login(admin_user)
+    url = reverse("admin:core_homeherosettings_change", args=[1])
+    response = client.post(
+        url,
+        {
+            "section_visible": "on",
+            "block__home__hero.title__ru": "Имя",
+            "block__home__hero.title__en": "Name",
+            "block__home__hero.subtitle__ru": "",
+            "block__home__hero.subtitle__en": "",
+            "block__home__hero.lead__ru": "Lead",
+            "block__home__hero.lead__en": "Lead",
+            "block__home__hero.cta_primary__ru": "CTA",
+            "block__home__hero.cta_primary__en": "CTA",
+            "block__home__hero.cta_secondary__ru": "Sec",
+            "block__home__hero.cta_secondary__en": "Sec",
+            "block__home__hero.tagline__ru": "Tag",
+            "block__home__hero.tagline__en": "Tag",
+            "block__home__hero.media_layout__choice": "full",
+            "style-label": "Баннер",
+            "style-bg_fill_type": "",
+            "style-bg_solid_color": "#111111",
+            "style-bg_gradient_start": "#4c0d13",
+            "style-bg_gradient_end": "#3a0a0f",
+            "style-bg_gradient_angle": "180",
+            "style-btn_primary_fill_type": "",
+            "style-btn_primary_solid_color": "#222222",
+            "style-btn_primary_gradient_start": "#dfccb7",
+            "style-btn_primary_gradient_end": "#b09572",
+            "style-btn_primary_gradient_angle": "180",
+            "style-btn_secondary_fill_type": "",
+            "style-btn_secondary_solid_color": "",
+            "style-btn_secondary_gradient_start": "",
+            "style-btn_secondary_gradient_end": "",
+            "style-btn_secondary_gradient_angle": "180",
+        },
+    )
+    assert response.status_code in (200, 302)
+    hero.refresh_from_db()
+    assert hero.bg_fill_type == ""
+    assert hero.bg_solid_color == ""
+    assert hero.btn_primary_fill_type == ""
+    assert hero.btn_primary_solid_color == ""
+    assert hero.bg_css() is None
+    assert hero.btn_primary_css() is None
 
 
 @pytest.mark.django_db

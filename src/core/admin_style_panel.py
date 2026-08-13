@@ -87,6 +87,20 @@ class SectionStyleForm(forms.ModelForm):
             for name in fill_field_names("btn_header"):
                 self.fields.pop(name, None)
 
+    def clean(self):
+        cleaned = super().clean()
+        for prefix in ("bg", "btn_primary", "btn_secondary", "btn_header"):
+            fill_name = f"{prefix}_fill_type"
+            if fill_name not in self.fields:
+                continue
+            fill = (cleaned.get(fill_name) or "").strip()
+            if fill:
+                continue
+            cleaned[f"{prefix}_solid_color"] = ""
+            cleaned[f"{prefix}_gradient_start"] = ""
+            cleaned[f"{prefix}_gradient_end"] = ""
+        return cleaned
+
 
 STYLE_PREFIX = "style"
 STYLEABLE_SLUGS = frozenset(SectionStyle.Section.values)
@@ -182,6 +196,10 @@ def build_style_groups(form) -> list[dict]:
                 "picker_solid": _picker_hex(solid.value(), d_solid),
                 "picker_start": _picker_hex(start.value(), d_start),
                 "picker_end": _picker_hex(end.value(), d_end),
+                "default_solid": d_solid,
+                "default_start": d_start,
+                "default_end": d_end,
+                "default_angle": "180",
             }
         )
     return groups

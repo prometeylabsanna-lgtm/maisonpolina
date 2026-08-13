@@ -46,11 +46,6 @@ def resolve_fill(
         return None
     if fill_type == FillType.SOLID:
         return solid or None
-    # Unset type: prefer solid if provided, else complete gradient
-    if solid:
-        return solid
-    if start and end:
-        return f"linear-gradient({angle}deg, {start}, {end})"
     return None
 
 

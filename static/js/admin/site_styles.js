@@ -44,15 +44,40 @@
     });
   };
 
+  const resetRowDefaults = (row) => {
+    const solidInput = row.querySelector('[data-show="solid"] .cms-hex-input');
+    const gradInputs = row.querySelectorAll('[data-show="gradient"] .cms-hex-input');
+    const angleInput = row.querySelector(".cms-style-angle");
+    if (solidInput) {
+      solidInput.value = row.getAttribute("data-default-solid") || "";
+    }
+    if (gradInputs[0]) {
+      gradInputs[0].value = row.getAttribute("data-default-start") || "";
+    }
+    if (gradInputs[1]) {
+      gradInputs[1].value = row.getAttribute("data-default-end") || "";
+    }
+    if (angleInput) {
+      angleInput.value = row.getAttribute("data-default-angle") || "180";
+    }
+    row.querySelectorAll(".cms-color-picker").forEach(syncPicker);
+  };
+
   const bindTypeRow = (row) => {
     const select = row.querySelector(".cms-style-select");
     if (select) {
       setMode(row, select.value || "");
-      select.addEventListener("change", () => setMode(row, select.value || ""));
+      select.addEventListener("change", () => {
+        const mode = select.value || "";
+        setMode(row, mode);
+        if (!mode) resetRowDefaults(row);
+      });
     }
     row.querySelectorAll("[data-value]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        setMode(row, btn.getAttribute("data-value") || "");
+        const mode = btn.getAttribute("data-value") || "";
+        setMode(row, mode);
+        if (!mode) resetRowDefaults(row);
       });
     });
   };

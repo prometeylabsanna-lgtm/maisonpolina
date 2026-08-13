@@ -72,7 +72,7 @@ def site_styles_view(
         "title": "Цвета и кнопки на сайте",
         "page_hint": (
             "Цвета также можно менять внутри каждого блока. "
-            "Пустые поля оставляют обычный вид сайта."
+            "«Сайт» возвращает цвета из вёрстки."
         ),
         "triples": triples,
         "opts": model_admin.model._meta if model_admin else None,
