@@ -9,18 +9,18 @@
 }
 
 .dark .tox-tinymce {
-  border: 1px solid rgb(202 182 149 / 0.65);
-  background-color: #111827;
+  border: 1px solid var(--admin-gold);
+  background-color: transparent;
   box-shadow: none;
 }
 
 .dark .tox .tox-edit-area {
   border-top: 1px solid rgb(202 182 149 / 0.4);
-  background-color: #111827;
+  background-color: transparent;
 }
 
 .dark .tox .tox-edit-area__iframe {
-  background-color: #111827;
+  background-color: transparent;
 }
 
 .tox .tox-edit-area__iframe {
@@ -29,7 +29,7 @@
 
 .dark .tox .tox-statusbar {
   border-top: 1px solid rgb(202 182 149 / 0.4);
-  background-color: #111827;
+  background-color: transparent;
   color: #c0b0a4;
 }
 

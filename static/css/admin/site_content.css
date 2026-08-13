@@ -137,6 +137,26 @@
   outline-offset: 1px;
 }
 
+.dark .site-content-editor .cms-admin-input,
+.dark .site-content-editor__field input[type="text"],
+.dark .site-content-editor__field input[type="number"],
+.dark .site-content-editor__field input[type="file"],
+.dark .site-content-editor__field textarea,
+.dark .site-content-editor__field select {
+  background: transparent;
+  border: 1px solid var(--admin-gold);
+  color: var(--admin-gold-soft);
+}
+
+.dark .site-content-editor .cms-admin-input:focus,
+.dark .site-content-editor__field input:focus,
+.dark .site-content-editor__field textarea:focus,
+.dark .site-content-editor__field select:focus {
+  outline: 2px solid var(--admin-gold-soft);
+  outline-offset: 1px;
+  border-color: var(--admin-gold-soft);
+}
+
 .site-content-editor__field textarea,
 .cms-admin-input[rows],
 textarea.cms-admin-input {

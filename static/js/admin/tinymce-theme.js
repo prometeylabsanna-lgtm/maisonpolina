@@ -4,14 +4,23 @@
  * Does not write classes on <html> (that broke editing via re-init loop).
  */
 (function () {
-  var DARK_BODY_BG = "#111827";
-  var DARK_BODY_FG = "#e5e7eb";
+  var DARK_BODY_FG = "#dfccb7";
   var LIGHT_BODY_BG = "#ffffff";
   var LIGHT_BODY_FG = "#111827";
   var reinitLock = false;
 
   function isAdminDark() {
     return document.documentElement.classList.contains("dark");
+  }
+
+  function darkSurfaceBg() {
+    var sample =
+      document.querySelector(".site-content-fieldset") ||
+      document.querySelector("#content-main") ||
+      document.body;
+    var bg = window.getComputedStyle(sample).backgroundColor;
+    if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") return bg;
+    return "transparent";
   }
 
   function applyThemeToConfig(conf) {
@@ -21,7 +30,7 @@
       next.content_css = "dark";
       next.content_style =
         "body{background-color:" +
-        DARK_BODY_BG +
+        darkSurfaceBg() +
         ";color:" +
         DARK_BODY_FG +
         ";margin:0.85rem;line-height:1.55;}";
@@ -42,7 +51,7 @@
     var body = editor.getBody && editor.getBody();
     if (!body) return;
     var dark = isAdminDark();
-    body.style.backgroundColor = dark ? DARK_BODY_BG : LIGHT_BODY_BG;
+    body.style.backgroundColor = dark ? darkSurfaceBg() : LIGHT_BODY_BG;
     body.style.color = dark ? DARK_BODY_FG : LIGHT_BODY_FG;
   }
 

@@ -49,6 +49,24 @@ def test_unfold_primary_is_burgundy():
     assert primary["500"] == "#8a2433"
 
 
+def test_dark_cms_inputs_use_page_bg_and_gold_border():
+    cms = (Path(settings.BASE_DIR) / "static/css/admin/site_content.css").read_text()
+    light = cms.split(".cms-admin-input,", 1)[1].split("}", 1)[0]
+    assert "background: rgb(255 255 255)" in light
+    dark = cms.split(
+        ".dark .site-content-editor .cms-admin-input,", 1
+    )[1].split("}", 1)[0]
+    assert "background: transparent" in dark
+    assert "var(--admin-gold)" in dark
+    assert "255 255 255" not in dark
+    tinymce = (Path(settings.BASE_DIR) / "static/css/admin/tinymce-theme.css").read_text()
+    dark_tox = tinymce.split(".dark .tox-tinymce {", 1)[1].split("}", 1)[0]
+    assert "background-color: transparent" in dark_tox
+    assert "var(--admin-gold)" in dark_tox
+    light_tox = tinymce.split(".tox-tinymce {", 1)[1].split("}", 1)[0]
+    assert "background-color: #fff" in light_tox
+
+
 def test_tinymce_extra_media_includes_theme_sync():
     extra = settings.TINYMCE_EXTRA_MEDIA
     assert "js/admin/tinymce-theme.js" in extra["js"]

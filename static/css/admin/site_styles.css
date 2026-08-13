@@ -203,12 +203,17 @@
 }
 
 .dark .cms-hex-input,
-.dark .cms-style-angle,
+.dark .cms-style-angle {
+  background: transparent;
+  border-color: var(--admin-gold);
+  color: var(--admin-gold-soft);
+}
+
 .dark .cms-style-panel__reset,
 .dark .site-styles-editor__reset {
-  background: rgb(24 18 20);
-  border-color: rgb(255 255 255 / 0.16);
-  color: rgb(243 244 246);
+  background: transparent;
+  border-color: var(--admin-gold);
+  color: var(--admin-gold-soft);
 }
 
 @media (max-width: 1023px) {
