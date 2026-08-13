@@ -220,6 +220,8 @@
 
 .header__whatsapp-icon {
   display: block;
+  width: 24px;
+  height: 24px;
 }
 
 .header__whatsapp--bar {
