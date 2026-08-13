@@ -2,11 +2,12 @@ from io import BytesIO
 from pathlib import Path
 
 import pytest
+from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from PIL import Image
 
 from src.core.admin_site_content_form import SitePageContentForm, load_section_blocks
-from src.core.fields import AdminWebPImageField
+from src.core.fields import AdminWebPImageField, _IMAGE_TYPE_ERROR
 from src.core.models import SiteBlock, SiteSettings
 from src.core.site_content_registry import get_section
 from src.core.webp import convert_bytes_to_webp, convert_path_to_webp
@@ -73,6 +74,45 @@ def test_gallery_upload_becomes_webp():
         save=True,
     )
     assert photo.image.name.endswith(".webp")
+
+
+def _heic_bytes() -> bytes:
+    buf = BytesIO()
+    Image.new("RGB", (20, 16), (40, 12, 16)).save(buf, format="HEIF")
+    return buf.getvalue()
+
+
+def test_convert_heic_bytes_to_webp():
+    payload, name = convert_bytes_to_webp(_heic_bytes(), "IMG_1234.HEIC")
+    assert name == "IMG_1234.webp"
+    assert payload[:4] == b"RIFF"
+    with Image.open(BytesIO(payload)) as image:
+        assert image.format == "WEBP"
+
+
+def test_admin_form_field_converts_heic():
+    field = AdminWebPImageField(required=False)
+    uploaded = SimpleUploadedFile(
+        "IMG_1234.HEIC",
+        _heic_bytes(),
+        content_type="image/heic",
+    )
+    result = field.clean(uploaded)
+    assert result.name.endswith(".webp")
+    with Image.open(result) as image:
+        assert image.format == "WEBP"
+
+
+def test_admin_form_field_rejects_oversized():
+    field = AdminWebPImageField(required=False)
+    uploaded = SimpleUploadedFile(
+        "huge.jpg",
+        b"\xff\xd8\xff" + (b"\x00" * (12 * 1024 * 1024)),
+        content_type="image/jpeg",
+    )
+    with pytest.raises(ValidationError) as exc:
+        field.clean(uploaded)
+    assert "12 МБ" in exc.value.messages[0]
 
 
 def test_admin_form_field_converts_on_clean():

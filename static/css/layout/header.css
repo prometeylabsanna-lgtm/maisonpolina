@@ -253,7 +253,7 @@
 @media (min-width: 1280px) {
   .header__inner {
     display: grid;
-    grid-template-columns: minmax(0, 1.25fr) auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     column-gap: clamp(12px, 1.4vw, 24px);
     width: min(var(--container-max), calc(100% - 40px));
@@ -273,18 +273,12 @@
   }
 
   .header__center {
-    grid-column: 2;
-    justify-self: center;
-    max-width: none;
-  }
-
-  .header__line {
-    width: 8px;
+    display: none;
   }
 
   .header__actions {
     display: flex;
-    grid-column: 3;
+    grid-column: 2;
     justify-self: end;
     flex: 0 0 auto;
     gap: clamp(8px, 1vw, 14px);
@@ -305,18 +299,10 @@
 }
 
 @media (min-width: 1440px) {
-  .header__line {
-    width: 9px;
-  }
-
   .header__nav {
     gap: clamp(10px, 1.1vw, 18px);
     font-size: clamp(12px, 0.95vw, 14px);
     letter-spacing: 0.05em;
-  }
-
-  .header__brand-mark--text {
-    font-size: 14px;
   }
 
   .header__phone {

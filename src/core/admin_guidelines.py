@@ -20,7 +20,7 @@ class ImageProfile:
     def as_help(self) -> str:
         parts = [
             f"Рекомендуется {self.size} px, соотношение {self.ratio}.",
-            f"JPEG или WebP, до {self.max_kb} КБ.",
+            f"JPEG, PNG, WebP или HEIC (iPhone), до {self.max_kb} КБ.",
             self.crop,
         ]
         if self.extra:

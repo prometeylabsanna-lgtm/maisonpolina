@@ -3,10 +3,19 @@
 from __future__ import annotations
 
 from django import forms
+from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.db.models.fields.files import ImageField, ImageFieldFile
 
 from src.core.webp import convert_bytes_to_webp
+
+_MAX_ADMIN_IMAGE_BYTES = 12 * 1024 * 1024
+ADMIN_IMAGE_ACCEPT = (
+    "image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,.heic,.heif"
+)
+_IMAGE_TYPE_ERROR = (
+    "Нужен файл JPEG, PNG, WebP, GIF или HEIC (фото с iPhone)."
+)
 
 
 def to_webp_file(name: str, content) -> tuple[str, ContentFile] | None:
@@ -54,8 +63,24 @@ class WebPImageField(ImageField):
 
 
 class AdminWebPImageField(forms.ImageField):
-    """Form field used in admin: JPG/PNG/GIF become WebP on upload."""
+    """Form field used in admin: JPG/PNG/GIF/HEIC become WebP on upload."""
+
+    default_error_messages = {
+        **forms.ImageField.default_error_messages,
+        "invalid_image": _IMAGE_TYPE_ERROR,
+        "invalid": _IMAGE_TYPE_ERROR,
+        "empty": "Выберите файл фото.",
+        "missing": "Выберите файл фото.",
+        "max_size": "Файл больше 12 МБ. Сожмите фото или выберите меньший файл.",
+    }
 
     def clean(self, data, initial=None):
+        if data and data is not False and not getattr(data, "_committed", False):
+            size = getattr(data, "size", 0) or 0
+            if size > _MAX_ADMIN_IMAGE_BYTES:
+                raise ValidationError(
+                    self.error_messages["max_size"],
+                    code="max_size",
+                )
         uploaded = super().clean(data, initial)
         return prepare_admin_image_upload(uploaded)

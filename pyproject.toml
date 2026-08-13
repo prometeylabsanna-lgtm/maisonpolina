@@ -9,6 +9,7 @@ dependencies = [
   "whitenoise==6.9.0",
   "psycopg2-binary==2.9.10",
   "Pillow==11.3.0",
+  "pillow-heif==1.5.0",
   "django-htmx==1.23.0",
   "django-csp==4.0",
   "django-unfold==0.102.0",

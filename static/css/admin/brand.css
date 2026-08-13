@@ -278,3 +278,73 @@ h1 .material-symbols-outlined,
     min-height: 44px;
   }
 }
+
+.cms-form-errors {
+  margin: 0 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #9a4450;
+  border-radius: 0.5rem;
+  background: #faf2f3;
+  color: #4c0d13;
+}
+
+.dark .cms-form-errors {
+  background: rgb(138 36 51 / 0.28);
+  border-color: #c9959c;
+  color: #f3e4e6;
+}
+
+.cms-form-errors__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.cms-form-errors__list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.cms-form-errors__list a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.cms-field-error {
+  margin: 0.4rem 0 0;
+  font-size: 0.875rem;
+  color: #8a2433;
+}
+
+.dark .cms-field-error {
+  color: #e5c5c9;
+}
+
+.cms-field-error .errorlist {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.site-content-editor__field.is-invalid {
+  padding: 0.75rem;
+  border: 1px solid #9a4450;
+  border-radius: 0.5rem;
+  background: rgb(250 242 243 / 0.6);
+}
+
+.dark .site-content-editor__field.is-invalid {
+  background: rgb(138 36 51 / 0.18);
+  border-color: #c9959c;
+}
+
+.cms-lang-tab.has-error {
+  border-color: #9a4450;
+  color: #8a2433;
+}
+
+.dark .cms-lang-tab.has-error {
+  border-color: #c9959c;
+  color: #e5c5c9;
+}

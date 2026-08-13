@@ -1,8 +1,10 @@
 import pytest
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 
+from src.core.fields import _IMAGE_TYPE_ERROR
 from src.core.models import SiteBlock, SiteSettings
 from src.core.services import SITE_BLOCKS_CACHE_KEY, get_site_blocks, is_section_visible
 
@@ -143,6 +145,32 @@ def test_admin_image_static_fallback_preview(client, admin_user):
     html = response.content.decode()
     assert "cms-image-preview" in html
     assert "about-portrait" in html
+    assert ".heic" in html
+    assert "HEIC" in html
+
+
+@pytest.mark.django_db
+def test_admin_invalid_portrait_shows_field_error(client, admin_user):
+    SiteSettings.get_solo()
+    client.force_login(admin_user)
+    url = reverse("admin:core_homeaboutsettings_change", args=[1])
+    response = client.post(
+        url,
+        {
+            "section_visible": "on",
+            "block__home__about.portrait__image": SimpleUploadedFile(
+                "photo.jpg",
+                b"not-an-image",
+                content_type="image/jpeg",
+            ),
+        },
+    )
+    assert response.status_code == 200
+    html = response.content.decode()
+    assert "cms-form-errors" in html
+    assert "cms-field-error" in html
+    assert _IMAGE_TYPE_ERROR in html
+    assert "is-invalid" in html
 
 
 @pytest.mark.django_db

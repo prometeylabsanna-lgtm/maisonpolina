@@ -26,7 +26,7 @@ from src.core.block_defaults import (
     get_block_field_label,
     is_visibility_key,
 )
-from src.core.fields import AdminWebPImageField
+from src.core.fields import ADMIN_IMAGE_ACCEPT, AdminWebPImageField
 from src.core.models import SiteBlock
 from src.core.services import invalidate_site_blocks_cache
 from src.core.site_content_registry import (
@@ -143,7 +143,9 @@ class SitePageContentForm(forms.Form):
             self.fields[block_field_name(page, key, "image")] = AdminWebPImageField(
                 label=label,
                 required=False,
-                widget=UnfoldAdminFileFieldWidget(),
+                widget=UnfoldAdminFileFieldWidget(
+                    attrs={"accept": ADMIN_IMAGE_ACCEPT}
+                ),
                 help_text=image_help(key),
             )
             self.fields[block_field_name(page, key, "clear_image")] = forms.BooleanField(

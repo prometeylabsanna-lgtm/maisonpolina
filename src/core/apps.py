@@ -10,6 +10,9 @@ class CoreConfig(AppConfig):
 
     def ready(self) -> None:
         from src.core import signals  # noqa: F401
+        from src.core.webp import ensure_heif_support
+
+        ensure_heif_support()
 
         admin.site.site_header = "MaisonPolina"
         admin.site.site_title = "MaisonPolina"

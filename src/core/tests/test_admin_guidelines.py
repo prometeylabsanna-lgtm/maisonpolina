@@ -23,6 +23,7 @@ def test_image_help_hero():
     assert "1200×1600" in hint
     assert "1920×1080" in hint
     assert "450 КБ" in hint
+    assert "HEIC" in hint
 
 
 def test_text_help_nav_nowrap():

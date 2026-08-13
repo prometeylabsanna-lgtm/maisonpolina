@@ -10,7 +10,36 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 WEBP_QUALITY = 82
 WEBP_METHOD = 6
 SKIP_SUFFIXES = {".webp", ".svg", ".ico", ".mp4", ".webm", ".mov"}
-CONVERT_SUFFIXES = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".tiff"}
+CONVERT_SUFFIXES = {
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".bmp",
+    ".tif",
+    ".tiff",
+    ".heic",
+    ".heif",
+}
+
+_HEIF_READY = False
+
+
+def ensure_heif_support() -> bool:
+    """Register iPhone HEIC/HEIF so Pillow and Django ImageField can open them."""
+    global _HEIF_READY
+    if _HEIF_READY:
+        return True
+    try:
+        from pillow_heif import register_heif_opener
+    except ImportError:
+        return False
+    register_heif_opener()
+    _HEIF_READY = True
+    return True
+
+
+ensure_heif_support()
 
 
 def webp_name(source_name: str) -> str:

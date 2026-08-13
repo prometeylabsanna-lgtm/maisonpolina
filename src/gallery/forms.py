@@ -4,7 +4,7 @@ from unfold.widgets import UnfoldAdminFileFieldWidget, UnfoldBooleanWidget
 
 from src.core.admin_guidelines import image_help, text_help
 from src.core.admin_site_content_widgets import CmsAdminTextInputWidget
-from src.core.fields import AdminWebPImageField
+from src.core.fields import ADMIN_IMAGE_ACCEPT, AdminWebPImageField
 from src.gallery.models import GalleryPhoto
 
 
@@ -12,7 +12,7 @@ class GalleryPhotoForm(forms.ModelForm):
     image = AdminWebPImageField(
         label="Фото",
         required=False,
-        widget=UnfoldAdminFileFieldWidget(),
+        widget=UnfoldAdminFileFieldWidget(attrs={"accept": ADMIN_IMAGE_ACCEPT}),
         help_text=image_help("gallery.image"),
     )
 

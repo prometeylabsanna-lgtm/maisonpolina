@@ -40,9 +40,18 @@
 
   window.cmsResizeTinyMCE = resizeTiny;
 
+  const paneHasErrors = (lang) =>
+    Boolean(document.querySelector(`.cms-lang-pane--${lang} .errorlist`));
+
   const boot = () => {
-    applyLang(getLang());
+    let lang = getLang();
+    if (paneHasErrors("en") && !paneHasErrors("ru")) {
+      lang = "en";
+    }
+    applyLang(lang);
     document.querySelectorAll(TAB_SELECTOR).forEach((btn) => {
+      const tabLang = btn.getAttribute("data-cms-lang");
+      btn.classList.toggle("has-error", paneHasErrors(tabLang));
       btn.addEventListener("click", (event) => {
         event.preventDefault();
         applyLang(btn.getAttribute("data-cms-lang"));
