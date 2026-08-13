@@ -267,7 +267,7 @@ msgid "Telegram"
 msgstr ""
 
 #: templates/partials/footer.html:27 templates/sections/contacts.html:27
-msgid "Написать в чат-бот"
+msgid "Написать в чат"
 msgstr ""
 
 #: templates/partials/footer.html:34 templates/partials/header.html:29

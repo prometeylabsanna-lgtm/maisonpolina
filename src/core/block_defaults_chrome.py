@@ -93,8 +93,8 @@ CHROME_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("site", "footer.telegram_sub"): {
         "label": "Подвал — Telegram подпись",
-        "text_ru": "Написать в чат-бот",
-        "text_en": "Message the chat bot",
+        "text_ru": "Написать в чат",
+        "text_en": "Write to chat",
     },
     ("site", "footer.menu_more"): {
         "label": "Подвал — показать ещё",
