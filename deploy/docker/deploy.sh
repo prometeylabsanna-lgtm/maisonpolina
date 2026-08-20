@@ -4,9 +4,23 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
+# Prod nginx (443 + Let's Encrypt) only when USE_HTTPS=true in .env,
+# or when USE_PROD_COMPOSE=1 is set explicitly.
+_use_prod="${USE_PROD_COMPOSE:-}"
+if [ -z "${_use_prod}" ]; then
+  if [ -f .env ] && grep -qE '^[[:space:]]*USE_HTTPS[[:space:]]*=[[:space:]]*(true|True|1)[[:space:]]*$' .env; then
+    _use_prod=1
+  else
+    _use_prod=0
+  fi
+fi
+
 COMPOSE=(docker compose -f docker-compose.yml)
-if [ -f docker-compose.prod.yml ] && [ "${USE_PROD_COMPOSE:-1}" = "1" ]; then
+if [ -f docker-compose.prod.yml ] && [ "${_use_prod}" = "1" ]; then
+  echo "==> Using docker-compose.prod.yml (HTTPS nginx)"
   COMPOSE=(docker compose -f docker-compose.yml -f docker-compose.prod.yml)
+else
+  echo "==> Using HTTP-only nginx (docker.conf)"
 fi
 
 free_host_ports() {
