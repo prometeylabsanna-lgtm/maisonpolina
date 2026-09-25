@@ -2,11 +2,13 @@ import csv
 
 from django.contrib import admin, messages
 from django.http import HttpResponse
+from django.utils.html import format_html
 from unfold.admin import ModelAdmin
 
 from src.core.admin_changelist import TopDropdownFilterMixin
 from src.core.admin_tinymce import TinyMCEAdminMixin
 from src.core.admin_utils import status_badge
+from src.leads.contact_links import contact_links_html
 from src.leads.models import Lead, LeadStatus
 
 _STATUS_TONE = {
@@ -82,7 +84,7 @@ class LeadAdmin(TopDropdownFilterMixin, TinyMCEAdminMixin, ModelAdmin):
     list_display = (
         "created_at",
         "name",
-        "contact",
+        "contact_cell",
         "service",
         "source",
         "language",
@@ -100,6 +102,7 @@ class LeadAdmin(TopDropdownFilterMixin, TinyMCEAdminMixin, ModelAdmin):
         "utm_medium",
         "utm_campaign",
         "notified_at",
+        "contact_actions",
     )
     actions = [mark_in_progress, mark_won, mark_lost, export_csv]
     date_hierarchy = "created_at"
@@ -110,6 +113,7 @@ class LeadAdmin(TopDropdownFilterMixin, TinyMCEAdminMixin, ModelAdmin):
                 "fields": (
                     "name",
                     "contact",
+                    "contact_actions",
                     "message",
                     "service",
                     "source",
@@ -134,6 +138,19 @@ class LeadAdmin(TopDropdownFilterMixin, TinyMCEAdminMixin, ModelAdmin):
             },
         ),
     )
+
+    @admin.display(description="Контакт", ordering="contact")
+    def contact_cell(self, obj):
+        links = contact_links_html(obj.contact)
+        if not links:
+            return obj.contact
+        return format_html("{}<br>{}", obj.contact, links)
+
+    @admin.display(description="Связаться")
+    def contact_actions(self, obj):
+        if obj is None:
+            return "—"
+        return contact_links_html(obj.contact) or "—"
 
     @admin.display(description="Статус", ordering="status")
     def status_badge(self, obj):

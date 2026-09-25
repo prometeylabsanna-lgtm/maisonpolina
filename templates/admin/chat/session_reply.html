@@ -1,0 +1,23 @@
+{% if original and original.status == "active" %}
+<section class="chat-admin-reply">
+  <h2 class="chat-admin-reply__title">Ответ посетителю на сайте</h2>
+  <p class="chat-admin-reply__note">
+    Текст появится в чате на сайте. В Telegram посетителя он не уходит.
+  </p>
+  <form method="post" action="{% url 'admin:chat_telegramchatsession_reply' original.pk %}">
+    {% csrf_token %}
+    <label class="chat-admin-reply__label" for="id_admin_reply">Текст ответа</label>
+    <textarea
+      id="id_admin_reply"
+      name="admin_reply"
+      class="chat-admin-reply__input"
+      rows="4"
+      maxlength="4000"
+      required
+      enterkeyhint="send"></textarea>
+    <button type="submit" class="chat-admin-reply__submit">Отправить на сайт</button>
+  </form>
+</section>
+{% elif original %}
+<p class="chat-admin-reply__note">Диалог закрыт. Новый ответ на сайт не отправится.</p>
+{% endif %}

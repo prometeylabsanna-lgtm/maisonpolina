@@ -258,6 +258,7 @@ UNFOLD = {
     "STYLES": [
         lambda request: static("css/admin/changelist_filters.css"),
         lambda request: static("css/admin/brand.css"),
+        lambda request: static("css/admin/chat-reply.css"),
     ],
     "SCRIPTS": [
         lambda request: static("js/admin/theme-default.js"),

@@ -153,6 +153,51 @@ def test_webhook_ignores_wrong_chat(client: Client, settings):
 
 
 @pytest.mark.django_db
+def test_webhook_plain_message_sends_hint(client: Client, settings):
+    settings.TELEGRAM_WEBHOOK_SECRET = "secret-token"
+    settings.TELEGRAM_CHAT_ID = "999"
+    payload = {
+        "update_id": 12,
+        "message": {
+            "message_id": 80,
+            "chat": {"id": 999},
+            "text": "Доброго вечора",
+        },
+    }
+    with patch("src.chat.services.telegram_bot.send_message") as send:
+        response = client.post(
+            reverse("chat:telegram_webhook"),
+            data=json.dumps(payload),
+            content_type="application/json",
+            HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN="secret-token",
+        )
+    assert response.status_code == 200
+    assert ChatMessage.objects.count() == 0
+    send.assert_called_once()
+    assert "не ушло на сайт" in send.call_args.args[1]
+
+
+@pytest.mark.django_db
+def test_admin_reply_appears_in_session(client: Client):
+    from django.contrib.auth import get_user_model
+
+    User = get_user_model()
+    user = User.objects.create_superuser("admin", "admin@example.com", "password123456")
+    client.force_login(user)
+    session = TelegramChatSession.objects.create(user_identifier="u1")
+    page = client.get(reverse("admin:chat_telegramchatsession_change", args=[session.pk]))
+    assert page.status_code == 200
+    assert b"id_admin_reply" in page.content
+    url = reverse("admin:chat_telegramchatsession_reply", args=[session.pk])
+    response = client.post(url, {"admin_reply": "Напишу вам тут"})
+    assert response.status_code == 302
+    saved = ChatMessage.objects.get()
+    assert saved.sender_type == SenderType.TELEGRAM_ADMIN
+    assert saved.text == "Напишу вам тут"
+    assert saved.session_id == session.session_id
+
+
+@pytest.mark.django_db
 def test_webhook_invalid_json(client: Client, settings):
     settings.TELEGRAM_WEBHOOK_SECRET = "secret-token"
     response = client.post(

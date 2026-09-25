@@ -6,6 +6,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.urls import reverse
 
+from src.leads.contact_links import contact_actions, contact_links_telegram
 from src.leads.models import Lead
 
 logger = logging.getLogger(__name__)
@@ -48,6 +49,7 @@ def _send_telegram(lead: Lead) -> None:
         "<b>Новая заявка</b>\n"
         f"Имя: {e(lead.name)}\n"
         f"Контакт: {e(lead.contact)}\n"
+        f"{_contact_actions_line(lead.contact)}"
         f"Формат: {e(lead.service)}\n"
         f"Источник: {e(lead.get_source_display())}\n"
         f"Язык: {e(lead.language)}\n"
@@ -69,6 +71,21 @@ def _send_telegram(lead: Lead) -> None:
     response.raise_for_status()
 
 
+def _contact_actions_line(contact: str) -> str:
+    links = contact_links_telegram(contact)
+    if not links:
+        return ""
+    return f"Написать: {links}\n"
+
+
+def _contact_email_line(contact: str) -> str:
+    actions = contact_actions(contact)
+    if not actions:
+        return ""
+    lines = "\n".join(f"{item['label']}: {item['url']}" for item in actions)
+    return f"{lines}\n"
+
+
 def _send_email(lead: Lead) -> None:
     recipient = getattr(settings, "LEADS_NOTIFY_EMAIL", "") or settings.DEFAULT_FROM_EMAIL
     if not recipient:
@@ -77,6 +94,7 @@ def _send_email(lead: Lead) -> None:
     body = (
         f"Имя: {lead.name}\n"
         f"Контакт: {lead.contact}\n"
+        f"{_contact_email_line(lead.contact)}"
         f"Формат: {lead.service}\n"
         f"Источник: {lead.get_source_display()}\n"
         f"Язык: {lead.language}\n"

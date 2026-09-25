@@ -18,6 +18,20 @@ TELEGRAM_API = "https://api.telegram.org"
 DEFAULT_TIMEOUT = 5
 MAX_TEXT_LEN = 4000
 
+_HINT_PLAIN = (
+    "Это сообщение не ушло на сайт.\n"
+    "Нажмите «Ответить» на карточку «Сообщение с сайта» и напишите текст ещё раз.\n"
+    "Обычное сообщение в этот чат посетитель не видит.\n"
+    "На заявку с формы так ответить нельзя: в карточке «Новая заявка» "
+    "откройте Дзвінок, WhatsApp или Telegram."
+)
+_HINT_UNLINKED = (
+    "Ответ не привязан к сообщению с сайта.\n"
+    "Нажмите «Ответить» именно на карточку «Сообщение с сайта», "
+    "а не на заявку и не на эту подсказку."
+)
+_HINT_CLOSED = "Этот диалог на сайте уже закрыт. Ответ посетителю не отправлен."
+
 
 class TelegramBotError(Exception):
     """Base error for Telegram Bot API failures."""
@@ -111,6 +125,7 @@ def send_message(
     *,
     parse_mode: str | None = "HTML",
     reply_to_message_id: int | None = None,
+    reply_markup: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     payload: dict[str, Any] = {
         "chat_id": chat_id,
@@ -121,6 +136,8 @@ def send_message(
         payload["parse_mode"] = parse_mode
     if reply_to_message_id is not None:
         payload["reply_to_message_id"] = reply_to_message_id
+    if reply_markup is not None:
+        payload["reply_markup"] = reply_markup
     return call_telegram_api("sendMessage", payload)
 
 
@@ -136,12 +153,18 @@ def forward_site_message(session: TelegramChatSession, message: ChatMessage) -> 
     body = (
         "<b>Сообщение с сайта</b>\n"
         f"Сессия: <code>{html.escape(short_id)}</code>\n"
-        "Ответьте reply на это сообщение.\n"
+        "Чтобы ответ появился у посетителя на сайте, нажмите «Ответить» "
+        "на это сообщение и напишите текст.\n"
+        "Обычное сообщение в этот чат на сайт не попадает.\n"
         "—\n"
         f"{safe_text}"
     )
     try:
-        data = send_message(admin_chat, body)
+        data = send_message(
+            admin_chat,
+            body,
+            reply_markup={"force_reply": True},
+        )
     except TelegramRateLimitError:
         logger.warning("Telegram rate limit while forwarding session %s", session.session_id)
         raise
@@ -155,6 +178,13 @@ def forward_site_message(session: TelegramChatSession, message: ChatMessage) -> 
         message.telegram_message_id = int(tg_id)
         message.save(update_fields=["telegram_message_id"])
     return message.telegram_message_id
+
+
+def _hint_admin(admin_chat: str, text: str) -> None:
+    try:
+        send_message(admin_chat, html.escape(text, quote=False))
+    except TelegramBotError:
+        logger.exception("Failed to send Telegram reply hint")
 
 
 def handle_webhook_update(payload: dict[str, Any]) -> bool:
@@ -178,16 +208,15 @@ def handle_webhook_update(payload: dict[str, Any]) -> bool:
         logger.info("Ignore webhook from unexpected chat_id=%s", chat_id)
         return False
 
+    text = (message.get("text") or "").strip()
     reply_to = message.get("reply_to_message")
     if not isinstance(reply_to, dict):
+        _hint_admin(admin_chat, _HINT_PLAIN)
         return False
 
     reply_msg_id = reply_to.get("message_id")
-    if reply_msg_id is None:
-        return False
-
-    text = (message.get("text") or "").strip()
-    if not text:
+    if reply_msg_id is None or not text:
+        _hint_admin(admin_chat, _HINT_PLAIN)
         return False
 
     tg_message_id = message.get("message_id")
@@ -204,13 +233,20 @@ def handle_webhook_update(payload: dict[str, Any]) -> bool:
         )
         if original is None:
             logger.info("No site message for reply_to=%s", reply_msg_id)
-            return False
+            hint = _HINT_UNLINKED
+        elif original.session.status != SessionStatus.ACTIVE:
+            logger.info("Session %s is closed — ignore reply", original.session.session_id)
+            hint = _HINT_CLOSED
+        else:
+            hint = ""
 
-        session = original.session
-        if session.status != SessionStatus.ACTIVE:
-            logger.info("Session %s is closed — ignore reply", session.session_id)
-            return False
+    if hint:
+        _hint_admin(admin_chat, hint)
+        return False
 
+    session = original.session
+
+    with transaction.atomic():
         if tg_message_id is not None:
             exists = ChatMessage.objects.filter(
                 telegram_message_id=int(tg_message_id),
