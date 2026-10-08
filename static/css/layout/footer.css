@@ -153,6 +153,28 @@
   color: var(--color-text);
 }
 
+.footer__company {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: var(--color-champagne-soft);
+}
+
+.footer__email {
+  margin: 8px 0 0;
+}
+
+.footer__email-link {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer__email-link:hover {
+  color: var(--color-interactive-hover);
+}
+
 .footer__menu {
   display: flex;
   flex-direction: column;
@@ -360,9 +382,11 @@
     display: none;
   }
 
+  .footer__company,
   .footer__location-label,
-  .footer__location {
-    display: none;
+  .footer__location,
+  .footer__email {
+    text-align: center;
   }
 
   .footer__legal {

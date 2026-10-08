@@ -36,6 +36,7 @@ def test_sidebar_follows_page_blocks():
     assert "Заявка" in titles
     assert "Подвал" in titles
     assert "Политика конфиденциальности" in titles
+    assert "Условия использования" in titles
     assert "Интерфейс" not in titles
     assert "Форматы услуг" not in titles
     assert "Hero" not in titles
@@ -129,7 +130,7 @@ def test_admin_formats_toggles_and_features(client, admin_user):
             "formats-0-label_ru": "I",
             "formats-0-label_en": "I",
             "formats-0-description_ru": "Вечер",
-            "formats-0-description_en": "Evening",
+            "formats-0-description_en": "Briefing",
             "formats-0-price_text_ru": "по запросу",
             "formats-0-price_text_en": "on request",
             "formats-0-features_ru": "Встреча\nУжин",

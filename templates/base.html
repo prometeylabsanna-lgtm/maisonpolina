@@ -1,15 +1,22 @@
-{% load static i18n django_htmx %}
+{% load static i18n django_htmx seo_tags %}
 <!DOCTYPE html>
 <html lang="{{ current_language|default:'ru' }}">
 <head>
+  {% if gtm_id %}
+  <!-- Google Tag Manager -->
+  <script nonce="{{ request.csp_nonce }}">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','{{ gtm_id }}');</script>
+  <!-- End Google Tag Manager -->
+  {% endif %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="csrf-token" content="{{ csrf_token }}">
   <title>{% block title %}{% if seo_title %}{{ seo_title }}{% else %}{{ page_title|default:site_settings.brand_name }}{% endif %}{% endblock %}</title>
   {% block meta %}
-  {% if seo_description %}
-  <meta name="description" content="{{ seo_description }}">
-  {% endif %}
+  {% include "partials/seo-meta.html" %}
   {% endblock %}
   {% block hreflang %}
   {% if alternate_urls.ru %}<link rel="alternate" hreflang="ru" href="{{ request.scheme }}://{{ request.get_host }}{{ alternate_urls.ru }}">{% endif %}
@@ -24,6 +31,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
   <link rel="manifest" href="{% static 'images/favicon/site.webmanifest' %}">
   <meta name="theme-color" content="#1a1816">
+  {% if gtm_id %}
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+  {% endif %}
   <link rel="preload" href="{% static 'fonts/lora-400-cyr.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{% static 'fonts/lora-400.woff2' %}" as="font" type="font/woff2" crossorigin>
   {% block resource_hints %}{% endblock %}
@@ -34,8 +46,15 @@
   {% endif %}
   <script src="{% static 'js/htmx.min.js' %}" defer></script>
   {% django_htmx_script %}
+  {% render_jsonld %}
 </head>
 <body>
+  {% if gtm_id %}
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtm_id }}"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  {% endif %}
   <div class="scroll-sentinel" id="scroll-sentinel" aria-hidden="true"></div>
   {% include "partials/header.html" %}
   {% include "partials/mobile-nav.html" %}

@@ -10,7 +10,12 @@ class StaticViewSitemap(Sitemap):
     x_default = True
 
     def items(self):
-        return ["core:home", "core:privacy"]
+        return ["core:home", "core:privacy", "core:terms"]
+
+    def priority(self, item):
+        return {"core:home": 1.0, "core:privacy": 0.3, "core:terms": 0.3}.get(
+            item, 0.5
+        )
 
     def location(self, item):
         return reverse(item)

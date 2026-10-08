@@ -41,9 +41,11 @@ def test_whatsapp_qr_link_in_header(client):
 def test_privacy_link_in_footer_and_mobile_nav(client):
     html = client.get(reverse("core:home")).content.decode()
     privacy = reverse("core:privacy")
+    terms = reverse("core:terms")
     assert "footer__legal-link" in html
     assert "mobile-nav__privacy" in html
     assert privacy in html
+    assert terms in html
 
 
 @pytest.mark.django_db

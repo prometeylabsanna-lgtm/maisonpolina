@@ -20,12 +20,14 @@ class SiteSettingsAdmin(WebPAdminMixin, AdminGuidelinesMixin, ModelAdmin):
             {
                 "fields": (
                     "brand_name",
+                    "company_legal_name",
                     "logo",
                     "get_logo_preview",
                     "copyright_name",
                 ),
                 "description": (
-                    "Название бренда и логотип 176×136 px (PNG, до 40 КБ) — в шапке до 44×34 px."
+                    "Название бренда, юридическое имя и логотип 176×136 px "
+                    "(PNG, до 40 КБ) — в шапке до 44×34 px."
                 ),
             },
         ),

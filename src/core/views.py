@@ -152,6 +152,41 @@ class PrivacyView(TemplateView):
         return ctx
 
 
+class TermsView(TemplateView):
+    template_name = "pages/terms.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        blocks = get_site_blocks()
+        lang = get_language() or "ru"
+        ts = str(time.time())
+        ctx["lead_form"] = LeadForm(
+            initial={
+                "source": LeadSource.CONTACTS,
+                "language": lang,
+                "form_ts": ts,
+            }
+        )
+        ctx["review_form"] = ReviewForm(
+            initial={
+                "language": lang,
+                "rating": 5,
+                "form_ts": ts,
+            }
+        )
+        ctx["page_title"] = get_block_text(
+            "terms", "title", blocks=blocks, fallback="Условия использования"
+        )
+        seo = SeoMeta.objects.filter(page="terms").first()
+        ctx["seo"] = seo
+        if seo:
+            ctx["seo_title"] = seo.get_text("title")
+            ctx["seo_description"] = seo.get_text("description")
+        ctx["terms_title"] = get_block_text("terms", "title", blocks=blocks)
+        ctx["terms_body"] = get_block_text("terms", "body", blocks=blocks)
+        return ctx
+
+
 def robots_txt(_request):
     from django.conf import settings
 
@@ -160,6 +195,10 @@ def robots_txt(_request):
         "User-agent: *",
         "Allow: /",
         "Disallow: /admin/",  # decoy; do not publish ADMIN_URL
+        "Disallow: /api/",
+        "Disallow: /tinymce/",
+        "Disallow: /healthz/",
+        "Disallow: /i18n/",
         f"Sitemap: {sitemap}",
     ]
     return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")

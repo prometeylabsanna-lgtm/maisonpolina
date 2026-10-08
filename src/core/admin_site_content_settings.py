@@ -17,6 +17,10 @@ SETTINGS_PREFIX = "settings__"
 SETTINGS_META: dict[str, dict] = {
     "logo": {"kind": "image", "label": "Логотип"},
     "brand_name": {"kind": "text", "label": "Название бренда"},
+    "company_legal_name": {
+        "kind": "text",
+        "label": "Юридическое название компании",
+    },
     "phone": {"kind": "text", "label": "Телефон"},
     "email": {"kind": "text", "label": "Email"},
     "telegram_url": {"kind": "text", "label": "Telegram"},

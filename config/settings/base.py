@@ -1,6 +1,7 @@
 import re
 from pathlib import Path
 
+from csp.constants import NONCE
 from decouple import config
 from django.core.exceptions import ImproperlyConfigured
 from django.templatetags.static import static
@@ -163,12 +164,35 @@ CONTENT_SECURITY_POLICY = {
     "EXCLUDE_URL_PREFIXES": (f"/{ADMIN_URL}",),
     "DIRECTIVES": {
         "default-src": ["'self'"],
-        "script-src": ["'self'"],
-        "style-src": ["'self'", "'unsafe-inline'"],
+        "script-src": [
+            "'self'",
+            NONCE,
+            "https://www.googletagmanager.com",
+            "https://www.google-analytics.com",
+            "https://ssl.google-analytics.com",
+            "https://tagmanager.google.com",
+            "https://www.googleadservices.com",
+            "https://googleads.g.doubleclick.net",
+        ],
+        "style-src": ["'self'", "'unsafe-inline'", "https://tagmanager.google.com"],
         "font-src": ["'self'", "data:"],
-        "img-src": ["'self'", "data:", "blob:"],
+        "img-src": ["'self'", "data:", "blob:", "https:"],
         "media-src": ["'self'", "blob:", "https:"],
-        "connect-src": ["'self'"],
+        "connect-src": [
+            "'self'",
+            "https://www.google-analytics.com",
+            "https://analytics.google.com",
+            "https://region1.google-analytics.com",
+            "https://www.googletagmanager.com",
+            "https://stats.g.doubleclick.net",
+            "https://www.google.com",
+            "https://google.com",
+        ],
+        "frame-src": [
+            "https://www.googletagmanager.com",
+            "https://td.doubleclick.net",
+            "https://www.google.com",
+        ],
         "frame-ancestors": ["'none'"],
         "base-uri": ["'self'"],
         "form-action": ["'self'"],
@@ -190,6 +214,7 @@ TELEGRAM_WEBHOOK_SECRET = config("TELEGRAM_WEBHOOK_SECRET", default="")
 TELEGRAM_WEBHOOK_URL = config("TELEGRAM_WEBHOOK_URL", default="")
 
 SITE_URL = config("SITE_URL", default="http://localhost:8000")
+GTM_ID = config("GTM_ID", default="GTM-KQVSVDPQ")
 
 LOGGING = {
     "version": 1,

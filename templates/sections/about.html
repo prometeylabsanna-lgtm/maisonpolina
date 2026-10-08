@@ -27,9 +27,12 @@
         {% endif %}
       </div>
       <div class="about__body">
-        <div class="about__text">{% block_html "home" "about.body_1" %}</div>
-        <div class="about__text">{% block_html "home" "about.body_2" %}</div>
-        <div class="about__text">{% block_html "home" "about.body_3" %}</div>
+        {% block_plain "home" "about.body_1" as about_body_1 %}
+        {% if about_body_1 %}<div class="about__text">{% block_html "home" "about.body_1" %}</div>{% endif %}
+        {% block_plain "home" "about.body_2" as about_body_2 %}
+        {% if about_body_2 %}<div class="about__text">{% block_html "home" "about.body_2" %}</div>{% endif %}
+        {% block_plain "home" "about.body_3" as about_body_3 %}
+        {% if about_body_3 %}<div class="about__text">{% block_html "home" "about.body_3" %}</div>{% endif %}
         <blockquote class="about__quote">{% block_html "home" "about.quote" %}</blockquote>
         <div class="about__stats">
           <div>

@@ -14,6 +14,7 @@ RICH_TEXT_KEYS: frozenset[str] = frozenset(
         "formats.note",
         "contacts.lead",
         "privacy.body",
+        "terms.body",
         "personality.languages",
         "personality.respect",
         "personality.education",
@@ -67,7 +68,9 @@ _TINYMCE_HEIGHT_COMPACT = 100
 
 
 def cms_tinymce_height_for_key(key: str, *, page: str = "") -> int:
-    if key == "privacy.body" or (page == "privacy" and key == "body"):
+    if key in {"privacy.body", "terms.body"} or (
+        page in {"privacy", "terms"} and key == "body"
+    ):
         return _TINYMCE_HEIGHT_PRIVACY
     if key in COMPACT_RICH_TEXT_KEYS or f"{page}.{key}" in COMPACT_RICH_TEXT_KEYS:
         return _TINYMCE_HEIGHT_COMPACT

@@ -46,13 +46,17 @@ class SiteSettings(models.Model):
     brand_name = models.CharField(
         max_length=128, default="MAISON POLINA", verbose_name="Название бренда"
     )
+    company_legal_name = models.CharField(
+        max_length=255,
+        blank=True,
+        default="Maison Polina",
+        verbose_name="Юридическое название компании",
+    )
     logo = WebPImageField(upload_to="brand/", blank=True, verbose_name="Логотип")
     phone = models.CharField(
         max_length=64, blank=True, default="+380 95 472 7859", verbose_name="Телефон"
     )
-    email = models.EmailField(
-        blank=True, default="hello@example.com", verbose_name="Email"
-    )
+    email = models.EmailField(blank=True, default="", verbose_name="Email")
     telegram_url = models.URLField(
         blank=True, default="https://t.me/", verbose_name="Telegram"
     )
@@ -65,18 +69,18 @@ class SiteSettings(models.Model):
         verbose_name="WhatsApp",
     )
     copyright_name = models.CharField(
-        max_length=128, default="MAISON POLINA", verbose_name="Имя в копирайте"
+        max_length=128, default="Maison Polina", verbose_name="Имя в копирайте"
     )
     location_ru = models.CharField(
         max_length=255,
         blank=True,
-        default="ЖК «Нова Конча-Заспа»",
+        default="ЖК Нова Конча Заспа, Ходосівка, Київська область, 08173",
         verbose_name="Адрес / локация",
     )
     location_en = models.CharField(
         max_length=255,
         blank=True,
-        default="Nova Koncha-Zaspa RC",
+        default="Nova Koncha Zaspa RC, Khodosivka, Kyiv Oblast, 08173",
         verbose_name="Адрес / локация",
     )
 
@@ -124,6 +128,7 @@ class SiteBlock(BilingualTextMixin, models.Model):
     class Page(models.TextChoices):
         HOME = "home", "Главная"
         PRIVACY = "privacy", "Политика"
+        TERMS = "terms", "Условия"
         SITE = "site", "Сайт"
 
     page = models.CharField(max_length=32, choices=Page.choices, verbose_name="Страница")
@@ -297,6 +302,13 @@ class PrivacySettings(SiteSettings):
         proxy = True
         verbose_name = "Политика конфиденциальности"
         verbose_name_plural = "Политика конфиденциальности"
+
+
+class TermsSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = "Условия использования"
+        verbose_name_plural = "Условия использования"
 
 
 class SiteHeaderSettings(SiteSettings):

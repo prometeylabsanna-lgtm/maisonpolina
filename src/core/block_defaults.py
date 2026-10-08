@@ -57,14 +57,14 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     ("home", "hero.lead"): {
         "label": "Баннер — текст",
         "text_ru": (
-            "Ценю живой разговор, эстетику и подлинный контакт. "
-            "Ужины, приёмы, деловые поездки — каждая встреча продумана так, "
-            "чтобы стать поводом вернуться."
+            "Премиальный бизнес-консьерж. Мы ценим ваше время, приватность и статус. "
+            "Безупречное управление стилем жизни, координация премиальных поездок "
+            "и поддержка на мероприятиях высшего уровня для лидеров индустрии и дипломатов."
         ),
         "text_en": (
-            "I value real conversation, aesthetics and genuine contact. "
-            "Dinners, receptions, business trips — each meeting is arranged "
-            "to become a reason to return."
+            "Premium Executive Concierge. We value your time, privacy, and status. "
+            "Seamless lifestyle management, high-end travel coordination, and premium "
+            "event assistance tailored for industry leaders and diplomats."
         ),
     },
     ("home", "hero.cta_primary"): {
@@ -79,8 +79,8 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "hero.tagline"): {
         "label": "Баннер — слоган",
-        "text_ru": "Independent · Private · Confidence",
-        "text_en": "Independent · Private · Confidence",
+        "text_ru": "НЕЗАВИСИМОСТЬ · КОНФИДЕНЦИАЛЬНОСТЬ · ПРОФЕССИОНАЛИЗМ",
+        "text_en": "INDEPENDENT · CONFIDENTIAL · PROFESSIONAL",
     },
     ("home", "hero.media"): {
         "label": "Баннер — фото",
@@ -99,61 +99,54 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "about.eyebrow"): {
         "label": "Обо мне — надзаголовок",
-        "text_ru": "Обо мне",
-        "text_en": "About",
+        "text_ru": "О компании",
+        "text_en": "About the agency",
     },
     ("home", "about.title"): {
         "label": "Обо мне — заголовок",
-        "text_ru": "Восемь лет",
-        "text_en": "Eight years",
+        "text_ru": "Управление премиальным",
+        "text_en": "High-End Lifestyle",
     },
     ("home", "about.title_accent"): {
         "label": "Обо мне — акцент в заголовке",
-        "text_ru": "ярких впечатлений",
-        "text_en": "of vivid impressions",
+        "text_ru": "стилем жизни",
+        "text_en": "Management",
     },
     ("home", "about.body_1"): {
         "label": "Обо мне — абзац 1",
         "text_ru": (
-            "За восемь лет я сопровождала дипломатов, промышленников "
-            "и людей творческих профессий — на переговорах, приёмах и в долгих "
-            "поездках. Каждый раз главным был не повод, а то, каким запомнится вечер."
+            "Обладая обширной международной экспертизой и опытом работы в более чем "
+            "20 странах, мы понимаем мировые стандарты премиального бизнеса. "
+            "Специализируемся на индивидуальных маршрутах, координации статусных "
+            "мероприятий и обеспечении безупречной реализации на местах и "
+            "бесперебойной логистики для ваших самых важных событий. Наше агентство "
+            "ведет ограниченное количество премиальных проектов ежемесячно, чтобы "
+            "гарантировать максимальное внимание и высочайшее качество сервиса."
         ),
         "text_en": (
-            "For eight years I have accompanied diplomats, industrialists "
-            "and people of creative professions — at negotiations, receptions "
-            "and on long journeys. What mattered was never the occasion, "
-            "but how the evening would be remembered."
+            "With extensive global expertise and operations across 20+ countries, "
+            "we understand the global standards of premium business. Specialized in "
+            "bespoke itineraries, high-profile event coordination, and ensuring "
+            "flawless on-ground execution and seamless logistics for your most "
+            "critical events. Our agency takes on a limited number of premium "
+            "projects each month to guarantee full attention and exceptional "
+            "service quality."
         ),
     },
     ("home", "about.body_2"): {
         "label": "Обо мне — абзац 2",
-        "text_ru": (
-            "Я легко подстраиваюсь под шаблон встречи. Слушаю, что нужно именно "
-            "в этот вечер: лёгкий разговор, тишина рядом или уверенное присутствие "
-            "за столом переговоров."
-        ),
-        "text_en": (
-            "I easily adapt to the meeting. I listen to what this evening needs: "
-            "light conversation, quiet presence, or confident company "
-            "at the negotiating table."
-        ),
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "about.body_3"): {
         "label": "Обо мне — абзац 3",
-        "text_ru": (
-            "Приглашений в месяц немного — ровно столько, чтобы каждой встрече "
-            "хватало внимания. Имена гостей остаются между нами."
-        ),
-        "text_en": (
-            "There are few invitations each month — just enough for every meeting "
-            "to receive full attention. Guest names stay between us."
-        ),
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "about.quote"): {
         "label": "Обо мне — цитата",
-        "text_ru": "Хорошее общество не нуждается в объяснениях.",
-        "text_en": "Good company needs no explanation.",
+        "text_ru": "Безупречный сервис незаметен, пока он вам не понадобится.",
+        "text_en": "Impeccable service is invisible until you need it.",
     },
     ("home", "about.stat_1_value"): {
         "label": "Обо мне — цифра 1",
@@ -172,8 +165,8 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "about.stat_2_label"): {
         "label": "Обо мне — подпись 2",
-        "text_ru": "встреч и приёмов",
-        "text_en": "meetings and receptions",
+        "text_ru": "успешных проектов",
+        "text_en": "projects concluded",
     },
     ("home", "about.stat_3_value"): {
         "label": "Обо мне — цифра 3",
@@ -182,18 +175,18 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "about.stat_3_label"): {
         "label": "Обо мне — подпись 3",
-        "text_ru": "приглашений в месяц",
-        "text_en": "invitations per month",
+        "text_ru": "активных клиентов в месяц",
+        "text_en": "active clients per month",
     },
     ("home", "about.cta"): {
         "label": "Обо мне — кнопка",
-        "text_ru": "Написать мне",
-        "text_en": "Write to me",
+        "text_ru": "Написать нам",
+        "text_en": "Write to us",
     },
     ("home", "about.portrait"): {
         "label": "Обо мне — портрет",
-        "text_ru": "Полина — выступление на мероприятии",
-        "text_en": "Polina — speaking at an event",
+        "text_ru": "Команда Maison Polina на мероприятии",
+        "text_en": "Maison Polina team at an event",
     },
     ("home", "personality_section_visible"): {
         "label": "Личность — видимость",
@@ -202,98 +195,98 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "personality.eyebrow"): {
         "label": "Личность — надзаголовок",
-        "text_ru": "Обо мне",
-        "text_en": "About me",
+        "text_ru": "Экспертиза",
+        "text_en": "Expertise",
     },
     ("home", "personality.title"): {
         "label": "Личность — заголовок (светлое слово)",
-        "text_ru": "Дополнительная",
-        "text_en": "Additional",
+        "text_ru": "Профессиональный",
+        "text_en": "Professional",
     },
     ("home", "personality.title_accent"): {
         "label": "Личность — акцент в заголовке",
-        "text_ru": "информация",
-        "text_en": "information",
+        "text_ru": "профиль",
+        "text_en": "Profile",
     },
     ("home", "personality.facts_title"): {
         "label": "Личность — подзаголовок параметров",
-        "text_ru": "Внешность",
-        "text_en": "Appearance",
+        "text_ru": "Ключевые компетенции",
+        "text_en": "Core competencies",
     },
     ("home", "personality.age"): {
         "label": "Личность — возраст",
-        "text_ru": "32",
-        "text_en": "32",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.eyes"): {
         "label": "Личность — глаза",
-        "text_ru": "серые",
-        "text_en": "gray",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.hair"): {
         "label": "Личность — волосы",
-        "text_ru": "русые",
-        "text_en": "light brown",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.height"): {
         "label": "Личность — рост",
-        "text_ru": "174",
-        "text_en": "174",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.weight"): {
         "label": "Личность — вес",
-        "text_ru": "59",
-        "text_en": "59",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.measurements"): {
         "label": "Личность — параметры",
-        "text_ru": "90-60-94",
-        "text_en": "90-60-94",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.shoes"): {
         "label": "Личность — обувь",
-        "text_ru": "39",
-        "text_en": "39",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.clothing"): {
         "label": "Личность — одежда",
-        "text_ru": "38",
-        "text_en": "38",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.zodiac"): {
         "label": "Личность — зодиак",
-        "text_ru": "Водолей",
-        "text_en": "Aquarius",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.tattoo"): {
         "label": "Личность — тату",
-        "text_ru": "нет",
-        "text_en": "none",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.piercing"): {
         "label": "Личность — пирсинг",
-        "text_ru": "нет",
-        "text_en": "none",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.flowers"): {
         "label": "Личность — цветы",
-        "text_ru": "Орхидеи, Лилии",
-        "text_en": "Orchids, lilies",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.cuisine"): {
         "label": "Личность — кухня",
-        "text_ru": "Итальянская",
-        "text_en": "Italian",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.alcohol"): {
         "label": "Личность — алкоголь",
-        "text_ru": "уточнять",
-        "text_en": "upon request",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.smoking"): {
         "label": "Личность — курение",
-        "text_ru": "Не курю",
-        "text_en": "Non-smoker",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.extra_title"): {
         "label": "Личность — подзаголовок дополнительного (не используется)",
@@ -302,44 +295,50 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "personality.extra_1"): {
         "label": "Личность — пункт 1",
-        "text_ru": "мастер спорта",
-        "text_en": "Master of Sport",
+        "text_ru": "Опыт в премиальном hospitality",
+        "text_en": "High-end hospitality background",
     },
     ("home", "personality.extra_2"): {
         "label": "Личность — пункт 2",
-        "text_ru": "профессиональная модель",
-        "text_en": "professional model",
+        "text_ru": "Event-менеджмент",
+        "text_en": "Event Management",
     },
     ("home", "personality.extra_3"): {
         "label": "Личность — пункт 3",
-        "text_ru": "фешн-журналист",
-        "text_en": "fashion journalist",
+        "text_ru": "PR и коммуникации",
+        "text_en": "PR & Communications expert",
     },
     ("home", "personality.languages"): {
         "label": "Личность — мови",
         "text_ru": (
-            "Языки: английский, русский, украинский. Знание делового этикета, "
-            "культурные различия стран."
+            "Ключевые компетенции: Управление стилем жизни, Деловой этикет, "
+            "Кросс-культурная коммуникация."
         ),
         "text_en": (
-            "Languages: English, Russian, Ukrainian. Business etiquette "
-            "and cultural differences across countries."
+            "Core Competencies: Lifestyle Management, Business Etiquette, "
+            "Cross-cultural Communication."
         ),
     },
     ("home", "personality.respect"): {
         "label": "Личность — повес до культур",
-        "text_ru": "Уважаю любую культуру, религию, традиции.",
-        "text_en": "I respect every culture, religion, and tradition.",
+        "text_ru": (
+            "Языки: Английский, Русский, Украинский. Мы уважаем каждую культуру, "
+            "религию и традицию. Работаем строго в рамках мировых корпоративных стандартов."
+        ),
+        "text_en": (
+            "Languages: English, Russian, Ukrainian. We respect every culture, "
+            "religion, and tradition. Operating strictly within global corporate standards."
+        ),
     },
     ("home", "personality.education"): {
         "label": "Личность — образование",
-        "text_ru": "Два высших образования.",
-        "text_en": "Two higher-education degrees.",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.travel"): {
         "label": "Личность — путешествия",
-        "text_ru": "Посетила 20+ стран.",
-        "text_en": "Visited 20+ countries.",
+        "text_ru": "",
+        "text_en": "",
     },
     ("home", "personality.portrait"): {
         "label": "Личность — фото",
@@ -358,13 +357,13 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "gallery.title"): {
         "label": "Галерея — заголовок",
-        "text_ru": "Кадры разных",
-        "text_en": "Frames from different",
+        "text_ru": "Кадры нашей",
+        "text_en": "Frames from our",
     },
     ("home", "gallery.title_accent"): {
         "label": "Галерея — акцент",
-        "text_ru": "вечеров",
-        "text_en": "evenings",
+        "text_ru": "работы",
+        "text_en": "work",
     },
     ("home", "formats_section_visible"): {
         "label": "Форматы — видимость",
@@ -379,22 +378,22 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     ("home", "formats.title"): {
         "label": "Форматы — заголовок",
         "text_ru": "Три формата",
-        "text_en": "Three formats",
+        "text_en": "Three formats of",
     },
     ("home", "formats.title_accent"): {
         "label": "Форматы — акцент",
-        "text_ru": "сопровождения",
-        "text_en": "of companionship",
+        "text_ru": "премиального ассистирования",
+        "text_en": "executive assistance",
     },
     ("home", "formats.note"): {
         "label": "Форматы — примечание",
         "text_ru": (
-            "Стоимость поездок за пределы города и особых форматов обсуждается отдельно. "
-            "Половина суммы вносится при подтверждении даты, остаток — по завершении встречи."
+            "Аванс в размере 50% необходим для бронирования графика, "
+            "остаток выплачивается по завершении проекта."
         ),
         "text_en": (
-            "Travel outside the city and special formats are discussed separately. "
-            "Half the fee is paid when the date is confirmed, the rest after the meeting."
+            "A 50% retainer is required to secure the schedule, "
+            "with the balance due upon completion of the project."
         ),
     },
     ("home", "testimonials_section_visible"): {
@@ -424,8 +423,8 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "faq.title_accent"): {
         "label": "Вопросы — акцент",
-        "text_ru": "до разговора",
-        "text_en": "before we speak",
+        "text_ru": "перед брифингом",
+        "text_en": "before the briefing",
     },
     ("home", "faq.cta"): {
         "label": "Вопросы — кнопка",
@@ -444,29 +443,29 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("home", "contacts.title"): {
         "label": "Контакты — заголовок",
-        "text_ru": "Начнём с разговора",
-        "text_en": "Let's start with a conversation",
+        "text_ru": "Запросите профессиональную",
+        "text_en": "Request a Professional",
     },
     ("home", "contacts.title_accent"): {
         "label": "Контакты — акцент",
-        "text_ru": "без обязательств",
-        "text_en": "without obligation",
+        "text_ru": "консультацию",
+        "text_en": "Consultation",
     },
     ("home", "contacts.lead"): {
         "label": "Контакты — текст",
         "text_ru": (
-            "Оставьте заявку — я отвечу лично в течение суток "
-            "и предложу время для встречи."
+            "Оставьте заявку — наша команда свяжется с вами в течение 24 часов "
+            "для планирования брифинга по проекту."
         ),
         "text_en": (
-            "Leave a request — I will reply personally within a day "
-            "and suggest a time to meet."
+            "Leave a request — our team will contact you within 24 hours "
+            "to schedule a project briefing."
         ),
     },
     ("home", "contacts.privacy_note"): {
         "label": "Контакты — примечание про конфиденциальность",
         "text_ru": "Все обращения остаются конфиденциальными.",
-        "text_en": "All inquiries remain private.",
+        "text_en": "All inquiries remain confidential.",
     },
     ("privacy", "title"): {
         "label": "Политика — заголовок",
@@ -492,6 +491,39 @@ _PAGE_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
             "third parties except where required by law.\n\n"
             "You may request deletion of your data by writing to the email address "
             "listed in the contacts section."
+        ),
+    },
+    ("terms", "title"): {
+        "label": "Условия — заголовок",
+        "text_ru": "Условия использования",
+        "text_en": "Terms of use",
+    },
+    ("terms", "body"): {
+        "label": "Условия — текст",
+        "text_ru": (
+            "Используя сайт Maison Polina, вы подтверждаете, что ознакомились "
+            "с настоящими условиями и принимаете их.\n\n"
+            "Материалы сайта носят информационный характер и описывают услуги "
+            "премиального бизнес-консьержа и lifestyle management. Заявки и "
+            "переписка не создают договорных обязательств до отдельного "
+            "письменного согласования сторон.\n\n"
+            "Запрещается копировать контент, вводить в заблуждение относительно "
+            "связи с брендом или использовать сайт способом, нарушающим закон "
+            "либо права третьих лиц.\n\n"
+            "Мы можем обновлять эти условия; актуальная редакция публикуется на "
+            "этой странице. По вопросам обращайтесь через контакты на сайте."
+        ),
+        "text_en": (
+            "By using the Maison Polina website, you confirm that you have read "
+            "and accept these terms.\n\n"
+            "Site materials are informational and describe premium executive "
+            "concierge and lifestyle management services. Inquiries and "
+            "correspondence do not create contractual obligations until the "
+            "parties agree in writing.\n\n"
+            "You may not copy content, misrepresent an affiliation with the brand, "
+            "or use the site in any way that violates the law or third-party rights.\n\n"
+            "We may update these terms; the current version is published on this "
+            "page. For questions, use the contact channels on the site."
         ),
     },
 }

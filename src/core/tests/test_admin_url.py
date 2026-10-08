@@ -22,4 +22,6 @@ def test_robots_txt_does_not_leak_admin_url(client):
     response = client.get("/robots.txt")
     body = response.content.decode()
     assert "Disallow: /admin/" in body
+    assert "Disallow: /api/" in body
+    assert "Sitemap:" in body
     assert settings.ADMIN_URL.strip("/") not in body

@@ -6,7 +6,7 @@
     </div>
 
     <div class="personality__grid" data-reveal data-reveal-delay="220">
-      <div class="personality__col">
+      <div class="personality__col personality__col--copy">
         <h3 class="personality__subtitle">{% block_plain "home" "personality.facts_title" %}</h3>
         <dl class="personality__facts">
           {% for item in personality_facts %}
@@ -16,9 +16,31 @@
           </div>
           {% endfor %}
         </dl>
+
+        {% if personality_extras %}
+        <ul class="personality__list">
+          {% for item in personality_extras %}
+          <li>
+            {% if item.label %}<span class="personality__list-label">{{ item.label }}</span>{% endif %}
+            {{ item.value }}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="personality__notes">
+          {% block_plain "home" "personality.languages" as personality_languages %}
+          {% if personality_languages %}<div>{% block_html "home" "personality.languages" %}</div>{% endif %}
+          {% block_plain "home" "personality.respect" as personality_respect %}
+          {% if personality_respect %}<div>{% block_html "home" "personality.respect" %}</div>{% endif %}
+          {% block_plain "home" "personality.education" as personality_education %}
+          {% if personality_education %}<div>{% block_html "home" "personality.education" %}</div>{% endif %}
+          {% block_plain "home" "personality.travel" as personality_travel %}
+          {% if personality_travel %}<div>{% block_html "home" "personality.travel" %}</div>{% endif %}
+        </div>
       </div>
 
-      <div class="personality__col personality__col--extra">
+      <div class="personality__col personality__col--media">
         <div class="personality__media">
           {% block_image "home" "personality.portrait" as portrait %}
           {% if portrait %}
@@ -34,22 +56,6 @@
                  decoding="async">
           </picture>
           {% endif %}
-        </div>
-        {% if personality_extras %}
-        <ul class="personality__list">
-          {% for item in personality_extras %}
-          <li>
-            {% if item.label %}<span class="personality__list-label">{{ item.label }}</span>{% endif %}
-            {{ item.value }}
-          </li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-        <div class="personality__notes">
-          <div>{% block_html "home" "personality.languages" %}</div>
-          <div>{% block_html "home" "personality.respect" %}</div>
-          <div>{% block_html "home" "personality.education" %}</div>
-          <div>{% block_html "home" "personality.travel" %}</div>
         </div>
       </div>
     </div>

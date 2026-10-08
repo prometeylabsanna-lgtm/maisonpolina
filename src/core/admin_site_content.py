@@ -41,6 +41,7 @@ from src.core.models import (
     SiteFooterSettings,
     SiteHeaderSettings,
     SiteSettings,
+    TermsSettings,
 )
 from src.core.site_content_registry import CONTENT_SECTIONS, get_section
 
@@ -156,6 +157,7 @@ def register_site_content_section_admins():
         (HomeFaqSettings, "home", "faq"),
         (HomeContactsSettings, "home", "contacts"),
         (PrivacySettings, "privacy", "privacy"),
+        (TermsSettings, "terms", "terms"),
         (SiteHeaderSettings, "site", "header"),
         (SiteFooterSettings, "site", "footer"),
         (SiteChatSettings, "site", "chat"),

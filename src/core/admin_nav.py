@@ -78,6 +78,11 @@ def build_admin_navigation(_request=None):
                     "icon": "policy",
                     "link": _link("admin:core_privacysettings_changelist"),
                 },
+                {
+                    "title": "Условия использования",
+                    "icon": "gavel",
+                    "link": _link("admin:core_termssettings_changelist"),
+                },
             ],
         },
         {

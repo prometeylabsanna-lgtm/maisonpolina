@@ -10,12 +10,23 @@
         </a>
         <span class="footer__line footer__line--right" aria-hidden="true"></span>
       </div>
+      {% if site_settings.company_legal_name %}
+      <p class="footer__company">{{ site_settings.company_legal_name }}</p>
+      {% endif %}
       {% if site_settings.get_location %}
       <p class="footer__label footer__label--brand footer__location-label">{% block_plain "site" "footer.location_label" %}</p>
       <p class="footer__text footer__location">{{ site_settings.get_location }}</p>
       {% endif %}
+      {% if site_settings.email %}
+      <p class="footer__text footer__email">
+        <a class="footer__email-link" href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a>
+      </p>
+      {% endif %}
       <p class="footer__legal">
         <a class="footer__legal-link" href="{% url 'core:privacy' %}">{% block_plain "site" "footer.privacy_1" %} {% block_plain "site" "footer.privacy_2" %}</a>
+      </p>
+      <p class="footer__legal">
+        <a class="footer__legal-link" href="{% url 'core:terms' %}">{% block_plain "site" "footer.terms_1" %} {% block_plain "site" "footer.terms_2" %}</a>
       </p>
     </div>
 

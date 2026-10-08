@@ -111,6 +111,16 @@ CHROME_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
         "text_ru": "конфиденциальности",
         "text_en": "policy",
     },
+    ("site", "footer.terms_1"): {
+        "label": "Подвал — условия 1",
+        "text_ru": "Условия",
+        "text_en": "Terms of",
+    },
+    ("site", "footer.terms_2"): {
+        "label": "Подвал — условия 2",
+        "text_ru": "использования",
+        "text_en": "use",
+    },
     ("site", "dock.aria"): {
         "label": "Dock — aria",
         "text_ru": "Мобильная панель",
@@ -408,8 +418,8 @@ CHROME_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("site", "personality.portrait_alt"): {
         "label": "Личность — alt портрета",
-        "text_ru": "Портрет",
-        "text_en": "Portrait",
+        "text_ru": "Деловой портрет команды Maison Polina",
+        "text_en": "Business portrait of the Maison Polina team",
     },
     ("site", "chat.title"): {
         "label": "Чат — заголовок",
@@ -418,8 +428,8 @@ CHROME_BLOCK_DEFAULTS: dict[tuple[str, str], dict] = {
     },
     ("site", "chat.subtitle"): {
         "label": "Чат — подзаголовок",
-        "text_ru": "Приватный диалог",
-        "text_en": "Private dialogue",
+        "text_ru": "Конфиденциальный диалог",
+        "text_en": "Confidential dialogue",
     },
     ("site", "chat.open"): {
         "label": "Чат — открыть",

@@ -1,8 +1,19 @@
 from django.core.management.base import BaseCommand
 
-from src.core.block_defaults import BLOCK_DEFAULTS, block_content_type
+from src.core.block_defaults import BLOCK_DEFAULTS, IMAGE_KEYS, block_content_type
 from src.core.models import PersonalityItem, SeoMeta, SiteBlock, SiteSettings
 from src.core.personality_item_defaults import PERSONALITY_ITEM_DEFAULTS
+from src.core.seed_catalog import (
+    COMPANY_LEGAL_NAME,
+    FAQ_SEED,
+    FORMAT_SEED,
+    GALLERY_SEED,
+    HOME_SEO,
+    LOCATION_EN,
+    LOCATION_RU,
+    PLACEHOLDER_EMAILS,
+    TESTIMONIAL_SEED,
+)
 from src.core.style_defaults import ensure_section_styles
 from src.faq.models import FaqItem
 from src.formats.models import FormatFeature, ServiceFormat
@@ -13,59 +24,143 @@ from src.reviews.models import Testimonial
 class Command(BaseCommand):
     help = "Idempotent seed of SiteBlocks, section styles, formats, reviews, FAQ"
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--overwrite",
+            action="store_true",
+            help="Replace existing CMS texts and catalog rows with Ads-safe defaults",
+        )
+
     def handle(self, *args, **options):
+        overwrite = bool(options.get("overwrite"))
+        self._seed_settings(overwrite=overwrite)
+        created_blocks, updated_blocks = self._seed_blocks(overwrite=overwrite)
+        styles_created = ensure_section_styles()
+        self._seed_seo(overwrite=overwrite)
+        self._seed_formats(overwrite=overwrite)
+        self._seed_testimonials(overwrite=overwrite)
+        self._seed_faq(overwrite=overwrite)
+        self._seed_gallery(overwrite=overwrite)
+        self._seed_personality_items(overwrite=overwrite)
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Seed done. New blocks: {created_blocks}, "
+                f"updated: {updated_blocks}, styles: {styles_created}, "
+                f"overwrite={overwrite}"
+            )
+        )
+
+    def _seed_settings(self, *, overwrite: bool) -> None:
         settings = SiteSettings.get_solo()
-        if settings.location_ru in (
+        fields: list[str] = []
+        if overwrite or settings.location_ru in (
             "Київ, за домовленістю",
             "Москва, по договорённости",
+            "Киев, по договорённости",
+            "ЖК «Нова Конча-Заспа»",
+            "вул. Феодосія Печерського, 1, Ходосівка, Київська область, 08173",
             "",
         ):
-            settings.location_ru = "Киев, по договорённости"
-        if settings.location_en in (
+            settings.location_ru = LOCATION_RU
+            fields.append("location_ru")
+        if overwrite or settings.location_en in (
             "Kyiv, by arrangement",
             "Moscow, by arrangement",
+            "Kyiv, by appointment",
+            "Nova Koncha-Zaspa RC",
+            "1 Feodosiia Pecherskyi St, Khodosivka, Kyiv Oblast, 08173",
             "",
         ):
-            settings.location_en = "Kyiv, by appointment"
-        settings.save(update_fields=["location_ru", "location_en"])
+            settings.location_en = LOCATION_EN
+            fields.append("location_en")
+        if overwrite or (settings.company_legal_name or "").strip() in (
+            "",
+            "MaisonPolina",
+        ):
+            settings.company_legal_name = COMPANY_LEGAL_NAME
+            fields.append("company_legal_name")
+        if overwrite or settings.copyright_name in (
+            "MAISON POLINA",
+            "MaisonPolina",
+            "Полина",
+            "",
+        ):
+            settings.copyright_name = COMPANY_LEGAL_NAME
+            fields.append("copyright_name")
+        email = (settings.email or "").strip().lower()
+        if overwrite or email in PLACEHOLDER_EMAILS:
+            settings.email = ""
+            fields.append("email")
+        if fields:
+            settings.save(update_fields=[*fields])
+
+    def _seed_blocks(self, *, overwrite: bool) -> tuple[int, int]:
         created_blocks = 0
-        labels_updated = 0
+        updated_blocks = 0
         for (page, key), defaults in BLOCK_DEFAULTS.items():
             label = defaults.get("label", key)
+            text_ru = defaults.get("text_ru", "")
+            text_en = defaults.get("text_en", "")
+            content_type = block_content_type(key)
             block, created = SiteBlock.objects.get_or_create(
                 page=page,
                 key=key,
                 defaults={
                     "label": label,
-                    "text_ru": defaults.get("text_ru", ""),
-                    "text_en": defaults.get("text_en", ""),
-                    "content_type": block_content_type(key),
+                    "text_ru": text_ru,
+                    "text_en": text_en,
+                    "content_type": content_type,
                     "is_active": True,
                     "sort_order": 0,
                 },
             )
             if created:
                 created_blocks += 1
-            elif label and block.label != label:
+                continue
+            update_fields: list[str] = []
+            if label and block.label != label:
                 block.label = label
-                block.save(update_fields=["label", "updated_at"])
-                labels_updated += 1
+                update_fields.append("label")
+            if overwrite:
+                if block.text_ru != text_ru:
+                    block.text_ru = text_ru
+                    update_fields.append("text_ru")
+                if block.text_en != text_en:
+                    block.text_en = text_en
+                    update_fields.append("text_en")
+                if block.content_type != content_type:
+                    block.content_type = content_type
+                    update_fields.append("content_type")
+                if key in IMAGE_KEYS and block.image:
+                    block.image = None
+                    update_fields.append("image")
+                if key in IMAGE_KEYS and block.video_file:
+                    block.video_file = None
+                    update_fields.append("video_file")
+                if key in IMAGE_KEYS and (block.video_url or "").strip():
+                    block.video_url = ""
+                    update_fields.append("video_url")
+            if update_fields:
+                # Drop duplicates while keeping order
+                seen: set[str] = set()
+                unique_fields: list[str] = []
+                for field in [*update_fields, "updated_at"]:
+                    if field not in seen:
+                        seen.add(field)
+                        unique_fields.append(field)
+                block.save(update_fields=unique_fields)
+                updated_blocks += 1
+        return created_blocks, updated_blocks
 
-        styles_created = ensure_section_styles()
-
-        SeoMeta.objects.get_or_create(
+    def _seed_seo(self, *, overwrite: bool) -> None:
+        seo, created = SeoMeta.objects.get_or_create(
             page="home",
-            defaults={
-                "title_ru": "Полина",
-                "title_en": "Polina",
-                "description_ru": (
-                    "Приватное сопровождение на ужины, приёмы и деловые поездки."
-                ),
-                "description_en": (
-                    "Private companionship for dinners, receptions and business trips."
-                ),
-            },
+            defaults=HOME_SEO,
         )
+        if not created and overwrite:
+            for field, value in HOME_SEO.items():
+                setattr(seo, field, value)
+            seo.save(update_fields=[*HOME_SEO.keys()])
         SeoMeta.objects.get_or_create(
             page="privacy",
             defaults={
@@ -75,137 +170,59 @@ class Command(BaseCommand):
                 "description_en": "How personal data is processed.",
             },
         )
-
-        self._seed_formats()
-        self._seed_testimonials()
-        self._seed_faq()
-        self._seed_gallery()
-        self._seed_personality_items()
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Seed done. New blocks: {created_blocks}, "
-                f"labels updated: {labels_updated}, styles: {styles_created}"
-            )
+        SeoMeta.objects.get_or_create(
+            page="terms",
+            defaults={
+                "title_ru": "Условия использования — Maison Polina",
+                "title_en": "Terms of use — Maison Polina",
+                "description_ru": "Условия использования сайта и информационных материалов Maison Polina.",
+                "description_en": "Terms of use for the Maison Polina website and informational materials.",
+            },
         )
 
-    def _seed_personality_items(self) -> None:
-        """Idempotent seed of personality facts/extras (no overwrite)."""
-        if PersonalityItem.objects.exists():
+    def _seed_personality_items(self, *, overwrite: bool) -> None:
+        if PersonalityItem.objects.exists() and not overwrite:
             return
-
-        fact_keys = (
-            ("age", "Возраст", "Age"),
-            ("eyes", "Глаза", "Eyes"),
-            ("hair", "Волосы", "Hair"),
-            ("height", "Рост", "Height"),
-            ("weight", "Вес", "Weight"),
-            ("measurements", "Параметры", "Measurements"),
-            ("flowers", "Цветы", "Flowers"),
-            ("cuisine", "Кухня", "Cuisine"),
-            ("alcohol", "Алкоголь", "Alcohol"),
-            ("smoking", "Курение", "Smoking"),
-        )
-        blocks = {
-            (b.page, b.key): b
-            for b in SiteBlock.objects.filter(
-                page__in=("home", "site"),
-                key__startswith="personality.",
-            )
-        }
-
-        def _text(page: str, key: str, fallback: str = "") -> str:
-            block = blocks.get((page, key))
-            if block is None:
-                return fallback
-            return (getattr(block, "text_ru", "") or fallback).strip()
-
-        def _text_en(page: str, key: str, fallback: str = "") -> str:
-            block = blocks.get((page, key))
-            if block is None:
-                return fallback
-            return (getattr(block, "text_en", "") or fallback).strip()
-
-        order = 0
-        for key, default_label_ru, default_label_en in fact_keys:
-            order += 1
-            value_ru = _text("home", f"personality.{key}")
-            value_en = _text_en("home", f"personality.{key}")
-            if not value_ru and not value_en:
-                continue
-            label_ru = _text("site", f"personality.label_{key}", default_label_ru)
-            label_en = _text_en("site", f"personality.label_{key}", default_label_en)
+        if overwrite:
+            PersonalityItem.objects.all().delete()
+        for group, order, label_ru, label_en, value_ru, value_en in PERSONALITY_ITEM_DEFAULTS:
             PersonalityItem.objects.create(
-                group=PersonalityItem.Group.FACTS,
+                group=group,
                 order=order,
                 label_ru=label_ru,
                 label_en=label_en,
                 value_ru=value_ru,
-                value_en=value_en or value_ru,
+                value_en=value_en,
                 is_active=True,
             )
 
-        extras_created = 0
-        for idx, key in enumerate(("extra_1", "extra_2", "extra_3"), start=1):
-            value_ru = _text("home", f"personality.{key}")
-            value_en = _text_en("home", f"personality.{key}")
-            if not value_ru and not value_en:
-                continue
-            PersonalityItem.objects.create(
-                group=PersonalityItem.Group.EXTRAS,
-                order=idx,
-                label_ru="",
-                label_en="",
-                value_ru=value_ru,
-                value_en=value_en or value_ru,
-                is_active=True,
-            )
-            extras_created += 1
-
-        if not PersonalityItem.objects.exists():
-            for group, order, label_ru, label_en, value_ru, value_en in PERSONALITY_ITEM_DEFAULTS:
-                PersonalityItem.objects.create(
-                    group=group,
-                    order=order,
-                    label_ru=label_ru,
-                    label_en=label_en,
-                    value_ru=value_ru,
-                    value_en=value_en,
-                    is_active=True,
-                )
-        elif extras_created == 0:
-            for group, order, label_ru, label_en, value_ru, value_en in PERSONALITY_ITEM_DEFAULTS:
-                if group != PersonalityItem.Group.EXTRAS:
-                    continue
-                PersonalityItem.objects.create(
-                    group=group,
-                    order=order,
-                    label_ru=label_ru,
-                    label_en=label_en,
-                    value_ru=value_ru,
-                    value_en=value_en,
-                    is_active=True,
-                )
-
-    def _seed_gallery(self) -> None:
-        """Ship gallery from static/images/gallery (Vercel-safe, like AJERES)."""
-        items = [
-            ("images/gallery/gallery-01.jpg", "Кадр вечера", "Evening frame"),
-            ("images/gallery/gallery-02.jpg", "Кадр вечера", "Evening frame"),
-            ("images/gallery/gallery-03.jpg", "Кадр вечера", "Evening frame"),
-            ("images/gallery/gallery-04.jpg", "Кадр вечера", "Evening frame"),
-            ("images/gallery/gallery-05.jpg", "Кадр вечера", "Evening frame"),
-            ("images/gallery/gallery-06.jpg", "Кадр вечера", "Evening frame"),
-        ]
-        for order, (path, caption_ru, caption_en) in enumerate(items, start=1):
+    def _seed_gallery(self, *, overwrite: bool) -> None:
+        keep_paths = {path for path, _, _ in GALLERY_SEED}
+        for order, (path, caption_ru, caption_en) in enumerate(GALLERY_SEED, start=1):
             name = path.rsplit("/", 1)[-1]
             existing = (
                 GalleryPhoto.objects.filter(static_image=path).first()
                 or GalleryPhoto.objects.filter(image__endswith=name).first()
             )
             if existing:
+                fields: list[str] = []
                 if existing.static_image != path:
                     existing.static_image = path
-                    existing.save(update_fields=["static_image"])
+                    fields.append("static_image")
+                if overwrite or existing.caption_ru in ("Кадр вечера",):
+                    existing.caption_ru = caption_ru
+                    existing.caption_en = caption_en
+                    existing.alt_ru = caption_ru
+                    existing.alt_en = caption_en
+                    fields.extend(["caption_ru", "caption_en", "alt_ru", "alt_en"])
+                if existing.order != order:
+                    existing.order = order
+                    fields.append("order")
+                if not existing.is_active:
+                    existing.is_active = True
+                    fields.append("is_active")
+                if fields:
+                    existing.save(update_fields=fields)
                 continue
             GalleryPhoto.objects.create(
                 static_image=path,
@@ -216,228 +233,38 @@ class Command(BaseCommand):
                 order=order,
                 is_active=True,
             )
+        if overwrite:
+            GalleryPhoto.objects.exclude(static_image__in=keep_paths).update(
+                is_active=False
+            )
 
-    def _seed_formats(self) -> None:
-        if ServiceFormat.objects.exists():
+    def _seed_formats(self, *, overwrite: bool) -> None:
+        if ServiceFormat.objects.exists() and not overwrite:
             return
-        data = [
-            {
-                "title_ru": "Знакомство",
-                "title_en": "Introduction",
-                "label_ru": "Формат I",
-                "label_en": "Format I",
-                "description_ru": (
-                    "Полтора часа личной беседы: цель обращения, формат встреч, "
-                    "взаимные ожидания."
-                ),
-                "description_en": (
-                    "An hour and a half of private conversation: purpose, "
-                    "meeting format, mutual expectations."
-                ),
-                "price_text_ru": "400 $",
-                "price_text_en": "400 $",
-                "is_featured": False,
-                "order": 1,
-                "features": [
-                    ("Обсуждение формата и целей", "Discussion of format and goals"),
-                    ("Условия конфиденциальности", "Privacy terms"),
-                ],
-            },
-            {
-                "title_ru": "Сопровождение на вечер",
-                "title_en": "Evening accompaniment",
-                "label_ru": "Формат II",
-                "label_en": "Format II",
-                "description_ru": (
-                    "Полное сопровождение делового приёма, премьеры или ужина — "
-                    "от встречи до прощания."
-                ),
-                "description_en": (
-                    "Full accompaniment for a business reception, premiere or dinner — "
-                    "from greeting to farewell."
-                ),
-                "price_text_ru": "1000 $",
-                "price_text_en": "1000 $",
-                "is_featured": True,
-                "order": 2,
-                "features": [
-                    (
-                        "Индивидуальный бриф перед встречей",
-                        "Individual brief before the meeting",
-                    ),
-                    (
-                        "Сопровождение на протяжении вечера",
-                        "Accompaniment throughout the evening",
-                    ),
-                    ("Соглашение о неразглашении", "Non-disclosure agreement"),
-                    (
-                        "Логистика и транспорт по согласованию",
-                        "Logistics and transport by arrangement",
-                    ),
-                ],
-            },
-            {
-                "title_ru": "Поездка",
-                "title_en": "Trip",
-                "label_ru": "Формат III",
-                "label_en": "Format III",
-                "description_ru": (
-                    "Сопровождение в деловой или частной поездке — "
-                    "от выезда до возвращения. "
-                    "Отдельная комната для меня — обязательное условие."
-                ),
-                "description_en": (
-                    "Accompaniment on a business or private trip — "
-                    "from departure to return. "
-                    "A separate room for me is required."
-                ),
-                "price_text_ru": "По договорённости",
-                "price_text_en": "By arrangement",
-                "is_featured": False,
-                "order": 3,
-                "features": [
-                    (
-                        "Согласование маршрута и расписания",
-                        "Itinerary and schedule alignment",
-                    ),
-                    (
-                        "Присутствие на встречах и событиях",
-                        "Presence at meetings and events",
-                    ),
-                    (
-                        "Логистика и связь на всём пути",
-                        "Logistics and contact throughout the trip",
-                    ),
-                ],
-            },
-        ]
-        for item in data:
-            features = item.pop("features")
-            fmt = ServiceFormat.objects.create(**item)
+        if overwrite:
+            FormatFeature.objects.all().delete()
+            ServiceFormat.objects.all().delete()
+        for item in FORMAT_SEED:
+            payload = dict(item)
+            features = payload.pop("features")
+            fmt = ServiceFormat.objects.create(**payload)
             for idx, (ru, en) in enumerate(features):
                 FormatFeature.objects.create(
                     service=fmt, text_ru=ru, text_en=en, order=idx
                 )
 
-    def _seed_testimonials(self) -> None:
-        if Testimonial.objects.exists():
+    def _seed_testimonials(self, *, overwrite: bool) -> None:
+        if Testimonial.objects.exists() and not overwrite:
             return
-        items = [
-            {
-                "author_name_ru": "Дмитрий К.",
-                "author_name_en": "Dmitry K.",
-                "role_ru": "Основатель инвестиционного фонда",
-                "role_en": "Founder of an investment fund",
-                "text_ru": (
-                    "Полина сопровождала меня на переговорах длиной в целый год. "
-                    "Ни одной неловкой паузы — и ни одной ситуации, где я чувствовал "
-                    "себя не на месте."
-                ),
-                "text_en": (
-                    "Polina accompanied me through a year of negotiations. "
-                    "Not a single awkward pause — and never a moment when I felt out of place."
-                ),
-                "order": 1,
-            },
-            {
-                "author_name_ru": "Александр Г.",
-                "author_name_en": "Alexander G.",
-                "role_ru": "Дирижёр",
-                "role_en": "Conductor",
-                "text_ru": (
-                    "Работа тихая и очень точная. Она не переделывает ситуацию, "
-                    "она убирает всё, что мешает её увидеть."
-                ),
-                "text_en": (
-                    "The work is quiet and precise. She does not reshape the situation — "
-                    "she removes what prevents seeing it."
-                ),
-                "order": 2,
-            },
-            {
-                "author_name_ru": "Андрей М.",
-                "author_name_en": "Andrey M.",
-                "role_ru": "Дипломатическая служба",
-                "role_en": "Diplomatic service",
-                "text_ru": (
-                    "Три поездки, четыре страны, ни одной ошибки в графике. "
-                    "Это дороже любых консультаций по этикету."
-                ),
-                "text_en": (
-                    "Three trips, four countries, not a single scheduling error. "
-                    "Worth more than any etiquette consulting."
-                ),
-                "order": 3,
-            },
-        ]
-        for item in items:
+        if overwrite:
+            Testimonial.objects.all().delete()
+        for item in TESTIMONIAL_SEED:
             Testimonial.objects.create(**item)
 
-    def _seed_faq(self) -> None:
-        if FaqItem.objects.exists():
+    def _seed_faq(self, *, overwrite: bool) -> None:
+        if FaqItem.objects.exists() and not overwrite:
             return
-        items = [
-            {
-                "question_ru": "Как проходит первая встреча?",
-                "question_en": "How does the first meeting work?",
-                "answer_ru": (
-                    "Мы начинаем с короткого знакомства: цели, формат, взаимные "
-                    "ожидания. Если всё подходит — согласуем следующую дату."
-                ),
-                "answer_en": (
-                    "We start with a short introduction: goals, format, mutual "
-                    "expectations. If it fits — we agree on the next date."
-                ),
-                "order": 1,
-            },
-            {
-                "question_ru": "Где проходят встречи?",
-                "question_en": "Where do meetings take place?",
-                "answer_ru": (
-                    "В Киеве и по договорённости в других городах. "
-                    "Логистика за пределами города обсуждается отдельно."
-                ),
-                "answer_en": (
-                    "In Kyiv and, by arrangement, in other cities. "
-                    "Travel outside the city is discussed separately."
-                ),
-                "order": 2,
-            },
-            {
-                "question_ru": "Сохраняется ли конфиденциальность?",
-                "question_en": "Is privacy preserved?",
-                "answer_ru": (
-                    "Да. Имена и детали встреч остаются между нами. "
-                    "При необходимости подписывается соглашение о неразглашении."
-                ),
-                "answer_en": (
-                    "Yes. Names and meeting details stay between us. "
-                    "A non-disclosure agreement can be signed when needed."
-                ),
-                "order": 3,
-            },
-            {
-                "question_ru": "За сколько нужно бронировать дату?",
-                "question_en": "How far in advance should I book?",
-                "answer_ru": (
-                    "Желательно за 5–7 дней. Для поездок — раньше, чтобы согласовать график."
-                ),
-                "answer_en": (
-                    "Preferably 5–7 days ahead. For travel — earlier, to align the schedule."
-                ),
-                "order": 4,
-            },
-            {
-                "question_ru": "Как происходит оплата?",
-                "question_en": "How does payment work?",
-                "answer_ru": (
-                    "Половина суммы при подтверждении даты, остаток — по завершении встречи."
-                ),
-                "answer_en": (
-                    "Half the fee when the date is confirmed, the rest after the meeting."
-                ),
-                "order": 5,
-            },
-        ]
-        for item in items:
+        if overwrite:
+            FaqItem.objects.all().delete()
+        for item in FAQ_SEED:
             FaqItem.objects.create(**item)

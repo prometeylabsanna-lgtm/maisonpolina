@@ -112,12 +112,12 @@
   max-width: none;
   margin: 0;
   background: transparent;
-  object-fit: cover;
-  object-position: 38% 6%;
-  -webkit-transform: translate3d(6%, 7%, 0) scale(1.06);
-  transform: translate3d(6%, 7%, 0) scale(1.06);
-  -webkit-transform-origin: center top;
-  transform-origin: center top;
+  object-fit: contain;
+  object-position: center bottom;
+  -webkit-transform: none;
+  transform: none;
+  -webkit-transform-origin: center bottom;
+  transform-origin: center bottom;
 }
 
 .hero__shade-x {

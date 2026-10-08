@@ -231,6 +231,21 @@ MORE_CONTENT_SECTIONS: tuple[ContentSection, ...] = (
         field_groups=(FieldGroup("Текст страницы", ("title", "body")),),
     ),
     ContentSection(
+        slug="terms",
+        page_slug="terms",
+        title="Условия использования",
+        sidebar_title="Условия использования",
+        sidebar_icon="gavel",
+        preview_url="/terms/",
+        description="Юридический текст страницы условий использования.",
+        admin_model_name="termssettings",
+        blocks=(
+            ("terms", "title"),
+            ("terms", "body"),
+        ),
+        field_groups=(FieldGroup("Текст страницы", ("title", "body")),),
+    ),
+    ContentSection(
         slug="header",
         page_slug="site",
         title="Шапка профиля",
@@ -308,6 +323,7 @@ MORE_CONTENT_SECTIONS: tuple[ContentSection, ...] = (
         description="Подписи подвала, политика и ссылки соцсетей.",
         admin_model_name="sitefootersettings",
         settings_fields=(
+            "company_legal_name",
             "copyright_name",
             "location_ru",
             "location_en",
@@ -328,6 +344,8 @@ MORE_CONTENT_SECTIONS: tuple[ContentSection, ...] = (
             ("site", "footer.menu_more"),
             ("site", "footer.privacy_1"),
             ("site", "footer.privacy_2"),
+            ("site", "footer.terms_1"),
+            ("site", "footer.terms_2"),
         ),
         field_groups=(
             FieldGroup(
@@ -348,6 +366,8 @@ MORE_CONTENT_SECTIONS: tuple[ContentSection, ...] = (
                     "footer.menu_more",
                     "footer.privacy_1",
                     "footer.privacy_2",
+                    "footer.terms_1",
+                    "footer.terms_2",
                 ),
             ),
         ),

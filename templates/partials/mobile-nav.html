@@ -1,5 +1,6 @@
 {% load site_content %}
 {% url 'core:privacy' as privacy_url %}
+{% url 'core:terms' as terms_url %}
 <div class="mobile-nav" id="mobile-nav" data-mobile-nav hidden>
   <div class="mobile-nav__top">
     <span class="header__brand-mark">
@@ -13,6 +14,9 @@
   </nav>
   <a class="mobile-nav__privacy" href="{{ privacy_url }}" data-mobile-nav-link>
     {% block_plain "site" "footer.privacy_1" %} {% block_plain "site" "footer.privacy_2" %}
+  </a>
+  <a class="mobile-nav__privacy" href="{{ terms_url }}" data-mobile-nav-link>
+    {% block_plain "site" "footer.terms_1" %} {% block_plain "site" "footer.terms_2" %}
   </a>
   <div class="mobile-nav__bottom">
     {% if site_settings.phone %}

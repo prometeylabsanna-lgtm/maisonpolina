@@ -59,6 +59,7 @@ def site_context(request):
         "site_blocks": site_blocks,
         "section_styles_css": section_styles_css,
         "current_language": get_language() or "ru",
+        "gtm_id": (getattr(settings, "GTM_ID", "") or "").strip(),
     }
 
 

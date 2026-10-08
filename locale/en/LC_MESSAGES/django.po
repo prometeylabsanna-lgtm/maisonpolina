@@ -216,7 +216,7 @@ msgstr "Message"
 
 #: templates/partials/chat-widget.html:28
 msgid "Приватный диалог"
-msgstr "Private conversation"
+msgstr "Confidential dialogue"
 
 #: templates/partials/chat-widget.html:34
 msgid "Закрыть чат"
