@@ -2512,11 +2512,21 @@ body.is-locked {
   align-items: center;
   gap: 16px;
   flex: 0 0 auto;
+  width: 100%;
+}
+
+.mobile-nav__contact {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px 16px;
+  width: 100%;
 }
 
 .mobile-nav__phone {
   display: inline-block;
-  align-self: center;
   text-align: center;
   font-family: var(--font-display);
   font-size: clamp(22px, 6vw, 28px);
@@ -2535,24 +2545,29 @@ body.is-locked {
   border-bottom-color: var(--color-interactive-hover);
 }
 
+.mobile-nav__whatsapp.header__whatsapp {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+}
+
+.mobile-nav__whatsapp .header__whatsapp-icon {
+  width: 30px;
+  height: 30px;
+}
+
 .mobile-nav__cta {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
   width: 100%;
 }
 
-.mobile-nav__cta .header__whatsapp {
-  display: grid;
-}
-
-.mobile-nav__bottom .btn,
-.mobile-nav__cta .btn {
-  width: 100%;
-}
-
-.mobile-nav__cta .btn {
-  flex: 1 1 auto;
+.mobile-nav__lead.btn {
+  width: min(100%, 280px);
+  margin-inline: auto;
 }
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {

@@ -19,12 +19,14 @@
     {% block_plain "site" "footer.terms_1" %} {% block_plain "site" "footer.terms_2" %}
   </a>
   <div class="mobile-nav__bottom">
-    {% if site_settings.phone %}
-    <a class="mobile-nav__phone" href="tel:{{ site_settings.phone|cut:' '|cut:'-' }}">{{ site_settings.phone }}</a>
-    {% endif %}
+    <div class="mobile-nav__contact">
+      {% if site_settings.phone %}
+      <a class="mobile-nav__phone" href="tel:{{ site_settings.phone|cut:' '|cut:'-' }}">{{ site_settings.phone }}</a>
+      {% endif %}
+      {% include "partials/header-whatsapp.html" with extra_class="mobile-nav__whatsapp" %}
+    </div>
     <div class="mobile-nav__cta">
-      {% include "partials/header-whatsapp.html" %}
-      <button type="button" class="btn btn--block" data-open-lead data-source="header" data-service="" data-mobile-nav-link>
+      <button type="button" class="btn btn--block mobile-nav__lead" data-open-lead data-source="header" data-service="" data-mobile-nav-link>
         {% block_plain "site" "header.cta" %}
       </button>
     </div>
