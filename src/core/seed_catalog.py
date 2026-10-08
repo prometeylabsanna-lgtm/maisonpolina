@@ -201,7 +201,7 @@ HOME_SEO = {
     ),
 }
 
-LOCATION_RU = "ЖК Нова Конча Заспа, Ходосівка, Київська область, 08173"
+LOCATION_RU = "ЖК Новая Конча-Заспа, Ходосовка, Киевская область, 08173"
 LOCATION_EN = "Nova Koncha Zaspa RC, Khodosivka, Kyiv Oblast, 08173"
 COMPANY_LEGAL_NAME = "Maison Polina"
 

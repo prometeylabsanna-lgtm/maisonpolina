@@ -74,7 +74,7 @@ class SiteSettings(models.Model):
     location_ru = models.CharField(
         max_length=255,
         blank=True,
-        default="ЖК Нова Конча Заспа, Ходосівка, Київська область, 08173",
+        default="ЖК Новая Конча-Заспа, Ходосовка, Киевская область, 08173",
         verbose_name="Адрес / локация",
     )
     location_en = models.CharField(
